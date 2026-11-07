@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR" style=""><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary-fixed": "#341100", "surface-bright": "#fbf9f4", "on-tertiary-container": "#621600", "primary-fixed": "#ffdbca", "surface-container-low": "#f5f3ee", "error": "#ba1a1a", "outline": "#8c7164", "inverse-primary": "#ffb690", "on-primary-container": "#582200", "on-tertiary-fixed": "#3b0900", "primary-fixed-dim": "#ffb690", "surface-container": "#f0eee9", "surface-container-highest": "#e4e2dd", "primary": "#9d4300", "inverse-surface": "#30312e", "on-surface-variant": "#584237", "surface-tint": "#9d4300", "on-secondary": "#ffffff", "outline-variant": "#e0c0b1", "on-tertiary-fixed-variant": "#862200", "tertiary-fixed": "#ffdbd1", "surface-variant": "#e4e2dd", "primary-container": "#f97316", "surface": "#fbf9f4", "on-error": "#ffffff", "on-error-container": "#93000a", "on-background": "#1b1c19", "tertiary": "#b02f00", "on-surface": "#1b1c19", "on-primary": "#ffffff", "surface-dim": "#dbdad5", "secondary-fixed": "#dae2fd", "tertiary-container": "#ff6c40", "error-container": "#ffdad6", "on-tertiary": "#ffffff", "background": "#fbf9f4", "secondary-fixed-dim": "#bec6e0", "on-secondary-fixed-variant": "#3f465c", "on-secondary-fixed": "#131b2e", "on-secondary-container": "#5c647a", "inverse-on-surface": "#f2f1ec", "surface-container-lowest": "#ffffff", "on-primary-fixed-variant": "#783200", "tertiary-fixed-dim": "#ffb5a0", "surface-container-high": "#eae8e3", "secondary": "#565e74", "secondary-container": "#dae2fd" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "margin": "3rem", "gutter-mobile": "1rem", "space-xl": "2.5rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "margin-mobile": "1.25rem", "space-sm": "0.5rem", "gutter": "1.5rem" }, "fontFamily": { "body-lg": [ "Plus Jakarta Sans" ], "headline-lg-mobile": [ "Outfit" ], "display-hero-mobile": [ "Outfit" ], "headline-lg": [ "Outfit" ], "display-hero": [ "Outfit" ], "body-sm": [ "Plus Jakarta Sans" ], "headline-sm": [ "Outfit" ], "headline-md": [ "Outfit" ], "label-lg": [ "Plus Jakarta Sans" ], "code-snippet": [ "JetBrains Mono" ], "body-md": [ "Plus Jakarta Sans" ], "label-md": [ "Plus Jakarta Sans" ] }, "fontSize": { "body-lg": [ "18px", { "lineHeight": "28px", "fontWeight": "400" } ], "headline-lg-mobile": [ "28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "display-hero-mobile": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" } ], "headline-lg": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "display-hero": [ "56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" } ], "body-sm": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-sm": [ "20px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "600" } ], "headline-md": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "label-lg": [ "14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" } ], "code-snippet": [ "13px", { "lineHeight": "20px", "fontWeight": "500" } ], "body-md": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "label-md": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-bright/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-6"><a class="flex items-center gap-3 shrink-0 group" data-path="inicio" href="#"><img alt="Vórtice Logo" class="h-8 w-auto object-contain transition-transform group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy9fMmXFLYFAOsPbkij9TXOX0TF1RSzASctu7NvjqMGiTfIuFH73aIJqUYi3JXgTNNmi_t7T7bss7JH_5EA0vLBnHhiGGh9U8LRQRJb4FY6OOtSR01NK_0PBOdG45qT_3-_EqMuHeTeq5GyIER4fBkbHom27zfzu_mtgOvW3q5PjRlpcZyYIUn8_dsEdF9VL7znNeT2S2l5aZM5acMW7UsgNmG33psApYwXvs_tmmS"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Vór<span class="text-primary-container">tice</span></span><span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">3D Labs &amp; Dev</span></div></a><nav class="hidden xl:flex items-center gap-7" data-active-classes="text-primary-container font-semibold"><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="inicio" href="#">Início</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="produtos" href="#">Produtos</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="personalizados" href="#">Personalizados</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="consultoria-dev" href="#">Consultoria Dev</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="sobre-nos" href="#">Sobre Nós</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="feedbacks-nfc" href="#">Feedbacks NFC</a></nav><div class="flex items-center gap-4 shrink-0"><div class="relative hidden sm:flex items-center"><span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px] pointer-events-none">search</span><input class="w-48 lg:w-56 pl-9 pr-4 py-2 bg-surface-container rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container-lowest transition-all" placeholder="Buscar peças, código..." type="text"/></div><a aria-label="Carrinho de compras" class="relative p-2 rounded-lg text-on-surface hover:bg-surface-container hover:text-on-surface transition-colors flex items-center justify-center" data-path="carrinho" href="#"><span class="material-symbols-outlined text-[24px]">shopping_bag</span><span class="absolute top-1 right-1 w-4 h-4 bg-primary-container text-on-primary rounded-full font-label-md text-[10px] flex items-center justify-center font-bold">2</span></a><a class="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface rounded-lg font-label-lg text-label-lg transition-transform hover:-translate-y-0.5 shadow-[0_2px_8px_rgba(15,23,42,0.08)]" data-path="login" href="#"><span class="material-symbols-outlined text-[18px]">login</span><span class="">Entrar</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-surface"><div class="flex flex-col w-full">
+<!-- Toast Notification Alert -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-inverse-surface text-inverse-on-surface px-5 py-3.5 rounded-xl shadow-xl" id="vrt-toast">
+<span class="material-symbols-outlined text-primary-container text-[20px]" id="toast-icon">check_circle</span>
+<span class="font-body-sm text-body-sm font-medium" id="toast-msg">Notificação do Laboratório</span>
+</div>
+<div class="max-w-7xl mx-auto w-full px-6 lg:px-12 py-8">
+<!-- Top Nav: Breadcrumb & Progress Stepper -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8">
+<!-- Breadcrumb -->
+<nav aria-label="Navegação estrutural" class="flex items-center gap-2">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" data-path="inicio" href="#">
+<span class="material-symbols-outlined text-[16px]">home</span>
+<span>Início</span>
+</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="produtos" href="#">Catálogo de Produtos</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="font-label-md text-label-md text-primary font-bold">Meu Carrinho</span>
+</nav>
+<!-- Stepper Component -->
+<div class="inline-flex items-center gap-2 sm:gap-4 bg-surface-container-low px-4 py-2 rounded-xl">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center font-bold shadow-sm">1</span>
+<span class="font-label-md text-label-md text-on-surface font-bold whitespace-nowrap">Carrinho</span>
+</div>
+<span class="w-4 h-0.5 bg-outline-variant"></span>
+<div class="flex items-center gap-2 opacity-50">
+<span class="w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md text-label-md flex items-center justify-center font-medium">2</span>
+<span class="hidden sm:inline font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Identificação</span>
+</div>
+<span class="w-4 h-0.5 bg-outline-variant"></span>
+<div class="flex items-center gap-2 opacity-50">
+<span class="w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md text-label-md flex items-center justify-center font-medium">3</span>
+<span class="hidden sm:inline font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Pagamento</span>
+</div>
+<span class="w-4 h-0.5 bg-outline-variant"></span>
+<div class="flex items-center gap-2 opacity-50">
+<span class="w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md text-label-md flex items-center justify-center font-medium">4</span>
+<span class="hidden sm:inline font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Fatiamento 3D</span>
+</div>
+</div>
+</div>
+<!-- Page Header Area -->
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8">
+<div>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-code-snippet text-code-snippet mb-2">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-ping"></span>
+<span>ESTAÇÃO DE CORTE &amp; CHECKOUT</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
+          Carrinho de Compras <span class="font-light text-on-surface-variant">&amp; Ordem de Produção</span>
+</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-low text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-primary">lock</span>
+<span>Criptografia AES-256</span>
+</div>
+<span class="font-label-lg text-label-lg px-3 py-1.5 rounded-lg bg-primary-container/10 text-primary font-bold" id="items-badge-count">
+          3 itens no pedido
+        </span>
+</div>
+</div>
+<!-- Main Content Bento Layout: Grid 12 Columns -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Cart Items Section (8 Cols) -->
+<div class="lg:col-span-8 flex flex-col gap-5">
+<!-- Cart Items List Container -->
+<div class="flex flex-col gap-4" id="cart-items-wrapper">
+<!-- ITEM 1: Chaveiro Mascote Fox Vórtice NFC -->
+<div class="cart-item group relative bg-surface-container-lowest rounded-xl p-5 shadow-sm transition-all duration-300 hover:shadow-md" data-price="42.90" id="item-vrt-fox">
+<div class="flex flex-col sm:flex-row gap-5 items-start">
+<!-- Item Thumbnail -->
+<div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container-low p-2 shrink-0 flex items-center justify-center overflow-hidden">
+<img alt="Chaveiro Mascote Fox Vórtice NFC" class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1Ud0lpncfyc2eMelYaQZ47mMD2h6EO8dAPVfPjbjqvaDVkrBVryjbIvTIBQEfu6KWNotLvhBoGWhDrOVjh3zShD-r6gRdyvZL10LQ731AXO2MTtJgI9l8i1Ld7vHS2ht0XjYsRE79aGblkW6KH0JMepWrZ8nVeYNwCwi1bMfbg_jeAGYIX4YB2tI-Pi2UBR-3YEKbGz3aAGoc7eOGw_kZ4XXYX3XlJpH4DoN6BqdckxX66bqvkryHBsjrCo"/>
+<div class="absolute top-1 left-1 bg-inverse-surface/85 backdrop-blur-sm text-surface-container-lowest font-code-snippet text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] text-primary-container">nfc</span>
+<span>NTAG213</span>
+</div>
+</div>
+<!-- Item Specifications & Meta -->
+<div class="flex-1 flex flex-col justify-between w-full min-w-0">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-primary-container/10 text-primary font-label-md text-[11px] font-bold">Pronta Entrega</span>
+<span class="font-code-snippet text-code-snippet text-outline">SKU: VRT-FOX-NFC</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1 tracking-tight">Chaveiro Mascote Fox Vórtice NFC</h2>
+</div>
+<div class="text-left sm:text-right">
+<span class="font-label-md text-label-md text-on-surface-variant block">Subtotal</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold text-item-total" id="total-vrt-fox">R$ 85,80</span>
+</div>
+</div>
+<!-- Technical Specs Chips -->
+<div class="flex flex-wrap gap-2 mt-2 pt-2 text-on-surface-variant">
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span> PLA+ Laranja Vórtice
+                  </span>
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px]">Infill 40% Gyroid</span>
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px]">Gravação a Laser Serializada</span>
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px]">Chip NTAG213 (144 bytes)</span>
+</div>
+<!-- Controls & Actions Row -->
+<div class="flex flex-wrap items-center justify-between gap-4 mt-4 pt-3 bg-surface-container-low/40 -mx-5 -mb-5 p-4 rounded-b-xl">
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-on-surface-variant">Qtd:</span>
+<div class="inline-flex items-center bg-surface-container-lowest rounded-lg p-1 shadow-sm">
+<button aria-label="Diminuir quantidade" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container rounded transition-colors" onclick="updateQty('vrt-fox', -1)" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<input class="w-8 text-center bg-transparent font-code-snippet text-code-snippet font-bold text-on-surface focus:outline-none" id="qty-vrt-fox" max="99" min="1" readonly="" type="number" value="2"/>
+<button aria-label="Aumentar quantidade" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container rounded transition-colors" onclick="updateQty('vrt-fox', 1)" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">× R$ 42,90</span>
+</div>
+<div class="flex items-center gap-3">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" data-path="produtos" href="#">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>Ver Produto</span>
+</a>
+<button class="text-error/80 hover:text-error hover:bg-error-container/30 p-1.5 rounded-lg transition-colors flex items-center gap-1 font-label-md text-label-md" onclick="removeItem('item-vrt-fox', 'Chaveiro Mascote Fox NFC')" title="Remover item" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span class="hidden sm:inline">Remover</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ITEM 2: Miniatura Colecionável Mascote Fox em Resina 8K -->
+<div class="cart-item group relative bg-surface-container-lowest rounded-xl p-5 shadow-sm transition-all duration-300 hover:shadow-md" data-price="89.00" id="item-vrt-col">
+<div class="flex flex-col sm:flex-row gap-5 items-start">
+<!-- Item Thumbnail -->
+<div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container-low p-2 shrink-0 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300" data-alt="High detailed collectible studio miniature of a geometric stylized Fox mascot figurine 3D printed in ultra smooth slate grey 8K photopolymer resin. Macro product photography with micro layer lines visible only at 0.05mm scale, resting on a precision calibration grid mat in a warm technical maker lab with soft amber rim lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsbB7AHeEgJ9HU4xt4e3nJSUVPS9YyNwX3V7FkpT5aUTMkdW-zfx2b65LDSgxUYetLMNEc83I7UqW2w4aHzcg-Ot6IWbROVW3Uj4QO391GNLczMi0tDLBOru3Pn7oCr3QlhMCJtfS0KAxvaGJHpNg-VF7f6iEMBTGpOYKJYMpzxGhjdHfa8fb-qyk6Ap5qer4wwyxbqfOC72-m3eFYkPjDt63jg1gLKOkXS2f-KloR"/>
+<div class="absolute top-1 left-1 bg-inverse-surface/85 backdrop-blur-sm text-surface-container-lowest font-code-snippet text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] text-secondary-fixed">layers</span>
+<span>8K UV</span>
+</div>
+</div>
+<!-- Item Specifications & Meta -->
+<div class="flex-1 flex flex-col justify-between w-full min-w-0">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-fixed font-label-md text-[11px] font-bold">Lote Limitado #04</span>
+<span class="font-code-snippet text-code-snippet text-outline">SKU: VRT-COL-08K</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1 tracking-tight">Miniatura Colecionável Mascote Fox em Resina 8K</h2>
+</div>
+<div class="text-left sm:text-right">
+<span class="font-label-md text-label-md text-on-surface-variant block">Subtotal</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold text-item-total" id="total-vrt-col">R$ 89,00</span>
+</div>
+</div>
+<!-- Technical Specs Chips -->
+<div class="flex flex-wrap gap-2 mt-2 pt-2 text-on-surface-variant">
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Resina UV Cinza Alta Definição
+                  </span>
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px]">Tolerância ±0.03mm</span>
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px]">Camada 0.05mm</span>
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px]">NTAG213 interno</span>
+</div>
+<!-- Controls & Actions Row -->
+<div class="flex flex-wrap items-center justify-between gap-4 mt-4 pt-3 bg-surface-container-low/40 -mx-5 -mb-5 p-4 rounded-b-xl">
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-on-surface-variant">Qtd:</span>
+<div class="inline-flex items-center bg-surface-container-lowest rounded-lg p-1 shadow-sm">
+<button aria-label="Diminuir quantidade" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container rounded transition-colors" onclick="updateQty('vrt-col', -1)" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<input class="w-8 text-center bg-transparent font-code-snippet text-code-snippet font-bold text-on-surface focus:outline-none" id="qty-vrt-col" max="99" min="1" readonly="" type="number" value="1"/>
+<button aria-label="Aumentar quantidade" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container rounded transition-colors" onclick="updateQty('vrt-col', 1)" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">× R$ 89,00</span>
+</div>
+<div class="flex items-center gap-3">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" data-path="produtos" href="#">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>Ver Produto</span>
+</a>
+<button class="text-error/80 hover:text-error hover:bg-error-container/30 p-1.5 rounded-lg transition-colors flex items-center gap-1 font-label-md text-label-md" onclick="removeItem('item-vrt-col', 'Miniatura Mascote Fox 8K')" title="Remover item" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span class="hidden sm:inline">Remover</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ITEM 3: Case Protetor Raspberry Pi 4/5 Industrial IoT -->
+<div class="cart-item group relative bg-surface-container-lowest rounded-xl p-5 shadow-sm transition-all duration-300 hover:shadow-md" data-price="58.00" id="item-vrt-rpi">
+<div class="flex flex-col sm:flex-row gap-5 items-start">
+<!-- Item Thumbnail -->
+<div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container-low p-2 shrink-0 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300" data-alt="Rugged industrial modular Raspberry Pi 4 and 5 enclosure 3D printed in matte carbon fiber reinforced black ABS filament. Featuring hexagonal airflow vents, 30mm cooling fan bay, DIN rail clamp mounting points, and laser engraved GPIO pinouts, shot in an industrial tech laboratory on clean warm surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACIs3dowx0yn9xMKkBAwuaVa2V86Rur6rylxufZj6Eq_UrV-CQih0Rb7vpdnSVnEVeGjUPTx1RXj2jfULEQis5sykF7fy8wE0RHtk8OUvJcuYMThBHo2kHGe_lUNQqd3R5b2r27RiiISFf1ig4rqqaHbQHkINV4MWjtT8cTacOKY-Sfb9PXDVsyyjQatl2WYL7RiVWmHRE9mQ3EbtraUzDVQz6Mw11ebml9VjmwFGW"/>
+<div class="absolute top-1 left-1 bg-inverse-surface/85 backdrop-blur-sm text-surface-container-lowest font-code-snippet text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] text-primary-container">memory</span>
+<span>IoT DIN</span>
+</div>
+</div>
+<!-- Item Specifications & Meta -->
+<div class="flex-1 flex flex-col justify-between w-full min-w-0">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-md text-[11px] font-bold">Manufatura Sob Demanda (24h)</span>
+<span class="font-code-snippet text-code-snippet text-outline">SKU: VRT-RPI-DIN</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1 tracking-tight">Case Protetor Raspberry Pi 4/5 Industrial IoT</h2>
+</div>
+<div class="text-left sm:text-right">
+<span class="font-label-md text-label-md text-on-surface-variant block">Subtotal</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold text-item-total" id="total-vrt-rpi">R$ 58,00</span>
+</div>
+</div>
+<!-- Technical Specs Chips -->
+<div class="flex flex-wrap gap-2 mt-2 pt-2 text-on-surface-variant">
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-inverse-surface"></span> ABS Carbon Fiber Preto
+                  </span>
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px]">Resistência Térmica 105°C</span>
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px]">Suporte Trilho DIN 35mm</span>
+<span class="px-2 py-1 bg-surface-container rounded-md font-body-sm text-[12px]">Furação Cooler 30mm</span>
+</div>
+<!-- Controls & Actions Row -->
+<div class="flex flex-wrap items-center justify-between gap-4 mt-4 pt-3 bg-surface-container-low/40 -mx-5 -mb-5 p-4 rounded-b-xl">
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-on-surface-variant">Qtd:</span>
+<div class="inline-flex items-center bg-surface-container-lowest rounded-lg p-1 shadow-sm">
+<button aria-label="Diminuir quantidade" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container rounded transition-colors" onclick="updateQty('vrt-rpi', -1)" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<input class="w-8 text-center bg-transparent font-code-snippet text-code-snippet font-bold text-on-surface focus:outline-none" id="qty-vrt-rpi" max="99" min="1" readonly="" type="number" value="1"/>
+<button aria-label="Aumentar quantidade" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container rounded transition-colors" onclick="updateQty('vrt-rpi', 1)" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">× R$ 58,00</span>
+</div>
+<div class="flex items-center gap-3">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" data-path="produtos" href="#">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>Ver Produto</span>
+</a>
+<button class="text-error/80 hover:text-error hover:bg-error-container/30 p-1.5 rounded-lg transition-colors flex items-center gap-1 font-label-md text-label-md" onclick="removeItem('item-vrt-rpi', 'Case Raspberry Pi Industrial')" title="Remover item" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span class="hidden sm:inline">Remover</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty Cart Notice (hidden by default) -->
+<div class="hidden flex-col items-center justify-center p-12 text-center bg-surface-container-lowest rounded-xl" id="empty-cart-alert">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-[32px]">remove_shopping_cart</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Seu carrinho está vazio</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm mt-1 mb-6">Explore o catálogo da Vórtice para encomendar peças com infusão tecnológica e NFC.</p>
+<a class="inline-flex items-center gap-2 px-6 py-3 bg-primary-container text-on-primary rounded-xl font-label-lg text-label-lg font-bold shadow-md hover:bg-primary transition-all" data-path="produtos" href="#">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+<span>Explorar Produtos</span>
+</a>
+</div>
+<!-- Cart Actions Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-lg text-label-lg transition-colors" data-path="produtos" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Continuar Comprando</span>
+</a>
+<div class="w-full sm:w-auto flex items-center gap-3">
+<button class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-error font-label-md text-label-md transition-colors" onclick="clearCart()" type="button">
+<span class="material-symbols-outlined text-[16px]">clear_all</span>
+<span>Limpar Carrinho</span>
+</button>
+<button class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors" onclick="saveB2BQuote()" type="button">
+<span class="material-symbols-outlined text-[16px]">request_quote</span>
+<span>Salvar Orçamento B2B</span>
+</button>
+</div>
+</div>
+<!-- Fox Mascot Telemetry Callout -->
+<div class="relative bg-inverse-surface text-inverse-on-surface p-5 rounded-xl shadow-md overflow-hidden mt-2">
+<div class="absolute -right-4 -bottom-4 w-28 h-28 opacity-10 pointer-events-none text-primary-container">
+<span class="material-symbols-outlined text-[120px]">smart_toy</span>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[24px]">precision_manufacturing</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg font-bold text-primary-fixed">Fox Slicer Telemetry</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-code-snippet bg-surface-container-highest/20 text-inverse-on-surface">Algoritmo Vórtice v2.4</span>
+</div>
+<p class="font-body-sm text-body-sm text-surface-container-high leading-relaxed">
+                Todas as 3 peças estão pré-otimizadas com orientação de camada calculada para suportar impacto dinâmico. O chip NTAG213 do chaveiro receberá hash criptográfico com gravação única no momento da finalização.
+              </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Order Summary Sidebar (4 Cols) -->
+<div class="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-24">
+<!-- Summary Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 shadow-md flex flex-col gap-5">
+<div class="flex items-center justify-between pb-3 border-b-0">
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight">Resumo da Ordem</h2>
+<span class="font-code-snippet text-code-snippet text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+              ID: ORD-9921
+            </span>
+</div>
+<!-- Financial Subtotals -->
+<div class="flex flex-col gap-2.5 font-body-md text-body-md text-on-surface-variant">
+<div class="flex items-center justify-between">
+<span>Subtotal dos Produtos</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold" id="summary-subtotal">R$ 232,80</span>
+</div>
+<!-- Frete Simulado -->
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1">
+<span>Frete Selecionado</span>
+<span class="material-symbols-outlined text-[14px] text-outline" title="Cálculo baseado no CEP de destino">help_outline</span>
+</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold" id="summary-shipping">R$ 24,90</span>
+</div>
+<!-- Desconto de Cupom (dinâmico) -->
+<div class="hidden items-center justify-between text-primary font-medium" id="discount-row">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">sell</span>
+<span id="discount-label">Desconto Cupom</span>
+</span>
+<span class="font-label-lg text-label-lg font-bold" id="summary-discount">- R$ 0,00</span>
+</div>
+<!-- Desconto PIX 5% -->
+<div class="flex items-center justify-between text-emerald-600 font-medium">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+<span>Desconto PIX (5% off)</span>
+</span>
+<span class="font-label-lg text-label-lg font-bold" id="summary-pix">- R$ 11,64</span>
+</div>
+</div>
+<!-- Shipping Calculator Block -->
+<div class="bg-surface-container-low p-4 rounded-xl flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">local_shipping</span>
+<span>Calcular Frete &amp; Prazos</span>
+</span>
+<span class="font-code-snippet text-[11px] text-on-surface-variant">SP / Brasil</span>
+</div>
+<div class="flex items-center gap-2">
+<input class="flex-1 bg-surface-container-lowest px-3 py-2 rounded-lg font-code-snippet text-code-snippet text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container shadow-inner" id="input-cep" maxlength="9" placeholder="01310-200" type="text" value="01310-200"/>
+<button class="px-3.5 py-2 bg-inverse-surface text-inverse-on-surface rounded-lg font-label-md text-label-md font-semibold hover:bg-inverse-surface/80 transition-colors" onclick="calculateShipping()" type="button">
+                Calcular
+              </button>
+</div>
+<!-- Shipping Options Selection -->
+<div class="flex flex-col gap-2 pt-1" id="shipping-options">
+<!-- Sedex IoT -->
+<label class="shipping-option flex items-start gap-2.5 p-2.5 rounded-lg bg-surface-container-lowest cursor-pointer transition-all hover:bg-surface-bright shadow-sm">
+<input checked="" class="mt-1 accent-primary-container" name="shipping_method" onchange="selectShipping(24.90, 'Sedex IoT Telemétrico')" type="radio" value="24.90"/>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-on-surface">Sedex IoT Sensorizado</span>
+<span class="font-label-md text-label-md font-bold text-primary">R$ 24,90</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant mt-0.5">1 a 2 dias úteis • Rastreio de Temperatura &amp; Choque</p>
+<span class="inline-block mt-1 px-1.5 py-0.5 rounded bg-primary-container/10 text-primary text-[10px] font-bold">Recomendado para Colecionáveis</span>
+</div>
+</label>
+<!-- PAC -->
+<label class="shipping-option flex items-start gap-2.5 p-2.5 rounded-lg bg-surface-container-lowest cursor-pointer transition-all hover:bg-surface-bright">
+<input class="mt-1 accent-primary-container" name="shipping_method" onchange="selectShipping(14.50, 'PAC Logística Expressa')" type="radio" value="14.50"/>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface">PAC Logística Expressa</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">R$ 14,50</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant mt-0.5">4 a 6 dias úteis • Rastreio Padrão Correios</p>
+</div>
+</label>
+<!-- Retirada Lab Pinheiros -->
+<label class="shipping-option flex items-start gap-2.5 p-2.5 rounded-lg bg-surface-container-lowest cursor-pointer transition-all hover:bg-surface-bright">
+<input class="mt-1 accent-primary-container" name="shipping_method" onchange="selectShipping(0.00, 'Retirada no Lab Pinheiros')" type="radio" value="0.00"/>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Retirada no Lab Pinheiros</span>
+<span class="font-label-md text-label-md text-emerald-600 font-bold">Grátis</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant mt-0.5">Disponível em 4h após aprovação • São Paulo/SP</p>
+</div>
+</label>
+</div>
+</div>
+<!-- Coupon Block -->
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md text-on-surface font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">loyalty</span>
+<span>Cupom de Desconto Maker</span>
+</span>
+<div class="flex items-center gap-2">
+<input class="flex-1 bg-surface-container-low px-3 py-2 rounded-lg font-code-snippet text-code-snippet uppercase text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container" id="input-coupon" placeholder="Ex: VORTICE10, MAKER10" type="text"/>
+<button class="px-4 py-2 bg-surface-container-highest hover:bg-surface-dim text-on-surface rounded-lg font-label-md text-label-md font-semibold transition-colors" onclick="applyCoupon()" type="button">
+                Aplicar
+              </button>
+</div>
+<!-- Quick Suggestion Pills -->
+<div class="flex flex-wrap gap-1.5 pt-1">
+<button class="px-2 py-1 rounded-md bg-surface-container text-on-surface-variant hover:text-primary font-code-snippet text-[11px] transition-colors" onclick="fillCoupon('VORTICE10')" type="button">
+                + VORTICE10 (-10%)
+              </button>
+<button class="px-2 py-1 rounded-md bg-surface-container text-on-surface-variant hover:text-primary font-code-snippet text-[11px] transition-colors" onclick="fillCoupon('FRETEFREE')" type="button">
+                + FRETEFREE
+              </button>
+</div>
+</div>
+<!-- Total Calculation Highlight -->
+<div class="bg-surface-container p-4 rounded-xl flex flex-col gap-1.5">
+<div class="flex items-baseline justify-between">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Total à vista</span>
+<span class="font-headline-lg text-headline-lg font-bold text-primary" id="summary-grand-total">R$ 246,06</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span id="installment-text">ou até 3x de R$ 85,90 sem juros</span>
+<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">PIX Aprovado na hora</span>
+</div>
+</div>
+<!-- Checkout CTA Button -->
+<button class="w-full py-4 px-6 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-lg shadow-primary-container/20 flex items-center justify-center gap-2 transform active:scale-[0.98] transition-all" onclick="proceedToCheckout()" type="button">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+<span>Avançar para Pagamento Seguro</span>
+</button>
+<!-- Security & Tech Guarantees Badges -->
+<div class="flex flex-col gap-3 pt-2 text-on-surface-variant font-body-sm text-[12px]">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0">straighten</span>
+<span><strong>Garantia Dimensional:</strong> Peças aferidas com paquímetro digital micrométrico Mitutoyo.</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0">nfc</span>
+<span><strong>Tag NFC Testada:</strong> Garantia vitalícia de integridade do chip e leitura telemétrica.</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0">inventory_2</span>
+<span><strong>Envio Seguro:</strong> Embalagem isotérmica com selo anti-impacto e dessecante de sílica.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Cross-Sell Maker Recommendations -->
+<div class="mt-16 pt-10 bg-surface-container-low/60 rounded-2xl p-6 lg:p-8">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+<div>
+<div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-snippet text-code-snippet mb-1">
+<span>UPGRADES COMPATÍVEIS</span>
+</div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
+            Aproveite e Adicione ao Pedido <span class="font-normal text-on-surface-variant">(Sem custo extra de frete)</span>
+</h2>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Recomendações do Algoritmo Fox</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Rec 1: Carretel Filamento PLA+ -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div>
+<div class="relative w-full h-44 rounded-lg bg-surface-container-low mb-3 overflow-hidden flex items-center justify-center p-3">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="High precision spool of vibrant Fox Orange 3D printing filament 1.75mm PLA plus material wound neatly on a transparent recyclable polycarbonate spool. Technical laboratory presentation with lighting emphasizing dimensional tolerance and gloss finish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_CUGgKO9z2fZ52RjPSKzIoXHTfjOK0R9scD0gG6DtMkKUbBJD3HNV0ak_QZgrSMdNhGd-iKsKbGvtaq8m3GFQ7mBcfND_UAnGQxMJhJ_pcp9e9MB5buE5i9XIql2cgnThI7bdzDtT13bfriwibtpWMQsSCvTJK1EgNE4rDlRkHKOsLwST_pyGEjbQPD-eKKoVSaJCExnrLWgNvuudB18Bt14uRGkL61F39-v3AlC8"/>
+<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-surface-container-highest font-code-snippet text-[10px] text-on-surface font-semibold">1kg • 1.75mm</span>
+</div>
+<div class="flex items-center gap-1.5 text-primary text-[12px] font-bold">
+<span class="material-symbols-outlined text-[14px]">tune</span>
+<span>Filamento Oficial Vórtice</span>
+</div>
+<h3 class="font-headline-sm text-[17px] font-bold text-on-surface mt-0.5">Carretel Filamento PLA+ Laranja Vórtice</h3>
+<p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-2 mt-1">Bobinamento de alta precisão, tolerância de diâmetro ±0.02mm e secagem a vácuo com indicador de umidade.</p>
+</div>
+<div class="flex items-center justify-between mt-4 pt-3 bg-surface-container-low/50 -mx-4 -mb-4 p-3 rounded-b-xl">
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-on-surface-variant">Preço unitário</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">R$ 98,00</span>
+</div>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-inverse-surface hover:bg-inverse-surface/85 text-inverse-on-surface font-label-md text-label-md font-bold transition-all" onclick="addCrossSell('Carretel Filamento PLA+ Laranja', 98.00)" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary-container">add_shopping_cart</span>
+<span>+ Adicionar</span>
+</button>
+</div>
+</div>
+<!-- Rec 2: Organizador Hexagonal de Cabos Kit 5 -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div>
+<div class="relative w-full h-44 rounded-lg bg-surface-container-low mb-3 overflow-hidden flex items-center justify-center p-3">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="Set of five modular hexagonal desktop cable organizer clips 3D printed with precise snap-fit joints in matte graphite dark grey. Holding thick USB-C and Thunderbolt braided cables neatly arranged on a clean designer wooden desk surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfH8BaDz0RZ-E_-kVXc-U2v-F-EQgkxjUb0-cMi9NIVBvLDbT4eLbGjloBsDb8jjgj3GdqTvlHMXY5ClfMgcJsFDpPMikewg3y-tRxPS5s8WoEGl0HmNOPtKf3VSLMegbBvsbnZ_UH_LaUfiEfbp7eN57REsgbK9TiG6QdsazV-6r4P9vzGgB9sMQPD5CjVra_qyKqhik9XYKhDNzWqdAySvn2GEmL4mIqh4HbJUcC"/>
+<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-surface-container-highest font-code-snippet text-[10px] text-on-surface font-semibold">Kit 5 un.</span>
+</div>
+<div class="flex items-center gap-1.5 text-primary text-[12px] font-bold">
+<span class="material-symbols-outlined text-[14px]">grid_view</span>
+<span>Setup Organizado</span>
+</div>
+<h3 class="font-headline-sm text-[17px] font-bold text-on-surface mt-0.5">Organizador Hexagonal de Cabos</h3>
+<p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-2 mt-1">Encaixe magnético modular para trilhos e bordas de mesa. Fixação adesiva 3M VHB inclusa.</p>
+</div>
+<div class="flex items-center justify-between mt-4 pt-3 bg-surface-container-low/50 -mx-4 -mb-4 p-3 rounded-b-xl">
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-on-surface-variant">Preço do kit</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">R$ 29,90</span>
+</div>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-inverse-surface hover:bg-inverse-surface/85 text-inverse-on-surface font-label-md text-label-md font-bold transition-all" onclick="addCrossSell('Organizador Hexagonal de Cabos Kit 5', 29.90)" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary-container">add_shopping_cart</span>
+<span>+ Adicionar</span>
+</button>
+</div>
+</div>
+<!-- Rec 3: Suporte Magnético MagSafe Articulado -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div>
+<div class="relative w-full h-44 rounded-lg bg-surface-container-low mb-3 overflow-hidden flex items-center justify-center p-3">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="Ergonomic articulating desktop MagSafe stand printed with dual-color additive manufacturing in matte black and fox orange accents. Holding a modern smartphone magnetically with integrated cable channel and ball socket hinge, studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEhlgDT6C8BWb0RzZCjX4e7dAsNERqfax1OuUzLSRbomkdSSc6Ak_LL3kcO6yhfW3QksfkcRpROei8On1J5NcVecBG11wOz3uYF4G8xlU1ONbwuVPJYuInJHfFc49l9TnJ72RXzOdz4WHUdLd6Ikzl15y3Me7ygxjwqQ23a1ywcw8kPgaDV0LdWy9t86aTzeU1qc5uZ7zmVQjlba4HXgy6-6NRnZg-SPqWxntC-iEk"/>
+<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-surface-container-highest font-code-snippet text-[10px] text-on-surface font-semibold">Articulação 360°</span>
+</div>
+<div class="flex items-center gap-1.5 text-primary text-[12px] font-bold">
+<span class="material-symbols-outlined text-[14px]">smartphone</span>
+<span>Compatível MagSafe &amp; Qi</span>
+</div>
+<h3 class="font-headline-sm text-[17px] font-bold text-on-surface mt-0.5">Suporte Magnético Articulado</h3>
+<p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-2 mt-1">Anel com ímãs N52 de neodímio embutidos no corpo durante o processo de fatiamento contínuo.</p>
+</div>
+<div class="flex items-center justify-between mt-4 pt-3 bg-surface-container-low/50 -mx-4 -mb-4 p-3 rounded-b-xl">
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-on-surface-variant">Preço unitário</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">R$ 39,90</span>
+</div>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-inverse-surface hover:bg-inverse-surface/85 text-inverse-on-surface font-label-md text-label-md font-bold transition-all" onclick="addCrossSell('Suporte Magnético Articulado', 39.90)" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary-container">add_shopping_cart</span>
+<span>+ Adicionar</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Cart Management Logic -->
+<script>
+    (function () {
+      // Internal State
+      var cartState = {
+        items: {
+          'vrt-fox': { qty: 2, price: 42.90, name: 'Chaveiro Mascote Fox NFC' },
+          'vrt-col': { qty: 1, price: 89.00, name: 'Miniatura Colecionável Fox 8K' },
+          'vrt-rpi': { qty: 1, price: 58.00, name: 'Case Raspberry Pi Industrial IoT' }
+        },
+        shippingPrice: 24.90,
+        shippingName: 'Sedex IoT Sensorizado',
+        couponCode: null,
+        couponDiscountPercent: 0,
+        couponFreeShipping: false
+      };
+
+      function formatBRL(val) {
+        return 'R$ ' + val.toFixed(2).replace('.', ',');
+      }
+
+      function showToast(message, icon) {
+        var toast = document.getElementById('vrt-toast');
+        var msgEl = document.getElementById('toast-msg');
+        var iconEl = document.getElementById('toast-icon');
+        if (!toast || !msgEl) return;
+        msgEl.textContent = message;
+        if (icon && iconEl) iconEl.textContent = icon;
+        toast.classList.remove('opacity-0', 'translate-y-24', 'pointer-events-none');
+        setTimeout(function () {
+          toast.classList.add('opacity-0', 'translate-y-24', 'pointer-events-none');
+        }, 3200);
+      }
+
+      function updateItemUI(id) {
+        var item = cartState.items[id];
+        if (!item) return;
+        var subtotalEl = document.getElementById('total-' + id);
+        var qtyInput = document.getElementById('qty-' + id);
+        if (qtyInput) qtyInput.value = item.qty;
+        if (subtotalEl) {
+          subtotalEl.textContent = formatBRL(item.qty * item.price);
+        }
+      }
+
+      function recalculateTotals() {
+        var subtotal = 0;
+        var totalQty = 0;
+        var keys = Object.keys(cartState.items);
+
+        for (var i = 0; i < keys.length; i++) {
+          var k = keys[i];
+          subtotal += cartState.items[k].qty * cartState.items[k].price;
+          totalQty += cartState.items[k].qty;
+        }
+
+        // Subtotal UI
+        var subtotalEl = document.getElementById('summary-subtotal');
+        if (subtotalEl) subtotalEl.textContent = formatBRL(subtotal);
+
+        // Header Counter
+        var countBadge = document.getElementById('items-badge-count');
+        if (countBadge) {
+          countBadge.textContent = totalQty + ' ' + (totalQty === 1 ? 'item no pedido' : 'itens no pedido');
+        }
+
+        // Coupon Discount
+        var discountVal = 0;
+        var discountRow = document.getElementById('discount-row');
+        var discountLabel = document.getElementById('discount-label');
+        var discountAmountEl = document.getElementById('summary-discount');
+
+        if (cartState.couponDiscountPercent > 0) {
+          discountVal = subtotal * (cartState.couponDiscountPercent / 100);
+          if (discountRow) discountRow.classList.remove('hidden');
+          if (discountRow) discountRow.classList.add('flex');
+          if (discountLabel) discountLabel.textContent = 'Cupom ' + cartState.couponCode + ' (-' + cartState.couponDiscountPercent + '%)';
+          if (discountAmountEl) discountAmountEl.textContent = '- ' + formatBRL(discountVal);
+        } else {
+          if (discountRow) {
+            discountRow.classList.add('hidden');
+            discountRow.classList.remove('flex');
+          }
+        }
+
+        // Effective Shipping
+        var effectiveShipping = cartState.couponFreeShipping ? 0 : cartState.shippingPrice;
+        var shippingEl = document.getElementById('summary-shipping');
+        if (shippingEl) {
+          if (effectiveShipping === 0) {
+            shippingEl.innerHTML = '<span class="text-emerald-600 font-bold">Grátis</span>';
+          } else {
+            shippingEl.textContent = formatBRL(effectiveShipping);
+          }
+        }
+
+        // Total with shipping & coupon
+        var taxableTotal = Math.max(0, subtotal - discountVal);
+        var pixDiscount = taxableTotal * 0.05;
+        var pixEl = document.getElementById('summary-pix');
+        if (pixEl) pixEl.textContent = '- ' + formatBRL(pixDiscount);
+
+        var grandTotalPix = taxableTotal + effectiveShipping - pixDiscount;
+        var grandTotalNormal = taxableTotal + effectiveShipping;
+
+        var grandTotalEl = document.getElementById('summary-grand-total');
+        if (grandTotalEl) grandTotalEl.textContent = formatBRL(Math.max(0, grandTotalPix));
+
+        var installmentEl = document.getElementById('installment-text');
+        if (installmentEl) {
+          var part = grandTotalNormal / 3;
+          installmentEl.textContent = 'ou até 3x de ' + formatBRL(part) + ' sem juros';
+        }
+
+        // Empty state check
+        var wrapper = document.getElementById('cart-items-wrapper');
+        var emptyAlert = document.getElementById('empty-cart-alert');
+        if (keys.length === 0) {
+          if (wrapper) wrapper.classList.add('hidden');
+          if (emptyAlert) {
+            emptyAlert.classList.remove('hidden');
+            emptyAlert.classList.add('flex');
+          }
+        }
+      }
+
+      // Public Action Handlers attached to window
+      window.updateQty = function (id, delta) {
+        if (!cartState.items[id]) return;
+        var current = cartState.items[id].qty;
+        var updated = current + delta;
+        if (updated < 1) return;
+        if (updated > 99) {
+          showToast('Limite máximo para produção imediata atingido (99 un.)', 'info');
+          return;
+        }
+        cartState.items[id].qty = updated;
+        updateItemUI(id);
+        recalculateTotals();
+      };
+
+      window.removeItem = function (itemElementId, itemName) {
+        var key = itemElementId.replace('item-', '');
+        var elem = document.getElementById(itemElementId);
+        if (elem) {
+          elem.style.transition = 'all 0.3s ease';
+          elem.style.opacity = '0';
+          elem.style.transform = 'translateX(-20px)';
+          setTimeout(function () {
+            elem.remove();
+            delete cartState.items[key];
+            recalculateTotals();
+            showToast(itemName + ' removido do carrinho.', 'delete');
+          }, 300);
+        }
+      };
+
+      window.clearCart = function () {
+        if (confirm('Deseja realmente esvaziar todos os itens da ordem de produção?')) {
+          cartState.items = {};
+          var wrapper = document.getElementById('cart-items-wrapper');
+          if (wrapper) wrapper.innerHTML = '';
+          recalculateTotals();
+          showToast('O carrinho foi esvaziado.', 'remove_shopping_cart');
+        }
+      };
+
+      window.selectShipping = function (price, name) {
+        cartState.shippingPrice = parseFloat(price);
+        cartState.shippingName = name;
+        recalculateTotals();
+        showToast('Método alterado: ' + name, 'local_shipping');
+      };
+
+      window.calculateShipping = function () {
+        var cepInput = document.getElementById('input-cep');
+        var cep = cepInput ? cepInput.value.trim() : '';
+        if (cep.length < 8) {
+          showToast('Por favor, informe um CEP válido com 8 dígitos.', 'error');
+          return;
+        }
+        showToast('Rotas de envio e prazos recalculados para ' + cep, 'check_circle');
+      };
+
+      window.fillCoupon = function (code) {
+        var input = document.getElementById('input-coupon');
+        if (input) {
+          input.value = code;
+          window.applyCoupon();
+        }
+      };
+
+      window.applyCoupon = function () {
+        var input = document.getElementById('input-coupon');
+        if (!input) return;
+        var code = input.value.trim().toUpperCase();
+
+        if (code === 'VORTICE10' || code === 'MAKER10') {
+          cartState.couponCode = code;
+          cartState.couponDiscountPercent = 10;
+          cartState.couponFreeShipping = false;
+          recalculateTotals();
+          showToast('Sucesso! Cupom ' + code + ' aplicou 10% de desconto.', 'verified');
+        } else if (code === 'FOXTECH') {
+          cartState.couponCode = code;
+          cartState.couponDiscountPercent = 15;
+          cartState.couponFreeShipping = false;
+          recalculateTotals();
+          showToast('Incrível! Cupom de Parceiro FOXTECH aplicou 15% off.', 'verified');
+        } else if (code === 'FRETEFREE') {
+          cartState.couponCode = code;
+          cartState.couponDiscountPercent = 0;
+          cartState.couponFreeShipping = true;
+          recalculateTotals();
+          showToast('Frete Grátis aplicado ao seu pedido!', 'local_shipping');
+        } else if (code === '') {
+          showToast('Digite um código de cupom.', 'warning');
+        } else {
+          showToast('Cupom "' + code + '" não reconhecido ou expirado.', 'cancel');
+        }
+      };
+
+      window.addCrossSell = function (name, price) {
+        var fakeId = 'cross-' + Math.floor(Math.random() * 10000);
+        cartState.items[fakeId] = {
+          qty: 1,
+          price: price,
+          name: name
+        };
+
+        // Inject new item to cart list dynamically
+        var wrapper = document.getElementById('cart-items-wrapper');
+        if (wrapper) {
+          var newItem = document.createElement('div');
+          newItem.id = 'item-' + fakeId;
+          newItem.className = 'cart-item group relative bg-surface-container-lowest rounded-xl p-5 shadow-sm transition-all duration-300 hover:shadow-md animate-fadeIn';
+          newItem.innerHTML = '' +
+            '<div class="flex flex-col sm:flex-row gap-5 items-start">' +
+            '  <div class="w-16 h-16 rounded-xl bg-surface-container-low flex items-center justify-center shrink-0 text-primary-container">' +
+            '    <span class="material-symbols-outlined text-[32px]">hardware</span>' +
+            '  </div>' +
+            '  <div class="flex-1 min-w-0 w-full">' +
+            '    <div class="flex items-start justify-between gap-2">' +
+            '      <div>' +
+            '        <span class="px-2 py-0.5 rounded bg-primary-container/10 text-primary font-label-md text-[11px] font-bold">Item Adicional</span>' +
+            '        <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-0.5">' + name + '</h2>' +
+            '      </div>' +
+            '      <span class="font-headline-sm text-headline-sm text-on-surface font-bold" id="total-' + fakeId + '">' + formatBRL(price) + '</span>' +
+            '    </div>' +
+            '    <div class="flex items-center justify-between mt-3 pt-2 bg-surface-container-low/40 -mx-5 -mb-5 p-3 rounded-b-xl">' +
+            '      <span class="font-body-sm text-body-sm text-on-surface-variant">1 un. × ' + formatBRL(price) + '</span>' +
+            '      <button type="button" onclick="removeItem(\'item-' + fakeId + '\', \'' + name + '\')" class="text-error font-label-md text-label-md flex items-center gap-1 hover:underline">' +
+            '        <span class="material-symbols-outlined text-[16px]">delete</span> Remover' +
+            '      </button>' +
+            '    </div>' +
+            '  </div>' +
+            '</div>';
+          wrapper.appendChild(newItem);
+        }
+
+        recalculateTotals();
+        showToast(name + ' foi adicionado ao seu carrinho!', 'check_circle');
+      };
+
+      window.saveB2BQuote = function () {
+        showToast('Orçamento B2B salvo e copiado para a área de transferência!', 'content_copy');
+      };
+
+      window.proceedToCheckout = function () {
+        if (Object.keys(cartState.items).length === 0) {
+          showToast('Adicione pelo menos um item para avançar ao pagamento.', 'warning');
+          return;
+        }
+        showToast('Preparando ambiente seguro de pagamento...', 'lock');
+      };
+
+      // Initial Run
+      recalculateTotals();
+    })();
+  </script>
+</div></main><footer class="w-full bg-surface-container-low shadow-[0_-1px_8px_rgba(0,0,0,0.02)]"><div class="max-w-7xl mx-auto px-6 lg:px-12 pt-16 pb-12"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12"><div class="lg:col-span-2 flex flex-col gap-4"><div class="flex items-center gap-3"><img alt="Vórtice Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy9fMmXFLYFAOsPbkij9TXOX0TF1RSzASctu7NvjqMGiTfIuFH73aIJqUYi3JXgTNNmi_t7T7bss7JH_5EA0vLBnHhiGGh9U8LRQRJb4FY6OOtSR01NK_0PBOdG45qT_3-_EqMuHeTeq5GyIER4fBkbHom27zfzu_mtgOvW3q5PjRlpcZyYIUn8_dsEdF9VL7znNeT2S2l5aZM5acMW7UsgNmG33psApYwXvs_tmmS"/><span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Vór<span class="text-primary-container">tice</span></span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Fusão ágil entre fabricação digital aditiva (3D Printing) e arquitetura de software de alta performance. Da modelagem matemática aos ecossistemas conectados com NFC.</p><div class="flex items-center gap-3 pt-2"><div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-code-snippet text-code-snippet"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="">NFC Core Active</span></div><span class="font-label-md text-label-md text-on-surface-variant">Crafted with Vortice Precision</span></div></div><div class="flex flex-col gap-3"><span class="font-label-lg text-label-lg text-on-surface font-bold uppercase tracking-wider">Categorias 3D</span><div class="flex flex-col gap-2.5"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="brindes" href="#">Brindes Corporativos</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="decoracao" href="#">Decoração &amp; Design</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="figures" href="#">Figures &amp; Colecionáveis</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="utilitarios" href="#">Utilitários &amp; Suportes</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="personalizados" href="#">Projetos Personalizados</a></div></div><div class="flex flex-col gap-3"><span class="font-label-lg text-label-lg text-on-surface font-bold uppercase tracking-wider">Consultoria Dev</span><div class="flex flex-col gap-2.5"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="consultoria-dev" href="#">Arquitetura Web &amp; APIs</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="consultoria-dev" href="#">Integração Hardware/NFC</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="consultoria-dev" href="#">Prototipagem Ágil</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="feedbacks-nfc" href="#">Sistemas de Feedback NFC</a><a class="inline-flex items-center gap-1 font-label-md text-label-md text-primary font-bold hover:text-primary-container transition-colors" data-path="painel-administrativo" href="#"><span class="material-symbols-outlined text-[16px]">admin_panel_settings</span><span class="">Painel do Proprietário</span></a></div></div><div class="flex flex-col gap-3"><span class="font-label-lg text-label-lg text-on-surface font-bold uppercase tracking-wider">Conexão &amp; Lab</span><div class="flex flex-col gap-2.5"><p class="font-body-sm text-body-sm text-on-surface-variant">Laboratório de Criação e Engenharia</p><a class="font-body-sm text-body-sm text-on-surface font-semibold hover:text-primary-container transition-colors" href="mailto:contato@vortice.tech">contato@vortice.tech</a><div class="p-3 rounded-xl bg-surface-container flex items-center gap-3 mt-2"><span class="material-symbols-outlined text-primary-container text-[24px]">nfc</span><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface font-bold">Chaveiro NFC Tech</span><span class="font-body-sm text-body-sm text-on-surface-variant">Toque para avaliar instantaneamente</span></div></div></div></div></div><div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4"><p class="font-body-sm text-body-sm text-on-surface-variant">© 2025 Vórtice. Todos os direitos reservados. Impressão 3D e Engenharia de Software.</p><div class="flex items-center gap-6"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="termos" href="#">Termos de Uso</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacidade" href="#">Privacidade</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="painel-administrativo" href="#">Acesso Restrito</a></div></div></div></footer>
+</body></html>

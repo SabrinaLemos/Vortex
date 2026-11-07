@@ -1,0 +1,669 @@
+<!DOCTYPE html><html lang="pt-BR" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary-fixed": "#341100", "surface-bright": "#fbf9f4", "on-tertiary-container": "#621600", "primary-fixed": "#ffdbca", "surface-container-low": "#f5f3ee", "error": "#ba1a1a", "outline": "#8c7164", "inverse-primary": "#ffb690", "on-primary-container": "#582200", "on-tertiary-fixed": "#3b0900", "primary-fixed-dim": "#ffb690", "surface-container": "#f0eee9", "surface-container-highest": "#e4e2dd", "primary": "#9d4300", "inverse-surface": "#30312e", "on-surface-variant": "#584237", "surface-tint": "#9d4300", "on-secondary": "#ffffff", "outline-variant": "#e0c0b1", "on-tertiary-fixed-variant": "#862200", "tertiary-fixed": "#ffdbd1", "surface-variant": "#e4e2dd", "primary-container": "#f97316", "surface": "#fbf9f4", "on-error": "#ffffff", "on-error-container": "#93000a", "on-background": "#1b1c19", "tertiary": "#b02f00", "on-surface": "#1b1c19", "on-primary": "#ffffff", "surface-dim": "#dbdad5", "secondary-fixed": "#dae2fd", "tertiary-container": "#ff6c40", "error-container": "#ffdad6", "on-tertiary": "#ffffff", "background": "#fbf9f4", "secondary-fixed-dim": "#bec6e0", "on-secondary-fixed-variant": "#3f465c", "on-secondary-fixed": "#131b2e", "on-secondary-container": "#5c647a", "inverse-on-surface": "#f2f1ec", "surface-container-lowest": "#ffffff", "on-primary-fixed-variant": "#783200", "tertiary-fixed-dim": "#ffb5a0", "surface-container-high": "#eae8e3", "secondary": "#565e74", "secondary-container": "#dae2fd" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "margin": "3rem", "gutter-mobile": "1rem", "space-xl": "2.5rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "margin-mobile": "1.25rem", "space-sm": "0.5rem", "gutter": "1.5rem" }, "fontFamily": { "body-lg": [ "Plus Jakarta Sans" ], "headline-lg-mobile": [ "Outfit" ], "display-hero-mobile": [ "Outfit" ], "headline-lg": [ "Outfit" ], "display-hero": [ "Outfit" ], "body-sm": [ "Plus Jakarta Sans" ], "headline-sm": [ "Outfit" ], "headline-md": [ "Outfit" ], "label-lg": [ "Plus Jakarta Sans" ], "code-snippet": [ "JetBrains Mono" ], "body-md": [ "Plus Jakarta Sans" ], "label-md": [ "Plus Jakarta Sans" ] }, "fontSize": { "body-lg": [ "18px", { "lineHeight": "28px", "fontWeight": "400" } ], "headline-lg-mobile": [ "28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "display-hero-mobile": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" } ], "headline-lg": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "display-hero": [ "56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" } ], "body-sm": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-sm": [ "20px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "600" } ], "headline-md": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "label-lg": [ "14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" } ], "code-snippet": [ "13px", { "lineHeight": "20px", "fontWeight": "500" } ], "body-md": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "label-md": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-bright/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-6"><a class="flex items-center gap-3 shrink-0 group" data-path="inicio" href="#"><img alt="Vórtice Logo" class="h-8 w-auto object-contain transition-transform group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy9fMmXFLYFAOsPbkij9TXOX0TF1RSzASctu7NvjqMGiTfIuFH73aIJqUYi3JXgTNNmi_t7T7bss7JH_5EA0vLBnHhiGGh9U8LRQRJb4FY6OOtSR01NK_0PBOdG45qT_3-_EqMuHeTeq5GyIER4fBkbHom27zfzu_mtgOvW3q5PjRlpcZyYIUn8_dsEdF9VL7znNeT2S2l5aZM5acMW7UsgNmG33psApYwXvs_tmmS"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Vór<span class="text-primary-container">tice</span></span><span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">3D Labs &amp; Dev</span></div></a><nav class="hidden xl:flex items-center gap-7" data-active-classes="text-primary-container font-semibold"><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="inicio" href="#">Início</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="produtos" href="#">Produtos</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="personalizados" href="#">Personalizados</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="consultoria-dev" href="#">Consultoria Dev</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="sobre-nos" href="#">Sobre Nós</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="feedbacks-nfc" href="#">Feedbacks NFC</a></nav><div class="flex items-center gap-4 shrink-0"><div class="relative hidden sm:flex items-center"><span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px] pointer-events-none">search</span><input class="w-48 lg:w-56 pl-9 pr-4 py-2 bg-surface-container rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container-lowest transition-all" placeholder="Buscar peças, código..." type="text"></div><a aria-label="Carrinho de compras" class="relative p-2 rounded-lg text-on-surface hover:bg-surface-container hover:text-on-surface transition-colors flex items-center justify-center" data-path="carrinho" href="#"><span class="material-symbols-outlined text-[24px]">shopping_bag</span><span class="absolute top-1 right-1 w-4 h-4 bg-primary-container text-on-primary rounded-full font-label-md text-[10px] flex items-center justify-center font-bold">2</span></a><a class="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface rounded-lg font-label-lg text-label-lg transition-transform hover:-translate-y-0.5 shadow-[0_2px_8px_rgba(15,23,42,0.08)]" data-path="login" href="#"><span class="material-symbols-outlined text-[18px]">login</span><span class="">Entrar</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-surface"><div class="flex flex-col w-full">
+<!-- HERO SECTION -->
+<section class="relative w-full overflow-hidden bg-surface py-12 lg:py-20">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+<!-- Coluna Esquerda: Texto & Ações -->
+<div class="lg:col-span-7 flex flex-col gap-6 z-10">
+<!-- Badges Pílula -->
+<div class="flex flex-wrap items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+              Impressão 3D FDM &amp; Resina
+            </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[15px] text-primary-container">contactless</span>
+              Chaveiros Inteligentes NFC
+            </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[15px] text-secondary">terminal</span>
+              Desenvolvimento Web Fullstack
+            </span>
+</div>
+<!-- Headline Principal -->
+<h1 class="font-display-hero text-display-hero text-on-surface tracking-tight">
+            Sua ideia ganha forma. <br>
+<span class="text-primary-container">Sua tecnologia ganha propósito.</span>
+</h1>
+<!-- Descrição -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+            Impressão 3D de alta precisão, criação de produtos personalizados sob medida e soluções digitais em desenvolvimento de software desenvolvidas para transformar suas ideias em realidade.
+          </p>
+<!-- CTAs -->
+<div class="flex flex-wrap items-center gap-4 pt-2">
+<a class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-primary-container hover:bg-tertiary-container text-on-primary font-label-lg text-label-lg rounded-lg shadow-md transition-all duration-200 hover:-translate-y-0.5" href="#produtos">
+<span class="material-symbols-outlined text-[20px]">view_in_ar</span>
+<span class="">Explorar Produtos</span>
+</a>
+<a class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface font-label-lg text-label-lg rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5" href="#personalizados">
+<span class="material-symbols-outlined text-[20px] text-primary-container">auto_awesome</span>
+<span class="">Solicitar Projeto Personalizado</span>
+</a>
+</div>
+<!-- Métricas Rápidas -->
+<div class="grid grid-cols-3 gap-6 pt-6 max-w-lg">
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">0.05<span class="text-primary-container text-headline-sm">mm</span></span>
+<span class="font-label-md text-label-md text-on-surface-variant">Resolução Micrométrica</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">24<span class="text-primary-container text-headline-sm">h</span></span>
+<span class="font-label-md text-label-md text-on-surface-variant">Prototipagem Ágil</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">100<span class="text-primary-container text-headline-sm">%</span></span>
+<span class="font-label-md text-label-md text-on-surface-variant">Hardware + Código</span>
+</div>
+</div>
+</div>
+<!-- Coluna Direita: Showcase Visual Raposa Tech -->
+<div class="lg:col-span-5 relative flex items-center justify-center">
+<!-- Background Glow Effect -->
+<div class="absolute -inset-4 bg-gradient-to-tr from-primary-container/20 to-transparent rounded-3xl blur-2xl -z-10"></div>
+<!-- Main Interactive Device Box -->
+<div class="relative w-full max-w-md bg-surface-container-lowest rounded-xl p-6 shadow-xl flex flex-col gap-5">
+<!-- Header do Frame de Engenharia -->
+
+<!-- Imagem Central da Mascote Raposa Tech -->
+<div class="relative w-full h-72 rounded-lg bg-surface-container-low overflow-hidden flex items-center justify-center p-4">
+<img alt="Mascote Raposa Vórtice 3D &amp; Tech" class="w-full h-full object-contain filter drop-shadow-lg transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMP1SBzI4rlu-om6G7Sdj8Ny-pHiNQbPPK9ueK2YsXapqWTKGBbEbMwdwD0ICX5Jkt9FHRPTTyzGPdUzzGIGF800WsZAUGBK-tF2ySaxw9C3g3AEyVqLMePZ6uD2KtaBGqj2IjMgFV9I9PxMTChzqJQiw-Q5d3kQQbVAPP2O7FMvD1NWUwK6atxW1lrojSeKmSz6UM6w5sA5R4vCIOAXWHgudeWli1R98OZ898USyFHCpSw5Gd3b8ocfpDt-7R8uSLlArUcLfbinmJpdA">
+<!-- Tag Flutuante de Status NFC -->
+<div class="absolute top-3 right-3 bg-inverse-surface/90 text-inverse-on-surface backdrop-blur-md px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-md">
+<span class="material-symbols-outlined text-[16px] text-primary-container animate-pulse">wifi_tethering</span>
+<span class="font-label-md text-[11px] font-bold">NFC Active</span>
+</div>
+<!-- Régua de Calibração 3D Visual -->
+<div class="absolute left-3 bottom-3 bg-surface-container-lowest/90 px-2 py-1 rounded text-on-surface font-code-snippet text-[10px]"><br></div>
+</div>
+<!-- Snippet de Código Flutuante -->
+
+<!-- Cards Flutuantes de Telemetria -->
+<div class="grid grid-cols-2 gap-3">
+<div class="p-3 rounded-lg bg-surface-container flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary-container text-[20px]">bolt</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Prototipagem 24h</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Ciclo rápido de entrega</span>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[20px]">nfc</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Chaveiro NFC</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Incluso nos projetos</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SEÇÃO DE CATEGORIAS EM DESTAQUE (5 CATEGORIAS OBRIGATÓRIAS) -->
+<section class="w-full bg-surface-container-low py-16 lg:py-24" id="produtos">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-12">
+<!-- Cabeçalho da Seção -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="flex flex-col gap-2 max-w-2xl">
+<span class="font-label-lg text-label-lg text-primary uppercase font-bold tracking-wider">Catálogo Especializado</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Explore Nossas Especialidades em Impressão 3D</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Do polímero industrial à inteligência conectada via chip NFC embutido. Escolha a sua categoria e encomende protótipos de altíssima precisão.
+          </p>
+</div>
+<!-- Controles Interativos Rápidos -->
+<div class="inline-flex items-center gap-1.5 p-1 rounded-lg bg-surface-container">
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-lowest font-label-md text-label-md text-on-surface font-bold shadow-sm">Todos</button>
+<button class="px-3.5 py-1.5 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-on-surface">FDM</button>
+<button class="px-3.5 py-1.5 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-on-surface">Resina 8K</button>
+<button class="px-3.5 py-1.5 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-on-surface">NFC Ready</button>
+</div>
+</div>
+<!-- Grid com as 5 Categorias Exigidas -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- 1. Brindes -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="relative w-full h-52 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="High precision modern corporate custom 3D printed keychains with geometric fox shape and embedded glossy NFC touch logo badge in clean studio lighting with bright warm orange accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhMYGe0I0Cbgw_UNPDAPgFCWdh6f3tobVfP9zUHCGfNq5q1VH98ZM4MRK_MeH7EbTH3ropPAMo932t9-18k6qDAPK--Gl1IhFyEaDZNvsCb2lj_gppd5akgjAoE8p0reUT3aYSq52tuNFY1mlkDqGIE81FbIVGUTMefgvlfdyRUA5mDRreDLJ2p2rq_cSSw2IIygVVD-qpSxvjWkFVevLhrzaq-9TErUbqyUPNM5vY">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 px-2.5 py-1 rounded-full text-on-surface font-label-md text-label-md font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-primary-container text-[16px]">nfc</span>
+                Brindes
+              </div>
+<span class="absolute top-3 right-3 bg-inverse-surface text-inverse-on-surface px-2.5 py-1 rounded text-label-md font-semibold">Em Estoque</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Chaveiros &amp; Brindes NFC</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Chaveiros inteligentes NFC, lembranças corporativas, pins comemorativos e tags customizadas para empresas.</p>
+</div>
+</div>
+<div class="pt-5 mt-4 flex items-center justify-between border-t border-transparent">
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-on-surface-variant uppercase">A partir de</span>
+<span class="font-headline-sm text-headline-sm text-primary-container font-bold">R$ 18,90</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors" title="Ver Detalhes">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-primary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+<span class="">Adicionar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 2. Decoração -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="relative w-full h-52 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Parametric spiral geometric 3D printed vase and litophane modern lamp glowing warmly with architectural aesthetic on a minimal wooden table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmUspWQqLsHcp6lyhoqAG3c7nxXPZb2k6FU6mipO4CoI5wZAIn8aKAd4APv7Tcxq24ofkNF3G2BPRitdV1wfzd5GcAwJl7gqel9gZmuBt_5oN4qn4mwEoo0M0qDgQ37DKgFthfJOXV9vSYR6b5Vk3RCi8RCCdVKsJonXmViYYNe1G1fyHf0rBMYe4HEglrplnpy-YDFgPudyUvE5_MezXat_NMjkbJ0TFSaMdTJLEk">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 px-2.5 py-1 rounded-full text-on-surface font-label-md text-label-md font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-primary-container text-[16px]">palette</span>
+                Decoração
+              </div>
+<span class="absolute top-3 right-3 bg-inverse-surface text-inverse-on-surface px-2.5 py-1 rounded text-label-md font-semibold">Pronta Entrega</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Decoração &amp; Design Paramétrico</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Vasos com design paramétrico, luminárias litofanias com LED e esculturas geométricas exclusivas para ambientes modernos.</p>
+</div>
+</div>
+<div class="pt-5 mt-4 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-on-surface-variant uppercase">A partir de</span>
+<span class="font-headline-sm text-headline-sm text-primary-container font-bold">R$ 64,00</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors" title="Ver Detalhes">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-primary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+<span class="">Adicionar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 3. Figures -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="relative w-full h-52 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="High resolution resin printed miniature collectible cyber fox warrior figurine with ultra-fine detailed armor and paintjob on neutral presentation pedestal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2qKad86UARaOubMD3hbjFUAIlRFIwPspfqIfgF7B1-o_BazA7Hqr-3j_79sgpZRqh9eNUInSXhDFgiOsxU9DvHBGe6_of2UQQHKMGz_ke5fuynKsEj7n7zrCjiUuQLFnNaK6UGFrLgNNubkZCLjMyWInU_mLp0H0P8RPayyzLjCOM8zwkCgUfjRuZzdJKBLHLdBBnPdPeBM2cQ4gqNCb1Jm7uXx8jfeVO-4kj3-zH">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 px-2.5 py-1 rounded-full text-on-surface font-label-md text-label-md font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-primary-container text-[16px]">toys</span>
+                Figures
+              </div>
+<span class="absolute top-3 right-3 bg-inverse-surface text-inverse-on-surface px-2.5 py-1 rounded text-label-md font-semibold">Resina 8K</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Figures &amp; Miniaturas Colecionáveis</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Miniaturas colecionáveis de alta resolução, action figures com pintura artesanal e miniaturas para tabletop RPG.</p>
+</div>
+</div>
+<div class="pt-5 mt-4 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-on-surface-variant uppercase">A partir de</span>
+<span class="font-headline-sm text-headline-sm text-primary-container font-bold">R$ 89,00</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors" title="Ver Detalhes">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-primary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+<span class="">Adicionar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 4. Utilitários -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="relative w-full h-52 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Ergonomic modular 3D printed headphone stand and matte black cable manager setup on modern developer desk with keyboard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuJbyHuU_woTQwFI1e2rkFvufnfukGGMqduBn8zxlqPvL-Yn7PWCzPh7r83V3crFmcmRi7ryjxtZkJCbjPnMvDYvkLHQyQdjmoyrCrsWOjeHs25NOsR4uA2Oltal7QGPYDMuhHKsFuFolPYMD672dj-1QOhyj3wAp8vcI-_ZSV6lPVwK0j6O-AgUyray-Cpe2AmylxCFu8TWHr6nalKtl0IYn_5rurZ-8kv58v8279">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 px-2.5 py-1 rounded-full text-on-surface font-label-md text-label-md font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-primary-container text-[16px]">build_circle</span>
+                Utilitários
+              </div>
+<span class="absolute top-3 right-3 bg-inverse-surface text-inverse-on-surface px-2.5 py-1 rounded text-label-md font-semibold">Resistente PETG</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Utilitários &amp; Suportes Ergonômicos</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Suportes modulares para fones, organizadores de cabos sob medida, grips mecânicos e suportes de setup ergonômico.</p>
+</div>
+</div>
+<div class="pt-5 mt-4 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-on-surface-variant uppercase">A partir de</span>
+<span class="font-headline-sm text-headline-sm text-primary-container font-bold">R$ 39,90</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors" title="Ver Detalhes">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-primary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+<span class="">Adicionar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 5. Personalizados (Card de Destaque Duplo) -->
+<div class="md:col-span-2 lg:col-span-2 bg-gradient-to-br from-inverse-surface to-on-surface text-inverse-on-surface rounded-xl p-6 lg:p-8 shadow-md flex flex-col justify-between relative overflow-hidden group" id="personalizados">
+<div class="absolute -right-10 -bottom-10 w-72 h-72 bg-primary-container/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 z-10">
+<div class="flex flex-col gap-3 max-w-lg">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container text-on-primary font-label-md text-label-md font-bold w-fit">
+<span class="material-symbols-outlined text-[16px]">upload_file</span>
+                Modelagem &amp; Impressão Sob Demanda
+              </div>
+<h3 class="font-headline-lg text-headline-lg text-surface-bright">Projetos Personalizados (Custom CAD)</h3>
+<p class="font-body-md text-body-md text-surface-variant">
+                Envie seu arquivo 3D nos formatos <strong>.STL, .OBJ ou .STEP</strong> ou solicite a modelagem do zero com nossos engenheiros. Calculamos material, preenchimento e tolerância mecânica em tempo real.
+              </p>
+</div>
+<!-- Upload Mockup Box -->
+<div class="w-full lg:w-72 bg-surface/10 backdrop-blur-md rounded-xl p-5 flex flex-col items-center justify-center text-center gap-3">
+<span class="material-symbols-outlined text-primary-container text-[40px]">cloud_upload</span>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg font-bold text-surface-bright">Arraste seu arquivo 3D</span>
+<span class="font-body-sm text-[12px] text-surface-variant">Formatos STL, OBJ, 3MF até 100MB</span>
+</div>
+<button class="w-full py-2 px-3 rounded-lg bg-surface-bright text-on-surface font-label-md text-label-md font-bold hover:bg-surface-container transition-colors">
+                Selecionar do Computador
+              </button>
+</div>
+</div>
+<div class="pt-6 mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 z-10">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-2">
+<span class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-xs">CAD</span>
+<span class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold text-xs">NFC</span>
+<span class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center font-bold text-xs">8K</span>
+</div>
+<span class="font-body-sm text-body-sm text-surface-variant">Orçamento com cálculo de filamento e tempo estimado</span>
+</div>
+<button class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary-container hover:bg-tertiary-container text-on-primary font-label-lg text-label-lg font-bold shadow-md transition-transform hover:-translate-y-0.5">
+<span class="">Calcular Orçamento Personalizado</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SEÇÃO INSTITUCIONAL — SOBRE NÓS -->
+<section class="w-full bg-surface py-16 lg:py-24" id="sobre-nos">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-16">
+<!-- Split Editorial: Manifesto e Storytelling -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-6 flex flex-col gap-6">
+<span class="font-label-lg text-label-lg text-primary uppercase font-bold tracking-wider">Engenharia Híbrida</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Tecnologia que Materializa e Conecta</h2>
+<div class="space-y-4 font-body-md text-body-md text-on-surface-variant"><p class="">A <strong>Vórtice</strong> nasceu da interseção exata entre a manufatura aditiva de alta precisão e o desenvolvimento moderno de software. Não encaramos a impressão 3D apenas como confecção de objetos decorativos, mas como a materialização tangível de ideias conectadas.</p><p class="">Com a agilidade e astúcia tecnológica, projetamos desde peças mecânicas e utilitários ergonômicos até produtos integrados a ecossistemas web através de chips NFC embutidos durante o fatiamento da peça. Um objeto que carrega dados, autenticação e experiências digitais imediatas ao aproximar um celular.</p></div>
+<div class="flex items-center gap-4 pt-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">check_circle</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">Precisão de Camada Micrométrica</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">check_circle</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">Arquitetura Escalável</span>
+</div>
+</div>
+</div>
+<!-- Visual da Bancada de Testes / Prototipagem -->
+<div class="lg:col-span-6 relative">
+<div class="relative rounded-xl overflow-hidden bg-surface-container shadow-xl">
+<img class="w-full h-96 object-cover" data-alt="Laboratory workspace showing state of the art 3D printers producing orange and charcoal mechanical parts alongside a laptop displaying clean software code and circuit components" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFd51-5k0FdFrybKpwbKXX9K3EIOFFo5NyGX9XphOYuq-AlkGfgFs2sUAbOtW8nrkC1-CIa9HN23NoU7JRYCN2q--Hot0TFKIDUIeLi2fdx9jTU3c1Jv5_qMbqNgOSdz4AuuNabs7B2KW_J7eZofRGKnPnmA25TqcR7WRZ3cT4HMGdfyfNxxH-lYNv1rgpDrZ7DbQy-c1yQv2AB4bYiVwcdEugOiVpCTuF7xLRPTzY">
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent flex flex-col justify-end p-6 text-inverse-on-surface">
+<div class="flex items-center gap-2 font-code-snippet text-code-snippet text-primary-container">
+<span class="material-symbols-outlined text-[18px]">precision_manufacturing</span>
+<span class="">Laboratório de Fabricação Aditiva &amp; Software</span>
+</div>
+<p class="font-body-sm text-body-sm text-surface-bright mt-1">Bancada com impressoras calibradas em ambiente climatizado para máxima estabilidade dimensional.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 4 Pilares / Diferenciais da Raposa Tech -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Pilar 1 -->
+<div class="p-6 rounded-xl bg-surface-container-low flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">layers</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Inovação &amp; Precisão 3D</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Camadas micrométricas e filamentos de alta resistência química e mecânica: PLA Pro, PETG, ABS, Fibra de Carbono e Resina UV 8K.
+          </p>
+</div>
+<!-- Pilar 2 -->
+<div class="p-6 rounded-xl bg-surface-container-low flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">code</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Consultoria &amp; Código Limpo</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Arquitetura moderna com React, Next.js, Node e TypeScript. Criamos plataformas escaláveis, APIs rápidas e infraestrutura em nuvem segura.
+          </p>
+</div>
+<!-- Pilar 3 -->
+<div class="p-6 rounded-xl bg-surface-container-low flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">nfc</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Experiência Integrada</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Produtos físicos conectados à web através de tags NFC embutidas. Redirecionamento dinâmico, cartões de visitas e cardápios interativos.
+          </p>
+</div>
+<!-- Pilar 4 -->
+<div class="p-6 rounded-xl bg-surface-container-low flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">handshake</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Atendimento Consultivo</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Modelagem CAD personalizada, testes mecânicos e suporte ponta a ponta desde a fase conceitual até a entrega final rastreada.
+          </p>
+</div>
+</div>
+<!-- Banner de Chamada Rápida: Consultoria Dev -->
+<div class="w-full bg-surface-container-highest rounded-xl p-8 lg:p-10 flex flex-col lg:flex-row items-center justify-between gap-8" id="consultoria-dev">
+<div class="flex items-center gap-5">
+<div class="w-16 h-16 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-md">
+<span class="material-symbols-outlined text-[32px]">developer_mode</span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline-md text-headline-md text-on-surface">Precisa de um Software Sob Medida ou Integração IoT?</h4>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+              Nossa equipe de engenharia desenvolve aplicações completas, portais de clientes, landing pages de alta conversão e sistemas de telemetria física.
+            </p>
+</div>
+</div>
+<a class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface font-label-lg text-label-lg rounded-lg shadow-sm whitespace-nowrap transition-transform hover:-translate-y-0.5" href="#contato">
+<span class="">Enviar Briefing de Projeto</span>
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+</a>
+</div>
+</div>
+</section>
+<!-- SEÇÃO EXCLUSIVA DE FEEDBACKS VIA CHAVEIRO NFC -->
+<section class="w-full bg-surface-container-low py-16 lg:py-24" id="feedbacks-nfc">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-16">
+<!-- Cabeçalho -->
+<div class="flex flex-col text-center items-center gap-3 max-w-3xl mx-auto">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md font-bold"><span class="material-symbols-outlined text-[16px]">sensors</span> Tecnologia Patenteada Vórtice NFC</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Sua opinião aproxima a gente.</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Encoste seu celular no nosso chaveiro NFC e conte como foi sua experiência! Sem digitar links, sem atrito — apenas toque e avalie.
+        </p>
+</div>
+<!-- Demonstração Interativa do Chaveiro + Simulador -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Ilustração / Interação Chaveiro NFC -->
+<div class="lg:col-span-5 bg-surface-container-lowest rounded-xl p-8 shadow-sm flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Como funciona o toque</span>
+<span class="font-code-snippet text-code-snippet text-primary font-bold">NTAG213 / 13.56 MHz</span>
+</div>
+<!-- Card Ilustrado com Smartphone e Chaveiro -->
+<div class="relative w-full h-64 rounded-xl bg-surface-container flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-primary-container/10 to-transparent"></div>
+<div class="relative flex items-center justify-center">
+<!-- Ondas de Sinal NFC -->
+<span class="absolute w-28 h-28 rounded-full bg-primary-container/20 animate-ping"></span>
+<span class="absolute w-20 h-20 rounded-full bg-primary-container/40"></span>
+<!-- Ícone do Chaveiro Central -->
+<div class="relative z-10 w-16 h-16 rounded-2xl bg-inverse-surface text-primary-container flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-[32px]">contactless</span>
+</div>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-bold mt-4 z-10">Aproximação Instantânea</span>
+<p class="font-body-sm text-[12px] text-on-surface-variant z-10 max-w-xs mt-1">
+              Basta desbloquear seu aparelho e encostar na parte superior traseira. Compatível nativamente com iPhone e Android.
+            </p>
+</div>
+<!-- Alternativa QR Code -->
+<div class="p-4 rounded-lg bg-surface-container flex items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[24px]">qr_code_scanner</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Sem leitor NFC no aparelho?</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Use o QR Code impresso no verso do chaveiro</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded bg-surface-container-high text-on-surface font-code-snippet text-[11px] font-bold">SCAN ME</span>
+</div>
+</div>
+<!-- Simulador do Formulário de Avaliação NFC -->
+<div class="lg:col-span-7 bg-surface-container-lowest rounded-xl p-8 shadow-sm flex flex-col gap-6">
+<div class="flex items-center justify-between border-b pb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[22px]">feedback</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Formulário de Feedback Conectado</span>
+</div>
+<span class="inline-flex items-center gap-1 font-label-md text-[11px] px-2 py-0.5 rounded bg-surface-container text-on-surface font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+              Sessão NFC Identificada
+            </span>
+</div>
+<form class="flex flex-col gap-4" onsubmit="event.preventDefault(); alert('Avaliação enviada com sucesso! Obrigado por fortalecer a comunidade Vórtice.');">
+<!-- Seletor de Estrelas -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Sua Classificação Geral</label>
+<div class="flex items-center gap-2">
+<button class="text-primary-container hover:scale-110 transition-transform" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</button>
+<button class="text-primary-container hover:scale-110 transition-transform" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</button>
+<button class="text-primary-container hover:scale-110 transition-transform" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</button>
+<button class="text-primary-container hover:scale-110 transition-transform" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</button>
+<button class="text-primary-container hover:scale-110 transition-transform" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</button>
+<span class="font-label-lg text-label-lg font-bold text-on-surface ml-2">5.0 (Excelente)</span>
+</div>
+</div>
+<!-- Campo Nome -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="feedback-nome">Seu Nome ou Empresa (Opcional)</label>
+<input class="h-12 px-4 rounded-lg bg-surface-container text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary-container transition-all" id="feedback-nome" placeholder="Ex: Lucas Silva ou Nexo Studio" type="text">
+</div>
+<!-- Campo Depoimento -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="feedback-comentario">Conte como foi sua experiência com nossos produtos ou serviços...</label>
+<textarea class="p-4 rounded-lg bg-surface-container text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary-container transition-all resize-none" id="feedback-comentario" placeholder="Qualidade do acabamento da impressão, agilidade na consultoria dev, atendimento..." rows="3"></textarea>
+</div>
+<!-- Botão Enviar -->
+<div class="pt-2">
+<button class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary-container hover:bg-tertiary-container text-on-primary font-label-lg text-label-lg font-bold rounded-lg shadow-md transition-all duration-200 hover:-translate-y-0.5" type="submit">
+<span class="material-symbols-outlined text-[20px]">send_to_mobile</span>
+<span class="">Enviar Avaliação pelo Chaveiro</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Carrossel / Grade de Depoimentos Recentes Aprovados -->
+<div class="flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">verified</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Depoimentos Verificados em Tempo Real</h3>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Média 4.98 de 5 estrelas</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Depoimento 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col justify-between gap-4">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</div>
+<span class="font-code-snippet text-[11px] text-on-surface-variant">Hoje</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">"O chaveiro Vórtice NFC ficou impecável! Meus clientes adoram encostar o celular e abrir nosso menu digital sem precisar escanear QR Code em papel amassado."</p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-surface-container">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold text-xs">
+                  MR
+                </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Marcelo Ramos</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Bistrô &amp; Bar 42</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 text-[11px] font-label-md text-primary font-semibold">
+<span class="material-symbols-outlined text-[14px]">nfc</span> NFC
+              </span>
+</div>
+</div>
+<!-- Depoimento 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col justify-between gap-4">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</div>
+<span class="font-code-snippet text-[11px] text-on-surface-variant">Ontem</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                "A consultoria em Next.js e a integração com hardware foi cirúrgica. Resolveram nosso gargalo de performance e ainda entregaram cases 3D sob medida para a placa."
+              </p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-surface-container">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-xs">
+                  FA
+                </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Fernanda Albuquerque</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">CTO na VeloceTech</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 text-[11px] font-label-md text-secondary font-semibold">
+<span class="material-symbols-outlined text-[14px]">code</span> Dev
+              </span>
+</div>
+</div>
+<!-- Depoimento 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col justify-between gap-4">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</div>
+<span class="font-code-snippet text-[11px] text-on-surface-variant">3 dias atrás</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                "As miniaturas em resina 8K vieram sem nenhuma linha de camada aparente. A precisão dos detalhes na armadura superou qualquer expectativa."
+              </p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-surface-container">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim text-on-primary-fixed flex items-center justify-center font-bold text-xs">
+                  GP
+                </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Gabriel Prado</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Colecionador RPG</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 text-[11px] font-label-md text-primary font-semibold">
+<span class="material-symbols-outlined text-[14px]">view_in_ar</span> 3D
+              </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- BANNER FINAL DE CONVERSÃO -->
+<section class="w-full bg-surface py-16 lg:py-20" id="contato">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="relative bg-inverse-surface rounded-2xl p-8 lg:p-14 text-inverse-on-surface overflow-hidden shadow-xl">
+<!-- Detalhe decorativo sutil -->
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary-container/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+<!-- Coluna de Texto e Contatos Diretos -->
+<div class="lg:col-span-6 flex flex-col gap-6">
+<span class="font-label-md text-label-md text-primary-container font-bold uppercase tracking-wider">Vamos Construir Juntos</span>
+<h2 class="font-headline-lg text-headline-lg text-surface-bright">Pronto para dar vida à sua ideia ou sistema?</h2>
+<p class="font-body-md text-body-md text-surface-variant">
+              Fale diretamente com quem entende de hardware, manufatura aditiva e código limpo. Respondemos orçamentos em até poucas horas.
+            </p>
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+<a class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-primary-container hover:bg-tertiary-container text-on-primary font-label-lg text-label-lg rounded-lg shadow-md transition-transform hover:-translate-y-0.5" href="https://wa.me/5500000000000" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span class="">Chamar no WhatsApp</span>
+</a>
+<a class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-surface/10 hover:bg-surface/20 text-surface-bright font-label-lg text-label-lg rounded-lg transition-colors" href="mailto:contato@vortice.tech"><span class="material-symbols-outlined text-[20px]">mail</span><span class="">contato@vortice.tech</span></a>
+</div>
+</div>
+<!-- Formulário Rápido de Contato -->
+<div class="lg:col-span-6 bg-surface-container-lowest text-on-surface rounded-xl p-6 lg:p-8 shadow-lg">
+<form class="flex flex-col gap-4" onsubmit="event.preventDefault(); alert('Mensagem enviada! Retornaremos seu contato em breve.');">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Envie uma Mensagem Rápida</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Nome Completo</label>
+<input class="h-11 px-3.5 rounded-lg bg-surface-container text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary-container" placeholder="Seu nome" required="" type="text">
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface-variant">WhatsApp / Telefone</label>
+<input class="h-11 px-3.5 rounded-lg bg-surface-container text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary-container" placeholder="(00) 00000-0000" required="" type="tel">
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Interesse Principal</label>
+<select class="h-11 px-3.5 rounded-lg bg-surface-container text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary-container">
+<option>Impressão 3D &amp; Brindes NFC</option>
+<option>Projeto 3D Personalizado (.STL / CAD)</option>
+<option>Consultoria Dev &amp; Arquitetura Web</option>
+<option>Outros / Parcerias</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Breve descrição da sua necessidade</label>
+<textarea class="p-3.5 rounded-lg bg-surface-container text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary-container resize-none" placeholder="Quantidades, dimensões, stack tecnológica ou prazo desejado..." rows="3"></textarea>
+</div>
+<button class="w-full py-3 bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface font-label-lg text-label-lg rounded-lg transition-transform hover:-translate-y-0.5 mt-2" type="submit">
+                Solicitar Contato Especializado
+              </button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div></main><footer class="w-full bg-surface-container-low shadow-[0_-1px_8px_rgba(0,0,0,0.02)]"><div class="max-w-7xl mx-auto px-6 lg:px-12 pt-16 pb-12"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12"><div class="lg:col-span-2 flex flex-col gap-4"><div class="flex items-center gap-3"><img alt="Vórtice Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy9fMmXFLYFAOsPbkij9TXOX0TF1RSzASctu7NvjqMGiTfIuFH73aIJqUYi3JXgTNNmi_t7T7bss7JH_5EA0vLBnHhiGGh9U8LRQRJb4FY6OOtSR01NK_0PBOdG45qT_3-_EqMuHeTeq5GyIER4fBkbHom27zfzu_mtgOvW3q5PjRlpcZyYIUn8_dsEdF9VL7znNeT2S2l5aZM5acMW7UsgNmG33psApYwXvs_tmmS"><span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Vór<span class="text-primary-container">tice</span></span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Fusão ágil entre fabricação digital aditiva (3D Printing) e arquitetura de software de alta performance. Da modelagem matemática aos ecossistemas conectados com NFC.</p><div class="flex items-center gap-3 pt-2"><div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-code-snippet text-code-snippet"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="">NFC Core Active</span></div><span class="font-label-md text-label-md text-on-surface-variant">Crafted with Vortice Precision</span></div></div><div class="flex flex-col gap-3"><span class="font-label-lg text-label-lg text-on-surface font-bold uppercase tracking-wider">Categorias 3D</span><div class="flex flex-col gap-2.5"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="brindes" href="#">Brindes Corporativos</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="decoracao" href="#">Decoração &amp; Design</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="figures" href="#">Figures &amp; Colecionáveis</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="utilitarios" href="#">Utilitários &amp; Suportes</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="personalizados" href="#">Projetos Personalizados</a></div></div><div class="flex flex-col gap-3"><span class="font-label-lg text-label-lg text-on-surface font-bold uppercase tracking-wider">Consultoria Dev</span><div class="flex flex-col gap-2.5"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="consultoria-dev" href="#">Arquitetura Web &amp; APIs</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="consultoria-dev" href="#">Integração Hardware/NFC</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="consultoria-dev" href="#">Prototipagem Ágil</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="feedbacks-nfc" href="#">Sistemas de Feedback NFC</a><a class="inline-flex items-center gap-1 font-label-md text-label-md text-primary font-bold hover:text-primary-container transition-colors" data-path="painel-administrativo" href="#"><span class="material-symbols-outlined text-[16px]">admin_panel_settings</span><span class="">Painel do Proprietário</span></a></div></div><div class="flex flex-col gap-3"><span class="font-label-lg text-label-lg text-on-surface font-bold uppercase tracking-wider">Conexão &amp; Lab</span><div class="flex flex-col gap-2.5"><p class="font-body-sm text-body-sm text-on-surface-variant">Laboratório de Criação e Engenharia</p><a class="font-body-sm text-body-sm text-on-surface font-semibold hover:text-primary-container transition-colors" href="mailto:contato@vortice.tech">contato@vortice.tech</a><div class="p-3 rounded-xl bg-surface-container flex items-center gap-3 mt-2"><span class="material-symbols-outlined text-primary-container text-[24px]">nfc</span><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface font-bold">Chaveiro NFC Tech</span><span class="font-body-sm text-body-sm text-on-surface-variant">Toque para avaliar instantaneamente</span></div></div></div></div></div><div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4"><p class="font-body-sm text-body-sm text-on-surface-variant">© 2025 Vórtice. Todos os direitos reservados. Impressão 3D e Engenharia de Software.</p><div class="flex items-center gap-6"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="termos" href="#">Termos de Uso</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacidade" href="#">Privacidade</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="painel-administrativo" href="#">Acesso Restrito</a></div></div></div></footer>
+
+
+
+
+
+</body></html>

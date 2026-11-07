@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary-fixed": "#341100", "surface-bright": "#fbf9f4", "on-tertiary-container": "#621600", "primary-fixed": "#ffdbca", "surface-container-low": "#f5f3ee", "error": "#ba1a1a", "outline": "#8c7164", "inverse-primary": "#ffb690", "on-primary-container": "#582200", "on-tertiary-fixed": "#3b0900", "primary-fixed-dim": "#ffb690", "surface-container": "#f0eee9", "surface-container-highest": "#e4e2dd", "primary": "#9d4300", "inverse-surface": "#30312e", "on-surface-variant": "#584237", "surface-tint": "#9d4300", "on-secondary": "#ffffff", "outline-variant": "#e0c0b1", "on-tertiary-fixed-variant": "#862200", "tertiary-fixed": "#ffdbd1", "surface-variant": "#e4e2dd", "primary-container": "#f97316", "surface": "#fbf9f4", "on-error": "#ffffff", "on-error-container": "#93000a", "on-background": "#1b1c19", "tertiary": "#b02f00", "on-surface": "#1b1c19", "on-primary": "#ffffff", "surface-dim": "#dbdad5", "secondary-fixed": "#dae2fd", "tertiary-container": "#ff6c40", "error-container": "#ffdad6", "on-tertiary": "#ffffff", "background": "#fbf9f4", "secondary-fixed-dim": "#bec6e0", "on-secondary-fixed-variant": "#3f465c", "on-secondary-fixed": "#131b2e", "on-secondary-container": "#5c647a", "inverse-on-surface": "#f2f1ec", "surface-container-lowest": "#ffffff", "on-primary-fixed-variant": "#783200", "tertiary-fixed-dim": "#ffb5a0", "surface-container-high": "#eae8e3", "secondary": "#565e74", "secondary-container": "#dae2fd" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "margin": "3rem", "gutter-mobile": "1rem", "space-xl": "2.5rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "margin-mobile": "1.25rem", "space-sm": "0.5rem", "gutter": "1.5rem" }, "fontFamily": { "body-lg": [ "Plus Jakarta Sans" ], "headline-lg-mobile": [ "Outfit" ], "display-hero-mobile": [ "Outfit" ], "headline-lg": [ "Outfit" ], "display-hero": [ "Outfit" ], "body-sm": [ "Plus Jakarta Sans" ], "headline-sm": [ "Outfit" ], "headline-md": [ "Outfit" ], "label-lg": [ "Plus Jakarta Sans" ], "code-snippet": [ "JetBrains Mono" ], "body-md": [ "Plus Jakarta Sans" ], "label-md": [ "Plus Jakarta Sans" ] }, "fontSize": { "body-lg": [ "18px", { "lineHeight": "28px", "fontWeight": "400" } ], "headline-lg-mobile": [ "28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "display-hero-mobile": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" } ], "headline-lg": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "display-hero": [ "56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" } ], "body-sm": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-sm": [ "20px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "600" } ], "headline-md": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "label-lg": [ "14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" } ], "code-snippet": [ "13px", { "lineHeight": "20px", "fontWeight": "500" } ], "body-md": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "label-md": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-bright/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-6"><a class="flex items-center gap-3 shrink-0 group" data-path="inicio" href="#"><img alt="Vórtice Logo" class="h-8 w-auto object-contain transition-transform group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy9fMmXFLYFAOsPbkij9TXOX0TF1RSzASctu7NvjqMGiTfIuFH73aIJqUYi3JXgTNNmi_t7T7bss7JH_5EA0vLBnHhiGGh9U8LRQRJb4FY6OOtSR01NK_0PBOdG45qT_3-_EqMuHeTeq5GyIER4fBkbHom27zfzu_mtgOvW3q5PjRlpcZyYIUn8_dsEdF9VL7znNeT2S2l5aZM5acMW7UsgNmG33psApYwXvs_tmmS"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Vór<span class="text-primary-container">tice</span></span><span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">3D Labs &amp; Dev</span></div></a><nav class="hidden xl:flex items-center gap-7" data-active-classes="text-primary-container font-semibold"><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="inicio" href="#">Início</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="produtos" href="#">Produtos</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="personalizados" href="#">Personalizados</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="consultoria-dev" href="#">Consultoria Dev</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="sobre-nos" href="#">Sobre Nós</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="feedbacks-nfc" href="#">Feedbacks NFC</a></nav><div class="flex items-center gap-4 shrink-0"><div class="relative hidden sm:flex items-center"><span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px] pointer-events-none">search</span><input class="w-48 lg:w-56 pl-9 pr-4 py-2 bg-surface-container rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container-lowest transition-all" placeholder="Buscar peças, código..." type="text"/></div><a aria-label="Carrinho de compras" class="relative p-2 rounded-lg text-on-surface hover:bg-surface-container hover:text-on-surface transition-colors flex items-center justify-center" data-path="carrinho" href="#"><span class="material-symbols-outlined text-[24px]">shopping_bag</span><span class="absolute top-1 right-1 w-4 h-4 bg-primary-container text-on-primary rounded-full font-label-md text-[10px] flex items-center justify-center font-bold">2</span></a><a class="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface rounded-lg font-label-lg text-label-lg transition-transform hover:-translate-y-0.5 shadow-[0_2px_8px_rgba(15,23,42,0.08)]" data-path="login" href="#"><span class="material-symbols-outlined text-[18px]">login</span><span class="">Entrar</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-surface"><div class="flex flex-col w-full">
+<!-- Subtle Ambient Glow Orbs -->
+<div class="relative w-full max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-20">
+<div class="absolute top-12 left-1/4 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute top-1/2 right-10 w-80 h-80 bg-tertiary-container/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<!-- Section: Header Contextual & Breadcrumbs -->
+<div class="flex flex-col gap-6 mb-10">
+<!-- Breadcrumbs + System Status Indicator -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<nav class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">home</span>
+            Início
+          </a>
+<span>/</span>
+<span class="text-on-surface font-semibold">Projetos Personalizados &amp; Estúdio 3D CAD</span>
+</nav>
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high text-on-surface font-code-snippet text-code-snippet shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Motor Slicer v4.8: Conectado
+          </span>
+<span class="hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[15px]">verified</span>
+            Calibração ±0.05mm
+          </span>
+</div>
+</div>
+<!-- Main Headline & Narrative Copy -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+<div class="max-w-3xl">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md uppercase tracking-wider mb-3">
+<span class="material-symbols-outlined text-primary-container text-[18px]">layers</span>
+            Fabricação Aditiva • Hardware Integrado
+          </div>
+<h1 class="font-display-hero text-display-hero text-on-surface font-bold tracking-tight leading-tight">
+            Estúdio de Fatiamento &amp; <span class="text-primary-container">Orçamento 3D</span> Sob Medida
+          </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-4">
+            Envie sua malha digital (.STL, .OBJ, .STEP) ou configure a manufatura de precisão da mascote Vórtice Fox Tech com cálculo micrométrico de volume, infill e telemetria de fabricação em tempo real.
+          </p>
+</div>
+<!-- Capability Badges -->
+<div class="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
+<div class="flex items-center gap-3 p-3.5 rounded-xl bg-surface-container shadow-sm">
+<div class="w-10 h-10 rounded-lg bg-inverse-surface text-inverse-on-surface flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">precision_manufacturing</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-bold">FDM &amp; Resina 8K</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Resolução até 0.05mm ultra-fina</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3.5 rounded-xl bg-surface-container shadow-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">contactless</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-bold">NFC NTAG213 Nativo</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Cápsula interna protegida contra choque</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Workspace Grid Layout: Left Simulator / Right Configurator -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- LEFT COLUMN: Interactive 3D Simulator & Slicer Viewport -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- 3D Viewport Panel -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm flex flex-col gap-4 relative overflow-hidden">
+<!-- Viewport Header Toolbar -->
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-inverse-surface text-inverse-on-surface font-code-snippet text-code-snippet">
+<span class="material-symbols-outlined text-primary-container text-[16px]">view_in_ar</span>
+                Vortice_Mascot_Polygonal_V2.stl
+              </span>
+<span class="font-label-md text-label-md text-on-surface-variant hidden sm:inline">250×250×250 mm Build Plate</span>
+</div>
+<!-- View Modes & Camera Presets -->
+<div class="flex items-center gap-1 bg-surface-container rounded-lg p-1">
+<button class="px-2.5 py-1 rounded text-on-surface font-label-md text-label-md font-semibold bg-surface-container-lowest shadow-sm hover:text-primary transition-all">Perspectiva</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-all">Topo</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-all">Raio-X</button>
+</div>
+</div>
+<!-- The CAD Canvas & Viewport Simulation Graphic -->
+<div class="relative w-full h-[460px] rounded-xl bg-inverse-surface overflow-hidden flex items-center justify-center select-none shadow-inner">
+<!-- Perspective Bed Grid Background -->
+<svg class="absolute inset-0 w-full h-full opacity-25" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="32" id="cad-grid" patternunits="userSpaceOnUse" width="32">
+<path d="M 32 0 L 0 0 0 32" fill="none" stroke="#dae2fd" stroke-width="0.5"></path>
+</pattern>
+<lineargradient id="grid-fade" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"></stop>
+<stop offset="100%" stop-color="#ffffff" stop-opacity="0.1"></stop>
+</lineargradient>
+</defs>
+<rect fill="url(#cad-grid)" height="100%" mask="url(#grid-mask)" width="100%"></rect>
+</svg>
+<!-- 3D Bounding Box Outline -->
+<div class="absolute inset-8 rounded-lg pointer-events-none opacity-40">
+<svg class="w-full h-full" fill="none" viewbox="0 0 400 400">
+<!-- Isometric Plate Boundaries -->
+<polygon fill="none" opacity="0.3" points="200,40 370,120 200,200 30,120" stroke="#f97316" stroke-dasharray="4 4" stroke-width="1"></polygon>
+<polygon fill="none" opacity="0.8" points="200,200 370,280 200,360 30,280" stroke="#f97316" stroke-width="1.5"></polygon>
+<line opacity="0.4" stroke="#dae2fd" stroke-dasharray="2 2" stroke-width="1" x1="30" x2="30" y1="120" y2="280"></line>
+<line opacity="0.4" stroke="#dae2fd" stroke-dasharray="2 2" stroke-width="1" x1="370" x2="370" y1="120" y2="280"></line>
+<line opacity="0.4" stroke="#dae2fd" stroke-dasharray="2 2" stroke-width="1" x1="200" x2="200" y1="40" y2="200"></line>
+</svg>
+</div>
+<!-- Stylized Polygonal Mascot Model (Vórtice Tech Fox Wireframe/Solid) -->
+<div class="relative z-10 w-72 h-72 flex items-center justify-center transform transition-transform hover:scale-105 duration-500">
+<svg class="w-full h-full drop-shadow-[0_20px_35px_rgba(249,115,22,0.35)]" fill="none" viewbox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+<!-- Base Sliced Shadow Layer -->
+<ellipse cx="160" cy="275" fill="#131b2e" opacity="0.6" rx="75" ry="18"></ellipse>
+<!-- Polygonal Fox Head & Geometries in Signature Vortice Orange + Graphite -->
+<!-- Left Ear -->
+<polygon fill="#f97316" opacity="0.95" points="100,50 145,120 75,130"></polygon>
+<polygon fill="#9d4300" opacity="0.85" points="100,50 75,130 50,110"></polygon>
+<polygon fill="#dae2fd" opacity="0.2" points="100,50 115,100 85,110"></polygon>
+<!-- Right Ear -->
+<polygon fill="#f97316" opacity="0.95" points="220,50 175,120 245,130"></polygon>
+<polygon fill="#ff6c40" opacity="0.85" points="220,50 245,130 270,110"></polygon>
+<polygon fill="#dae2fd" opacity="0.2" points="220,50 205,100 235,110"></polygon>
+<!-- Forehead / Crown Facets -->
+<polygon fill="#f97316" points="160,90 115,120 160,140 205,120"></polygon>
+<polygon fill="#ff6c40" points="160,90 145,120 160,140"></polygon>
+<polygon fill="#ffb690" points="160,90 160,140 175,120"></polygon>
+<!-- Left Cheek & Temple Facets -->
+<polygon fill="#e0c0b1" opacity="0.9" points="75,130 115,120 120,185 60,195"></polygon>
+<polygon fill="#ffb5a0" points="60,195 120,185 105,230"></polygon>
+<!-- Right Cheek Facets -->
+<polygon fill="#fbf9f4" opacity="0.9" points="245,130 205,120 200,185 260,195"></polygon>
+<polygon fill="#dae2fd" points="260,195 200,185 215,230"></polygon>
+<!-- Bridge of Snout -->
+<polygon fill="#f97316" points="160,140 120,185 160,225"></polygon>
+<polygon fill="#b02f00" points="160,140 200,185 160,225"></polygon>
+<!-- Tech Polygonal Eyes with Cyan/Ice Sheen -->
+<polygon fill="#dae2fd" points="120,155 140,165 122,175"></polygon>
+<polygon fill="#ffffff" points="200,155 180,165 198,175"></polygon>
+<!-- Muzzle & Tactile NFC Core Ring -->
+<polygon fill="#1b1c19" points="160,225 140,245 160,265 180,245"></polygon>
+<circle cx="160" cy="225" fill="#f97316" opacity="0.9" r="9" stroke="#ffffff" stroke-width="1.5"></circle>
+<circle class="animate-spin" cx="160" cy="225" fill="none" r="16" stroke="#f97316" stroke-dasharray="3 3" stroke-width="1" style="transform-origin: 160px 225px; animation-duration: 9s;"></circle>
+<!-- Slicing G-code scanlines simulation overlay -->
+<line opacity="0.8" stroke="#f97316" stroke-dasharray="6 3" stroke-width="1.5" x1="80" x2="240" y1="180" y2="180"></line>
+<line opacity="0.6" stroke="#dae2fd" stroke-width="1" x1="95" x2="225" y1="183" y2="183"></line>
+</svg>
+</div>
+<!-- On-Screen Telemetry HUD Overlay -->
+<div class="absolute top-4 left-4 flex flex-col gap-1.5 font-code-snippet text-code-snippet pointer-events-none">
+<span class="text-tertiary-fixed font-bold tracking-wider">OBJ: VORTICE_FOX_KEYCHAIN</span>
+<span class="text-inverse-on-surface/80">VERTICES: 18,492 • FACES: 36,980</span>
+<span class="text-inverse-on-surface/60">BOUNDS: 64.2 × 52.0 × 82.4 mm</span>
+</div>
+<!-- NFC Capsule Indicator Pill -->
+<div class="absolute top-4 right-4 bg-primary-container text-on-primary px-3 py-1.5 rounded-lg flex items-center gap-2 text-label-md font-label-md shadow-md">
+<span class="material-symbols-outlined text-[16px] animate-pulse">contactless</span>
+<span>Cavidade NFC: Ativa (Z: 42.0mm)</span>
+</div>
+<!-- Viewport Interactive Floating Controls -->
+<div class="absolute bottom-4 right-4 flex items-center gap-1.5 bg-inverse-surface/85 backdrop-blur-md p-1.5 rounded-lg shadow-lg">
+<button aria-label="Girar modelo" class="p-2 rounded text-inverse-on-surface hover:text-primary-container hover:bg-surface-container/20 transition-all">
+<span class="material-symbols-outlined text-[18px]">3d_rotation</span>
+</button>
+<button aria-label="Aumentar zoom" class="p-2 rounded text-inverse-on-surface hover:text-primary-container hover:bg-surface-container/20 transition-all">
+<span class="material-symbols-outlined text-[18px]">zoom_in</span>
+</button>
+<button aria-label="Redefinir câmera" class="p-2 rounded text-inverse-on-surface hover:text-primary-container hover:bg-surface-container/20 transition-all">
+<span class="material-symbols-outlined text-[18px]">center_focus_strong</span>
+</button>
+<button aria-label="Visão em tela cheia" class="p-2 rounded text-inverse-on-surface hover:text-primary-container hover:bg-surface-container/20 transition-all">
+<span class="material-symbols-outlined text-[18px]">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- Live Slicer Control Bar (Layer Slider & Structural Toggles) -->
+<div class="flex flex-col gap-4 bg-surface-container p-4 rounded-xl">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">tune</span>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Simulação de Camadas G-Code</span>
+</div>
+<div class="flex items-center gap-2 font-code-snippet text-code-snippet text-on-surface-variant">
+<span>Camada: <strong class="text-on-surface" id="current-layer">182</strong> / 540</span>
+<span class="text-primary-container">(33.7%)</span>
+</div>
+</div>
+<!-- Range Slider -->
+<div class="flex items-center gap-4">
+<span class="font-code-snippet text-label-md text-on-surface-variant">01</span>
+<input class="w-full accent-primary-container h-2 bg-surface-container-high rounded-lg cursor-pointer" id="layer-slider" max="540" min="1" oninput="document.getElementById('current-layer').innerText = this.value" type="range" value="182"/>
+<span class="font-code-snippet text-label-md text-on-surface-variant">540</span>
+</div>
+<!-- Infill & Layer Height Micro-selectors -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface-variant font-medium">Padrão de Preenchimento (Infill)</label>
+<div class="grid grid-cols-3 gap-1 bg-surface-container-lowest p-1 rounded-lg">
+<button class="py-1.5 px-2 rounded font-label-md text-label-md text-center bg-primary-container text-on-primary font-bold shadow-xs">Giroide</button>
+<button class="py-1.5 px-2 rounded font-label-md text-label-md text-center text-on-surface hover:bg-surface-container transition-all">Colmeia</button>
+<button class="py-1.5 px-2 rounded font-label-md text-label-md text-center text-on-surface hover:bg-surface-container transition-all">Grade</button>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface-variant font-medium">Altura de Camada (Microns)</label>
+<div class="grid grid-cols-3 gap-1 bg-surface-container-lowest p-1 rounded-lg">
+<button class="py-1.5 px-2 rounded font-label-md text-label-md text-center text-on-surface hover:bg-surface-container transition-all">0.12mm</button>
+<button class="py-1.5 px-2 rounded font-label-md text-label-md text-center bg-inverse-surface text-inverse-on-surface font-bold shadow-xs">0.20mm</button>
+<button class="py-1.5 px-2 rounded font-label-md text-label-md text-center text-on-surface hover:bg-surface-container transition-all">0.28mm</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Real-Time Telemetry Cards -->
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-surface-container-low p-3.5 rounded-xl flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary-container">schedule</span>
+                Tempo Estimado
+              </span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">3h 42min</span>
+<span class="font-code-snippet text-code-snippet text-on-surface-variant">Velocidade: 180mm/s</span>
+</div>
+<div class="bg-surface-container-low p-3.5 rounded-xl flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary-container">weight</span>
+                Filamento Bruto
+              </span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">48.2 g</span>
+<span class="font-code-snippet text-code-snippet text-on-surface-variant">16.1 metros lineares</span>
+</div>
+<div class="bg-surface-container-low p-3.5 rounded-xl flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">energy_savings_leaf</span>
+                Consumo Térmico
+              </span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">0.34 kWh</span>
+<span class="font-code-snippet text-code-snippet text-on-surface-variant">Mesa 60°C • Bico 215°C</span>
+</div>
+</div>
+<!-- Mascot Engineering Tip Floating Callout -->
+<div class="bg-inverse-surface text-inverse-on-surface p-4 rounded-xl relative shadow-md flex items-start gap-3.5">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg font-bold text-primary-fixed">Vórtice Fox AI • Análise Geométrica</span>
+<span class="font-code-snippet text-code-snippet text-primary-fixed-dim">OK / Pronta</span>
+</div>
+<p class="font-body-sm text-body-sm text-inverse-on-surface/90">
+                A inclinação das orelhas da mascote está a 42°, dispensando suportes descartáveis. A cavidade traseira já prevê o nicho exato de 25mm para selagem ultrassônica do chip NFC NTAG213.
+              </p>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Production Configurator & Quotation Pipeline -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- File Upload Area (Drag & Drop) -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary-container text-[18px]">cloud_upload</span>
+              Arquivo Digital do Projeto
+            </span>
+<span class="font-code-snippet text-code-snippet text-on-surface-variant">STL, OBJ, STEP (≤150MB)</span>
+</div>
+<div class="border-2 border-dashed border-outline-variant/50 rounded-xl p-6 flex flex-col items-center justify-center gap-3 bg-surface-container-low hover:bg-surface-container transition-all cursor-pointer group text-center">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-container text-[24px]">folder_zip</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold">Arraste seu modelo 3D aqui</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ou clique para navegar no computador</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold shadow-xs">
+                Substituir Arquivo Atual
+              </span>
+</div>
+</div>
+</div>
+<!-- Material Selection Section -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary-container text-[18px]">science</span>
+              Material de Engenharia
+            </span>
+<span class="font-label-md text-label-md text-primary font-semibold cursor-pointer hover:underline">Ver Guia Técnico</span>
+</div>
+<!-- Material Grid Options -->
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Option 1: PLA+ Active -->
+<label class="p-3 rounded-xl bg-surface-container-high flex flex-col gap-1 cursor-pointer transition-all shadow-xs relative">
+<input checked="" class="hidden" name="material" type="radio" value="pla"/>
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">PLA+ Pro</span>
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Biodegradável, precisão rígida e cores vivas</span>
+<span class="font-code-snippet text-code-snippet text-primary font-semibold mt-1">Incluso na Base</span>
+</label>
+<!-- Option 2: PETG -->
+<label class="p-3 rounded-xl bg-surface-container-low hover:bg-surface-container flex flex-col gap-1 cursor-pointer transition-all">
+<input class="hidden" name="material" type="radio" value="petg"/>
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">PETG Técnico</span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Resistência UV e impacto mecânico moderado</span>
+<span class="font-code-snippet text-code-snippet text-on-surface-variant mt-1">+ R$ 14,00</span>
+</label>
+<!-- Option 3: ABS Fibra Carbono -->
+<label class="p-3 rounded-xl bg-surface-container-low hover:bg-surface-container flex flex-col gap-1 cursor-pointer transition-all">
+<input class="hidden" name="material" type="radio" value="cf_abs"/>
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">ABS Carbon Fiber</span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Rigidez aeroespacial e resistência até 105°C</span>
+<span class="font-code-snippet text-code-snippet text-on-surface-variant mt-1">+ R$ 38,00</span>
+</label>
+<!-- Option 4: Resina 8K -->
+<label class="p-3 rounded-xl bg-surface-container-low hover:bg-surface-container flex flex-col gap-1 cursor-pointer transition-all">
+<input class="hidden" name="material" type="radio" value="resin"/>
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Resina UV 8K</span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Acabamento vitrificado, figuras e joalheria</span>
+<span class="font-code-snippet text-code-snippet text-on-surface-variant mt-1">+ R$ 52,00</span>
+</label>
+</div>
+<!-- Color Swatches & Finish -->
+<div class="flex flex-col gap-2 pt-2">
+<span class="font-label-md text-label-md text-on-surface-variant font-medium">Cor &amp; Acabamento Superficial:</span>
+<div class="flex flex-wrap items-center gap-3">
+<!-- Orange Selected -->
+<button class="w-8 h-8 rounded-full bg-primary-container shadow-md flex items-center justify-center transform scale-110" title="Laranja Vórtice">
+<span class="material-symbols-outlined text-[16px] text-on-primary">check</span>
+</button>
+<!-- Graphite Black -->
+<button class="w-8 h-8 rounded-full bg-[#1e293b] shadow-xs hover:scale-105 transition-transform" title="Preto Grafite Industrial"></button>
+<!-- Polar White -->
+<button class="w-8 h-8 rounded-full bg-[#f8fafc] shadow-xs hover:scale-105 transition-transform" title="Branco Polar"></button>
+<!-- Warm Sand Beige -->
+<button class="w-8 h-8 rounded-full bg-[#eae8e3] shadow-xs hover:scale-105 transition-transform" title="Bege Areia Matizado"></button>
+<!-- Translucent Resin -->
+<button class="w-8 h-8 rounded-full bg-[#dae2fd] shadow-xs hover:scale-105 transition-transform opacity-80" title="Translúcido Óptico"></button>
+<span class="font-label-md text-label-md text-on-surface font-semibold ml-2">Laranja Vórtice (Assinatura)</span>
+</div>
+</div>
+</div>
+<!-- Technological Add-on: Embedded NFC Hardware -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed text-on-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">contactless</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Embutir Chip NFC NTAG213</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">13.56 MHz, compatível com iOS &amp; Android nativo</span>
+</div>
+</div>
+<!-- Interactive Switch -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="nfc-toggle" onchange="document.getElementById('nfc-details').classList.toggle('hidden')" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface peer-checked:bg-primary-container after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-surface after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+</label>
+</div>
+<!-- NFC Pre-programming Subform -->
+<div class="bg-surface-container-low rounded-xl p-3.5 flex flex-col gap-2 mt-1" id="nfc-details">
+<label class="font-label-md text-label-md text-on-surface font-medium flex items-center justify-between">
+<span>Gravação Prévia de Dados no Chip (Opcional):</span>
+<span class="font-code-snippet text-code-snippet text-primary-container">144 Bytes Úteis</span>
+</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest px-3 py-2 rounded-lg font-code-snippet text-body-sm text-on-surface focus:outline-none shadow-xs" placeholder="URL, Cartão vCard, Link Instagram ou Google Reviews" type="text" value="https://vortice.tech/id/fox-mascot-4820"/>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Nosso laboratório grava e trava criptograficamente a tag durante a pausa Z na impressão.
+            </p>
+</div>
+</div>
+<!-- Technical Briefing & Tolerance Specifications -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm flex flex-col gap-3">
+<label class="font-label-lg text-label-lg text-on-surface font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary-container text-[18px]">draw</span>
+            Observações de Engenharia &amp; Tolerância
+          </label>
+<textarea class="w-full bg-surface-container-low p-3 rounded-xl font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container-lowest shadow-inner" placeholder="Ex: Ajuste h7 para encaixe de rolamento 608, resistência a tração para suporte de parede, acabamento lixado..." rows="2"></textarea>
+</div>
+<!-- Cost Breakdown & Production SLA Summary -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-md flex flex-col gap-5">
+<div class="flex items-center justify-between border-b border-surface-container pb-3">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Orçamento Imediato</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+              Pronta p/ Fila
+            </span>
+</div>
+<div class="flex flex-col gap-2.5 font-body-sm text-body-sm">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Manufatura Aditiva (PLA+ Pro, 48.2g / 3h 42min)</span>
+<span class="text-on-surface font-medium">R$ 54,90</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Módulo NFC NTAG213 + Calibração de Inserção Z</span>
+<span class="text-on-surface font-medium">R$ 18,00</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Inspeção Dimensional Micrométrica • Lab QA</span>
+<span class="text-emerald-700 font-bold">Grátis</span>
+</div>
+<div class="flex justify-between items-center pt-2">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Total do Projeto</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Prazo de Envio: 24h a 48h úteis</span>
+</div>
+<span class="font-headline-lg text-headline-lg text-primary-container font-extrabold">R$ 72,90</span>
+</div>
+</div>
+<!-- CTAs -->
+<div class="flex flex-col gap-2.5 pt-2">
+<button class="w-full py-3.5 px-6 rounded-xl bg-primary-container hover:bg-tertiary-container text-on-primary font-label-lg text-label-lg font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">shopping_cart_checkout</span>
+              Aprovar Fatiamento e Adicionar ao Carrinho
+            </button>
+<button class="w-full py-3 px-6 rounded-xl bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface font-label-lg text-label-lg font-medium transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+              Solicitar Parecer de Engenharia / Orçamento em Lote
+            </button>
+</div>
+<!-- Trust footer items -->
+<div class="flex items-center justify-between text-on-surface-variant text-label-md font-label-md pt-1">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-emerald-600">lock</span>
+              Arquivo protegido sob sigilo NDA
+            </span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-primary-container">local_shipping</span>
+              Envio p/ todo o Brasil
+            </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Technical Tolerances & FAQ Architecture Bento Grid -->
+<div class="mt-16 flex flex-col gap-8">
+<div class="flex flex-col gap-2 max-w-2xl">
+<span class="font-label-md text-label-md text-primary-container font-bold uppercase tracking-wider">Diretrizes de Manufatura Vórtice</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-bold">Guia de Engenharia para Malhas 3D</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Otimize seus arquivos para garantir acabamento espelhado, máxima coesão intercamadas e encaixe cirúrgico de componentes IoT.
+        </p>
+</div>
+<!-- Bento Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Bento Card 1: Tolerâncias Mecânicas -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col justify-between gap-4">
+<div class="flex flex-col gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[22px]">straighten</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Tolerâncias e Folgas (Clearance)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Para partes móveis ou encaixes de pressão (snap-fit), recomendamos deixar uma folga radial de pelo menos <strong class="text-on-surface">0.25mm a 0.35mm</strong> no diâmetro. Nossos bicos CHT de alto fluxo compensam a retração térmica nativamente.
+            </p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg font-code-snippet text-code-snippet text-on-surface-variant">
+            Paredes mínimas: 1.2mm (FDM) / 0.6mm (Resina 8K)
+          </div>
+</div>
+<!-- Bento Card 2: Incorporação NFC & IoT -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col justify-between gap-4">
+<div class="flex flex-col gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined text-[22px]">nfc</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Integração de Hardware &amp; NFC</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Nossa tecnologia patenteada de pausa programada em G-Code insere chips NFC, magnetos de neodímio e contrapesos no interior da peça sem necessidade de parafusos externos ou cola, criando produtos selados à prova d'água.
+            </p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg font-code-snippet text-code-snippet text-on-surface-variant">
+            Temperatura máxima da antena: 180°C suportada
+          </div>
+</div>
+<!-- Bento Card 3: Consultoria de Código & API -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col justify-between gap-4">
+<div class="flex flex-col gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-inverse-surface">
+<span class="material-symbols-outlined text-[22px]">code</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Software &amp; Plataformas Conectadas</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Além de imprimir a peça física, o time da Vórtice desenvolve as landing pages de feedback instantâneo, painéis de gestão e APIs de leitura dos chaveiros inteligentes produzidos no laboratório.
+            </p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg font-code-snippet text-code-snippet text-on-surface-variant">
+            Stack: Next.js + Tailwind + Web NFC API
+          </div>
+</div>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-low shadow-[0_-1px_8px_rgba(0,0,0,0.02)]"><div class="max-w-7xl mx-auto px-6 lg:px-12 pt-16 pb-12"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12"><div class="lg:col-span-2 flex flex-col gap-4"><div class="flex items-center gap-3"><img alt="Vórtice Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy9fMmXFLYFAOsPbkij9TXOX0TF1RSzASctu7NvjqMGiTfIuFH73aIJqUYi3JXgTNNmi_t7T7bss7JH_5EA0vLBnHhiGGh9U8LRQRJb4FY6OOtSR01NK_0PBOdG45qT_3-_EqMuHeTeq5GyIER4fBkbHom27zfzu_mtgOvW3q5PjRlpcZyYIUn8_dsEdF9VL7znNeT2S2l5aZM5acMW7UsgNmG33psApYwXvs_tmmS"/><span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Vór<span class="text-primary-container">tice</span></span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Fusão ágil entre fabricação digital aditiva (3D Printing) e arquitetura de software de alta performance. Da modelagem matemática aos ecossistemas conectados com NFC.</p><div class="flex items-center gap-3 pt-2"><div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-code-snippet text-code-snippet"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="">NFC Core Active</span></div><span class="font-label-md text-label-md text-on-surface-variant">Crafted with Vortice Precision</span></div></div><div class="flex flex-col gap-3"><span class="font-label-lg text-label-lg text-on-surface font-bold uppercase tracking-wider">Categorias 3D</span><div class="flex flex-col gap-2.5"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="brindes" href="#">Brindes Corporativos</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="decoracao" href="#">Decoração &amp; Design</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="figures" href="#">Figures &amp; Colecionáveis</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="utilitarios" href="#">Utilitários &amp; Suportes</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="personalizados" href="#">Projetos Personalizados</a></div></div><div class="flex flex-col gap-3"><span class="font-label-lg text-label-lg text-on-surface font-bold uppercase tracking-wider">Consultoria Dev</span><div class="flex flex-col gap-2.5"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="consultoria-dev" href="#">Arquitetura Web &amp; APIs</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="consultoria-dev" href="#">Integração Hardware/NFC</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="consultoria-dev" href="#">Prototipagem Ágil</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="feedbacks-nfc" href="#">Sistemas de Feedback NFC</a><a class="inline-flex items-center gap-1 font-label-md text-label-md text-primary font-bold hover:text-primary-container transition-colors" data-path="painel-administrativo" href="#"><span class="material-symbols-outlined text-[16px]">admin_panel_settings</span><span class="">Painel do Proprietário</span></a></div></div><div class="flex flex-col gap-3"><span class="font-label-lg text-label-lg text-on-surface font-bold uppercase tracking-wider">Conexão &amp; Lab</span><div class="flex flex-col gap-2.5"><p class="font-body-sm text-body-sm text-on-surface-variant">Laboratório de Criação e Engenharia</p><a class="font-body-sm text-body-sm text-on-surface font-semibold hover:text-primary-container transition-colors" href="mailto:contato@vortice.tech">contato@vortice.tech</a><div class="p-3 rounded-xl bg-surface-container flex items-center gap-3 mt-2"><span class="material-symbols-outlined text-primary-container text-[24px]">nfc</span><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface font-bold">Chaveiro NFC Tech</span><span class="font-body-sm text-body-sm text-on-surface-variant">Toque para avaliar instantaneamente</span></div></div></div></div></div><div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4"><p class="font-body-sm text-body-sm text-on-surface-variant">© 2025 Vórtice. Todos os direitos reservados. Impressão 3D e Engenharia de Software.</p><div class="flex items-center gap-6"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="termos" href="#">Termos de Uso</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacidade" href="#">Privacidade</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors" data-path="painel-administrativo" href="#">Acesso Restrito</a></div></div></div></footer>
+</body></html>
