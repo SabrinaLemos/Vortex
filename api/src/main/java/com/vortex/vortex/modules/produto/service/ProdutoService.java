@@ -46,7 +46,7 @@ public class ProdutoService {
         }
 
         String termoBusca = (filtro.busca() != null && !filtro.busca().isBlank())
-            ? filtro.busca().trim()
+            ? "%" + filtro.busca().trim().toLowerCase() + "%"
             : null;
 
         Page<Produto> produtos = produtoRepository.buscarComFiltros(

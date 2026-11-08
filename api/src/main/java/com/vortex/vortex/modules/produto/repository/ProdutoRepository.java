@@ -28,11 +28,11 @@ public interface ProdutoRepository extends JpaRepository<Produto, UUID> {
           AND (:precoMaximo IS NULL OR p.precoBase <= :precoMaximo)
           AND (:apenasNfc IS NULL OR p.possuiNfc = :apenasNfc)
           AND (:destaque IS NULL OR p.destaque = :destaque)
-          AND (:termoBusca IS NULL OR (
-                LOWER(p.titulo) LIKE LOWER(CONCAT('%', :termoBusca, '%'))
-                OR LOWER(p.sku) LIKE LOWER(CONCAT('%', :termoBusca, '%'))
-                OR LOWER(p.descricaoCurta) LIKE LOWER(CONCAT('%', :termoBusca, '%'))
-                OR LOWER(c.nome) LIKE LOWER(CONCAT('%', :termoBusca, '%'))
+          AND (CAST(:termoBusca AS string) IS NULL OR (
+                LOWER(p.titulo) LIKE :termoBusca
+                OR LOWER(p.sku) LIKE :termoBusca
+                OR LOWER(p.descricaoCurta) LIKE :termoBusca
+                OR LOWER(c.nome) LIKE :termoBusca
               ))
     """)
     Page<Produto> buscarComFiltros(
