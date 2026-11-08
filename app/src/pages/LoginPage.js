@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import authService from '../services/authService';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTarget = searchParams.get('redirect') || '/perfil';
+  const { login, registrar, nfcLogin } = useAuth();
   const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
   const [showPassword, setShowPassword] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(true);
@@ -25,14 +28,14 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       if (authMode === 'login') {
-        const res = await authService.login(email, password);
+        const res = await login(email, password);
         setAuthNotification({
           type: 'success',
           title: `Bem-vindo, ${res.usuario?.nome || 'Cliente'}!`,
-          message: 'Autenticação validada com sucesso. Redirecionando para seu painel...',
+          message: 'Autenticação validada com sucesso. Redirecionando...',
         });
       } else {
-        const res = await authService.registrar({
+        const res = await registrar({
           nome: name,
           email,
           senha: password,
@@ -46,8 +49,8 @@ export default function LoginPage() {
         });
       }
       setTimeout(() => {
-        navigate('/perfil');
-      }, 1200);
+        navigate(redirectTarget);
+      }, 1000);
     } catch (err) {
       setAuthNotification({
         type: 'error',
@@ -62,15 +65,15 @@ export default function LoginPage() {
   const handleNfcAuth = async () => {
     setNfcScanning(true);
     try {
-      const res = await authService.nfcLogin('VORTEX-NTAG213-048A2F1A');
+      const res = await nfcLogin('VORTEX-NTAG213-048A2F1A');
       setAuthNotification({
         type: 'success',
         title: 'Chaveiro Fox NFC Reconhecido!',
         message: `Token NTAG213 autenticado para ${res.usuario?.nome || 'Maker Pro'}. Entrando...`,
       });
       setTimeout(() => {
-        navigate('/perfil');
-      }, 1200);
+        navigate(redirectTarget);
+      }, 1000);
     } catch (err) {
       setAuthNotification({
         type: 'error',

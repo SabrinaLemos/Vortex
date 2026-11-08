@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { cartCount, notification } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const [navSearch, setNavSearch] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -143,25 +145,44 @@ export default function Navbar() {
               )}
             </Link>
 
-            {/* Login Button (Desktop) */}
-            <Link
-              to="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface rounded-lg font-label-lg text-xs font-semibold transition-transform hover:-translate-y-0.5 shadow-xs"
-            >
-              <span className="material-symbols-outlined text-[16px]">login</span>
-              <span>Entrar</span>
-            </Link>
-
-            {/* Profile Avatar Icon */}
-            <Link
-              to="/perfil"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 hover:opacity-90 transition-opacity"
-              title="Meu Perfil"
-            >
-              <span className="material-symbols-outlined text-on-primary text-[18px]">person</span>
-            </Link>
+            {/* Auth Actions (Desktop) */}
+            {isAuthenticated ? (
+              <div className="hidden sm:flex items-center gap-2">
+                <Link
+                  to="/perfil"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors"
+                  title="Meu Perfil"
+                >
+                  <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-on-primary text-xs font-bold">
+                    {user?.nome ? user.nome.charAt(0).toUpperCase() : <span className="material-symbols-outlined text-[16px]">person</span>}
+                  </div>
+                  <span className="font-label-md text-xs font-semibold text-on-surface max-w-[120px] truncate">
+                    {user?.nome?.split(' ')[0] || 'Perfil'}
+                  </span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                  }}
+                  className="p-1.5 text-on-surface-variant hover:text-error transition-colors rounded-lg hover:bg-surface-container"
+                  title="Sair da Conta"
+                >
+                  <span className="material-symbols-outlined text-[20px]">logout</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface rounded-lg font-label-lg text-xs font-semibold transition-transform hover:-translate-y-0.5 shadow-xs"
+              >
+                <span className="material-symbols-outlined text-[16px]">login</span>
+                <span>Entrar</span>
+              </Link>
+            )}
 
             {/* Mobile / Tablet Hamburger Menu Toggle */}
             <button
@@ -281,14 +302,39 @@ export default function Navbar() {
                 </Link>
 
                 <div className="flex gap-2 pt-2">
-                  <Link
-                    to="/login"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex-1 py-2.5 px-4 bg-inverse-surface text-inverse-on-surface rounded-xl font-label-lg text-xs font-semibold text-center flex items-center justify-center gap-1.5 shadow-xs"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">login</span>
-                    <span>Entrar na Conta</span>
-                  </Link>
+                  {isAuthenticated ? (
+                    <>
+                      <Link
+                        to="/perfil"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex-1 py-2.5 px-4 bg-surface-container-high text-on-surface rounded-xl font-label-lg text-xs font-semibold text-center flex items-center justify-center gap-1.5 shadow-xs"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">person</span>
+                        <span>Meu Perfil</span>
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          logout();
+                          setMobileMenuOpen(false);
+                          navigate('/');
+                        }}
+                        className="py-2.5 px-4 bg-error/10 text-error rounded-xl font-label-lg text-xs font-semibold text-center flex items-center justify-center gap-1.5 shadow-xs"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">logout</span>
+                        <span>Sair</span>
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      to="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex-1 py-2.5 px-4 bg-inverse-surface text-inverse-on-surface rounded-xl font-label-lg text-xs font-semibold text-center flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">login</span>
+                      <span>Entrar na Conta</span>
+                    </Link>
+                  )}
 
                   <Link
                     to="/carrinho"

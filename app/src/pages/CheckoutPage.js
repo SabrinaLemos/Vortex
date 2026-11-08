@@ -1,42 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import pedidoService from '../services/pedidoService';
+import authService from '../services/authService';
+import freteService from '../services/freteService';
+import carrinhoService from '../services/carrinhoService';
+import api from '../services/api';
+
+const ESTADOS_BRASIL = [
+  'SP', 'RJ', 'MG', 'RS', 'PR', 'SC', 'BA', 'PE', 'CE', 'DF',
+  'ES', 'GO', 'AM', 'PA', 'MT', 'MS', 'RN', 'PB', 'AL', 'SE',
+  'PI', 'MA', 'RO', 'TO', 'AC', 'AP', 'RR'
+];
 
 export default function CheckoutPage() {
   const { cart, cartSubtotal, clearCart } = useCart();
+  const { user } = useAuth();
 
-  // Address Selection
-  const [selectedAddress, setSelectedAddress] = useState('addr-1');
+  // Address Selection & Management
+  const [addressesList, setAddressesList] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const [showNewAddress, setShowNewAddress] = useState(false);
+  const [isLoadingAddresses, setIsLoadingAddresses] = useState(true);
+
+  // New Address Form State
   const [newAddress, setNewAddress] = useState({
+    destinatario: '',
     cep: '',
     rua: '',
     numero: '',
     complemento: '',
     bairro: '',
-    cidade: 'São Paulo',
+    cidade: '',
     uf: 'SP',
   });
+  const [isLoadingCep, setIsLoadingCep] = useState(false);
+  const [cepError, setCepError] = useState('');
+  const [isSavingAddress, setIsSavingAddress] = useState(false);
 
-  // Shipping
+  // Dynamic Shipping Options
+  const [shippingOptions, setShippingOptions] = useState([
+    { modalidade: 'SEDEX', nome: 'SEDEX Express (Fabricação + Envio)', valor: 18.90, prazoFormatado: '1 a 2 dias úteis' },
+    { modalidade: 'PAC', nome: 'PAC Econômico', valor: 11.50, prazoFormatado: '4 a 7 dias úteis' },
+    { modalidade: 'RETIRADA_LAB', nome: 'Retirada em Lab Vórtex (Campinas/SP)', valor: 0.00, prazoFormatado: 'Disponível em 24h após impressão' },
+  ]);
   const [shippingMethod, setShippingMethod] = useState('sedex');
-  const shippingCosts = {
-    sedex: 18.50,
-    pac: 11.90,
-    lab: 0.00,
-  };
-  const effectiveShipping = shippingCosts[shippingMethod] || 0;
+  const [isLoadingFreight, setIsLoadingFreight] = useState(false);
 
-  // Payment Tabs ('pix', 'card', 'b2b', 'nfc')
+  // Payment Tabs ('pix', 'card', 'b2b')
   const [paymentTab, setPaymentTab] = useState('pix');
 
   // Credit Card State
   const [cardData, setCardData] = useState({
-    number: '•••• •••• •••• 4289',
-    holder: 'LUCAS MENDONCA',
-    expiry: '08/29',
+    number: '',
+    holder: '',
+    expiry: '',
     cvv: '',
+    cpfCnpj: '',
     installments: '1',
   });
 
@@ -46,81 +67,329 @@ export default function CheckoutPage() {
 
   // Order Placement Modal / Success State
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderError, setOrderError] = useState('');
   const [orderSuccess, setOrderSuccess] = useState(null);
+  const [pixCopied, setPixCopied] = useState(false);
 
-  // Items to display (either cart items or fallback for review)
+  // Items to display (either cart items or default catalog sample)
   const displayItems = cart.length > 0 ? cart : [
     {
-      id: 1,
+      id: 'c0000000-0000-0000-0000-000000000001',
       title: 'Chaveiro Mascote Fox NFC',
       selectedColor: 'Laranja Vórtex Signature',
       specs: { chip: 'NFC NTAG213' },
       price: 42.90,
-      quantity: 2,
+      quantity: 1,
       imageUrl: '/assets/prod-chaveiro-fox-nfc.png',
       sku: 'VRT-FOX-NFC',
-    },
-    {
-      id: 2,
-      title: 'Organizador Hexagonal de Cabos',
-      selectedColor: 'Preto Grafite',
-      price: 29.90,
-      quantity: 1,
-      imageUrl: '/assets/prod-organizador-cabos.png',
-      sku: 'VRT-CAB-HEX',
     },
   ];
 
   const effectiveSubtotal = cart.length > 0 ? cartSubtotal : displayItems.reduce((acc, it) => acc + it.price * it.quantity, 0);
+
+  const selectedShippingOption = shippingOptions.find(
+    (o) => o.modalidade.toLowerCase() === shippingMethod.toLowerCase()
+  ) || shippingOptions[0];
+
+  const effectiveShipping = selectedShippingOption?.valor ?? 18.90;
   const pixDiscount = paymentTab === 'pix' ? effectiveSubtotal * 0.05 : 0;
   const grandTotal = Math.max(0, effectiveSubtotal + effectiveShipping - pixDiscount);
 
+  // Carregar endereços reais do usuário logado
+  useEffect(() => {
+    let isMounted = true;
+    async function carregarEnderecos() {
+      setIsLoadingAddresses(true);
+      try {
+        const enderecos = await authService.listarMeusEnderecos();
+        if (isMounted) {
+          if (enderecos && enderecos.length > 0) {
+            setAddressesList(enderecos);
+            const padrao = enderecos.find((a) => a.padrao) || enderecos[0];
+            setSelectedAddress(padrao.id);
+            if (padrao.cep) {
+              recalcularFrete(padrao.cep);
+            }
+          } else {
+            setShowNewAddress(true);
+          }
+        }
+      } catch (err) {
+        console.warn('Erro ao carregar endereços do usuário:', err);
+        if (isMounted) setShowNewAddress(true);
+      } finally {
+        if (isMounted) setIsLoadingAddresses(false);
+      }
+    }
+    carregarEnderecos();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Recalcular Frete Real via API
+  const recalcularFrete = async (cepDestino) => {
+    const cleanCep = String(cepDestino).replace(/\D/g, '');
+    if (cleanCep.length !== 8) return;
+
+    setIsLoadingFreight(true);
+    try {
+      const opcoes = await freteService.calcularFrete(cleanCep, effectiveSubtotal, 0.5);
+      if (opcoes && opcoes.length > 0) {
+        setShippingOptions(opcoes);
+      }
+    } catch (err) {
+      console.warn('Erro ao calcular frete remoto:', err);
+    } finally {
+      setIsLoadingFreight(false);
+    }
+  };
+
+  // Handler de seleção de endereço salvo
+  const handleSelectAddress = (addr) => {
+    setSelectedAddress(addr.id);
+    if (addr.cep) {
+      recalcularFrete(addr.cep);
+    }
+  };
+
+  // Handler de auto-análise e autopreenchimento de CEP (ViaCEP)
+  const handleCepChange = async (e) => {
+    const rawVal = e.target.value;
+    const clean = rawVal.replace(/\D/g, '');
+    let formatted = rawVal;
+    if (clean.length > 5) {
+      formatted = `${clean.slice(0, 5)}-${clean.slice(5, 8)}`;
+    }
+    setNewAddress((prev) => ({ ...prev, cep: formatted }));
+    setCepError('');
+
+    if (clean.length === 8) {
+      setIsLoadingCep(true);
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${clean}/json/`);
+        const data = await response.json();
+        if (data.erro) {
+          setCepError('CEP não encontrado. Preencha os campos de endereço manualmente.');
+        } else {
+          setNewAddress((prev) => ({
+            ...prev,
+            rua: data.logradouro || prev.rua,
+            bairro: data.bairro || prev.bairro,
+            cidade: data.localidade || prev.cidade,
+            uf: data.uf || prev.uf,
+          }));
+          recalcularFrete(clean);
+        }
+      } catch (err) {
+        setCepError('Falha ao consultar CEP no ViaCEP. Preencha manualmente.');
+      } finally {
+        setIsLoadingCep(false);
+      }
+    }
+  };
+
+  // Salvar novo endereço na conta do usuário
+  const handleSaveNewAddress = async (e) => {
+    if (e) e.preventDefault();
+    const cleanCep = newAddress.cep.replace(/\D/g, '');
+    if (cleanCep.length !== 8) {
+      alert('Informe um CEP válido com 8 dígitos.');
+      return;
+    }
+    if (!newAddress.rua || !newAddress.numero || !newAddress.bairro || !newAddress.cidade || !newAddress.uf) {
+      alert('Preencha os campos obrigatórios (Logradouro, Número, Bairro, Cidade e Estado).');
+      return;
+    }
+
+    setIsSavingAddress(true);
+    try {
+      const payload = {
+        destinatario: newAddress.destinatario || user?.nome || 'Destinatário',
+        cep: cleanCep,
+        logradouro: newAddress.rua,
+        numero: newAddress.numero,
+        complemento: newAddress.complemento || '',
+        bairro: newAddress.bairro,
+        cidade: newAddress.cidade,
+        uf: newAddress.uf,
+        tipo: 'ENTREGA',
+        padrao: true,
+      };
+
+      const salvo = await authService.adicionarMeuEndereco(payload);
+      setAddressesList((prev) => [salvo, ...prev]);
+      setSelectedAddress(salvo.id);
+      setShowNewAddress(false);
+      recalcularFrete(cleanCep);
+    } catch (err) {
+      alert('Erro ao salvar endereço: ' + (err.message || 'Tente novamente.'));
+    } finally {
+      setIsSavingAddress(false);
+    }
+  };
+
+  // Polling de status do pedido para detecção em tempo real de pagamento do PIX
+  useEffect(() => {
+    if (!orderSuccess?.id || orderSuccess?.statusPagamento === 'APROVADO' || orderSuccess?.status === 'PAGO') return;
+
+    const interval = setInterval(async () => {
+      try {
+        const updated = await pedidoService.buscarPedido(orderSuccess.id);
+        if (updated && (updated.statusPagamento === 'APROVADO' || updated.status === 'PAGO')) {
+          setOrderSuccess((prev) => ({
+            ...prev,
+            statusPagamento: 'APROVADO',
+            status: 'PAGO',
+          }));
+          clearInterval(interval);
+        }
+      } catch (e) {
+        // Polling silencioso
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [orderSuccess?.id, orderSuccess?.statusPagamento, orderSuccess?.status]);
+
+  // Submissão real do pedido para o Spring Boot & Mercado Pago
   const handleConfirmOrder = async () => {
+    setOrderError('');
+
+    let enderecoFinalId = selectedAddress;
+
+    // Se estiver na aba de novo endereço, salva automaticamente antes de fechar o pedido
+    if (showNewAddress) {
+      const cleanCep = newAddress.cep.replace(/\D/g, '');
+      if (cleanCep.length !== 8) {
+        setOrderError('Por favor, informe um CEP válido com 8 dígitos para o endereço de entrega.');
+        return;
+      }
+      if (!newAddress.rua || !newAddress.numero || !newAddress.bairro || !newAddress.cidade || !newAddress.uf) {
+        setOrderError('Preencha todos os campos do novo endereço (Rua, Número, Bairro, Cidade e Estado).');
+        return;
+      }
+
+      setIsSavingAddress(true);
+      try {
+        const salvo = await authService.adicionarMeuEndereco({
+          destinatario: newAddress.destinatario || user?.nome || 'Destinatário',
+          cep: cleanCep,
+          logradouro: newAddress.rua,
+          numero: newAddress.numero,
+          complemento: newAddress.complemento || '',
+          bairro: newAddress.bairro,
+          cidade: newAddress.cidade,
+          uf: newAddress.uf,
+          tipo: 'ENTREGA',
+          padrao: true,
+        });
+        setAddressesList((prev) => [salvo, ...prev]);
+        setSelectedAddress(salvo.id);
+        enderecoFinalId = salvo.id;
+        setShowNewAddress(false);
+      } catch (err) {
+        setOrderError('Erro ao salvar endereço: ' + (err.message || 'Verifique os dados informados.'));
+        setIsSavingAddress(false);
+        return;
+      } finally {
+        setIsSavingAddress(false);
+      }
+    }
+
+    if (!enderecoFinalId) {
+      setOrderError('Selecione ou cadastre um endereço de entrega para prosseguir com a compra.');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
+      // 1. Sincroniza os itens do carrinho com a API do backend
+      for (const item of displayItems) {
+        await carrinhoService.adicionarItem({
+          produtoId: item.id || item.produtoId,
+          quantidade: item.quantity || 1,
+          cor: item.selectedColor || 'Laranja Vórtex',
+          material: 'PLA+',
+        }).catch(() => null);
+      }
+
+      // 2. Prepara o payload estrito com os Enums corretos
+      const modalidadeEnum = shippingMethod === 'pac'
+        ? 'PAC'
+        : shippingMethod === 'lab' || shippingMethod === 'retirada_lab'
+        ? 'RETIRADA_LAB'
+        : 'SEDEX';
+
+      const metodoPagamentoEnum = paymentTab === 'pix'
+        ? 'PIX'
+        : paymentTab === 'card'
+        ? 'CARTAO_CREDITO'
+        : 'FATURAMENTO_B2B';
+
       const pedidoPayload = {
-        formaPagamento: paymentTab === 'pix' ? 'PIX' : paymentTab === 'card' ? 'CARTAO_CREDITO' : 'BOLETO',
-        tipoFrete: shippingMethod === 'sedex' ? 'SEDEX' : shippingMethod === 'pac' ? 'PAC' : 'RETIRADA_LAB',
-        valorSubtotal: effectiveSubtotal,
+        enderecoEntregaId: enderecoFinalId,
+        modalidadeFrete: modalidadeEnum,
         valorFrete: effectiveShipping,
-        valorDesconto: pixDiscount,
-        valorTotal: grandTotal,
-        enderecoEntregaId: selectedAddress,
-        observacoes: `NF-e: ${nfeType.toUpperCase()} | HashSync: ${nfeHashSync}`,
-        dadosCartao: paymentTab === 'card' ? cardData : null,
+        metodoPagamento: metodoPagamentoEnum,
+        parcelas: paymentTab === 'card' ? Number(cardData.installments || 1) : 1,
+        dadosCartao: paymentTab === 'card' ? {
+          nomeTitular: cardData.holder || user?.nome || 'TITULAR',
+          numeroCartao: cardData.number.replace(/\s/g, '') || '4532000000001234',
+          mesExpiracao: Number(cardData.expiry.split('/')[0] || 12),
+          anoExpiracao: Number('20' + (cardData.expiry.split('/')[1] || '28')),
+          codigoSeguranca: cardData.cvv || '123',
+          documentoTitular: '12345678000199',
+        } : null,
+        observacoesProducao: `NF-e: ${nfeType.toUpperCase()} | HashSync: ${nfeHashSync}`,
       };
 
       const res = await pedidoService.criarPedido(pedidoPayload);
 
-      const generatedOrder = {
-        orderId: res.codigoPedido || `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+      setOrderSuccess({
+        id: res.id,
+        orderId: res.codigoOrdem,
         date: new Date().toLocaleDateString('pt-BR'),
         items: displayItems,
-        total: res.valorTotal || grandTotal,
+        total: Number(res.total || grandTotal),
         paymentMethod: paymentTab,
         shipping: shippingMethod,
         nfeType: nfeType,
-        pixCopiaECola: res.pixCopiaECola || '00020126580014BR.GOV.BCB.PIX0136vortex-iot-pay@vortex.tech...',
-      };
+        qrCodePix: res.qrCodePix,
+        qrCodePixUrl: res.qrCodePixUrl,
+        statusPagamento: res.statusPagamento || 'PENDENTE',
+        status: res.status || 'AGUARDANDO_PAGAMENTO',
+      });
 
-      setOrderSuccess(generatedOrder);
       clearCart();
     } catch (err) {
       console.error('Erro ao submeter pedido:', err);
-      // Fallback em caso de erro
-      const generatedOrder = {
-        orderId: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
-        date: new Date().toLocaleDateString('pt-BR'),
-        items: displayItems,
-        total: grandTotal,
-        paymentMethod: paymentTab,
-        shipping: shippingMethod,
-        nfeType: nfeType,
-      };
-      setOrderSuccess(generatedOrder);
-      clearCart();
+      setOrderError(err.message || 'Falha ao processar pedido. Verifique os dados e tente novamente.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Simular Aprovação de PIX no Mercado Pago (Webhook de Teste)
+  const handleSimularAprovacaoPix = async () => {
+    if (!orderSuccess?.id) return;
+    try {
+      await api.post('/pedidos/webhook/mercadopago', {
+        action: 'payment.updated',
+        data: {
+          id: orderSuccess.idTransacaoGateway || 'MP-' + orderSuccess.orderId
+        }
+      }).catch(() => null);
+
+      setOrderSuccess((prev) => ({
+        ...prev,
+        statusPagamento: 'APROVADO',
+        status: 'PAGO',
+      }));
+    } catch {
+      setOrderSuccess((prev) => ({
+        ...prev,
+        statusPagamento: 'APROVADO',
+        status: 'PAGO',
+      }));
     }
   };
 
@@ -129,91 +398,34 @@ export default function CheckoutPage() {
       {/* Top Progress & Telemetry Header Bar */}
       <section className="w-full bg-surface-container-low/70 py-6 px-4 sm:px-6 lg:px-12 border-b border-surface-container-high/60">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-          {/* Breadcrumb & Title */}
           <div className="flex flex-col gap-1">
             <nav className="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
               <Link to="/" className="hover:text-primary transition-colors flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px]">home</span> Início
+                <span>Início</span>
               </Link>
-              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+              <span className="text-outline-variant">/</span>
               <Link to="/carrinho" className="hover:text-primary transition-colors">
-                Carrinho de Compras
+                Carrinho
               </Link>
-              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-              <span className="text-on-surface font-semibold">Finalização &amp; Checkout Seguro</span>
-            </nav>
-            <h1 className="font-headline-md text-headline-md text-on-surface font-bold tracking-tight flex items-center gap-2 flex-wrap">
-              <span>Checkout de Engenharia &amp; Rastreio IoT</span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface font-code-snippet text-[11px] font-medium border border-surface-container-high/50">
-                <span className="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span> ORD-9921
+              <span className="text-outline-variant">/</span>
+              <span className="text-on-surface font-semibold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+                Checkout Seguro
               </span>
+            </nav>
+            <h1 className="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
+              Finalização de Ordem de Manufatura
             </h1>
           </div>
 
-          {/* Security / Encryption Badge */}
-          <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-surface-container-lowest shadow-sm text-on-surface border border-surface-container-high/60">
-              <span className="material-symbols-outlined text-primary-container text-[22px]">encrypted</span>
-              <div className="flex flex-col">
-                <span className="font-label-md text-label-md font-bold text-on-surface leading-tight">
-                  TLS 1.3 &amp; AES-256
-                </span>
-                <span className="font-code-snippet text-[11px] text-on-surface-variant leading-none">
-                  Ambiente Certificado Vórtex Core
-                </span>
-              </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-surface-container-high/60 text-xs font-code-snippet text-on-surface-variant">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>TLS 1.3 256-bit Encrypted</span>
             </div>
-          </div>
-        </div>
-
-        {/* Stepper Navigation */}
-        <div className="max-w-7xl mx-auto mt-6 pt-4 border-t border-surface-container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
-            {/* Step 1: Carrinho */}
-            <Link
-              to="/carrinho"
-              className="flex items-center gap-2.5 p-2 rounded-lg bg-surface-container-lowest/80 text-on-surface hover:text-primary transition-colors"
-            >
-              <span className="w-7 h-7 rounded-full bg-emerald-500/15 text-emerald-600 font-bold text-xs flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[16px]">check</span>
-              </span>
-              <div className="flex flex-col min-w-0">
-                <span className="font-label-md text-xs font-bold leading-tight">1. Carrinho 3D</span>
-                <span className="font-body-sm text-[11px] text-on-surface-variant truncate">Revisado</span>
-              </div>
-            </Link>
-
-            {/* Step 2: Identificação & Endereço */}
-            <div className="flex items-center gap-2.5 p-2 rounded-lg bg-primary-container/10 border border-primary-container/30 text-on-surface">
-              <span className="w-7 h-7 rounded-full bg-primary-container text-on-primary font-bold text-xs flex items-center justify-center shrink-0">
-                2
-              </span>
-              <div className="flex flex-col min-w-0">
-                <span className="font-label-md text-xs font-bold leading-tight text-primary">2. Logística &amp; Dados</span>
-                <span className="font-body-sm text-[11px] text-on-surface-variant truncate">Endereço de Entrega</span>
-              </div>
-            </div>
-
-            {/* Step 3: Pagamento & NF-e */}
-            <div className="flex items-center gap-2.5 p-2 rounded-lg bg-surface-container-lowest/40 text-on-surface-variant">
-              <span className="w-7 h-7 rounded-full bg-surface-container text-on-surface-variant font-bold text-xs flex items-center justify-center shrink-0">
-                3
-              </span>
-              <div className="flex flex-col min-w-0">
-                <span className="font-label-md text-xs font-bold leading-tight">3. Pagamento &amp; NF-e</span>
-                <span className="font-body-sm text-[11px] text-on-surface-variant truncate">PIX / Cartão / B2B</span>
-              </div>
-            </div>
-
-            {/* Step 4: Fatiamento & Rastreio */}
-            <div className="flex items-center gap-2.5 p-2 rounded-lg bg-surface-container-lowest/40 text-on-surface-variant">
-              <span className="w-7 h-7 rounded-full bg-surface-container text-on-surface-variant font-bold text-xs flex items-center justify-center shrink-0">
-                4
-              </span>
-              <div className="flex flex-col min-w-0">
-                <span className="font-label-md text-xs font-bold leading-tight">4. Fila de Produção</span>
-                <span className="font-body-sm text-[11px] text-on-surface-variant truncate">G-Code &amp; NFC Hash</span>
-              </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-surface-container-high/60 text-xs font-code-snippet text-primary">
+              <span className="material-symbols-outlined text-[16px]">precision_manufacturing</span>
+              <span>Lab Hub: SP-PINHEIROS</span>
             </div>
           </div>
         </div>
@@ -221,6 +433,16 @@ export default function CheckoutPage() {
 
       {/* Main Content Layout (7 / 5 Grid) */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-10">
+        {orderError && (
+          <div className="mb-6 p-4 rounded-xl bg-error/10 border border-error/30 text-error flex items-center gap-3 animate-fadeIn">
+            <span className="material-symbols-outlined text-[24px]">error</span>
+            <div className="flex flex-col text-xs font-body-sm">
+              <span className="font-bold">Atenção ao finalizar o pedido:</span>
+              <span>{orderError}</span>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* LEFT COLUMN: Main Checkout Flow (7 Cols) */}
           <div className="lg:col-span-7 flex flex-col gap-8">
@@ -243,118 +465,137 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => setShowNewAddress(!showNewAddress)}
-                  className="font-label-md text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                  className="font-label-md text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[16px]">add_circle</span>
+                  <span className="material-symbols-outlined text-[16px]">
+                    {showNewAddress ? 'arrow_back' : 'add_circle'}
+                  </span>
                   <span>{showNewAddress ? 'Usar Salvo' : '+ Novo Endereço'}</span>
                 </button>
               </div>
 
               {/* Saved Address Cards */}
               {!showNewAddress ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Address 1 */}
-                  <label
-                    onClick={() => setSelectedAddress('addr-1')}
-                    className={`cursor-pointer rounded-xl p-4 border transition-all flex flex-col justify-between gap-3 ${
-                      selectedAddress === 'addr-1'
-                        ? 'bg-primary-container/5 border-primary-container shadow-xs'
-                        : 'bg-surface-container-low border-surface-container-high/60 hover:bg-surface-container'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[20px]">business</span>
-                        <span className="font-label-md text-xs font-bold text-on-surface">Laboratório Principal (B2B)</span>
-                      </div>
-                      <input
-                        type="radio"
-                        name="delivery_address"
-                        checked={selectedAddress === 'addr-1'}
-                        onChange={() => setSelectedAddress('addr-1')}
-                        className="accent-primary-container mt-0.5"
-                      />
+                <div>
+                  {isLoadingAddresses ? (
+                    <div className="p-8 text-center text-xs text-on-surface-variant">Carregando seus endereços...</div>
+                  ) : addressesList.length === 0 ? (
+                    <div className="p-6 text-center rounded-xl bg-surface-container-low border border-surface-container-high/40 flex flex-col items-center gap-2">
+                      <span className="material-symbols-outlined text-[32px] text-on-surface-variant">location_off</span>
+                      <p className="text-xs text-on-surface-variant">Você ainda não possui nenhum endereço salvo.</p>
+                      <button
+                        type="button"
+                        onClick={() => setShowNewAddress(true)}
+                        className="px-4 py-2 bg-primary-container text-on-primary text-xs font-bold rounded-lg hover:bg-primary transition-colors cursor-pointer"
+                      >
+                        Cadastrar Novo Endereço
+                      </button>
                     </div>
-                    <div className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-                      <p className="font-semibold text-on-surface">AeroTech Labs Indústria LTDA</p>
-                      <p>Av. Brigadeiro Faria Lima, 3477 • 12º Andar</p>
-                      <p>Itaim Bibi — São Paulo/SP • CEP 04538-133</p>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {addressesList.map((addr) => (
+                        <label
+                          key={addr.id}
+                          onClick={() => handleSelectAddress(addr)}
+                          className={`cursor-pointer rounded-xl p-4 border transition-all flex flex-col justify-between gap-3 ${
+                            selectedAddress === addr.id
+                              ? 'bg-primary-container/5 border-primary-container shadow-xs'
+                              : 'bg-surface-container-low border-surface-container-high/60 hover:bg-surface-container'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="material-symbols-outlined text-primary text-[20px]">location_on</span>
+                              <span className="font-label-md text-xs font-bold text-on-surface">
+                                {addr.destinatario || 'Endereço'}
+                              </span>
+                            </div>
+                            <input
+                              type="radio"
+                              name="delivery_address"
+                              checked={selectedAddress === addr.id}
+                              onChange={() => handleSelectAddress(addr)}
+                              className="accent-primary-container mt-0.5"
+                            />
+                          </div>
+                          <div className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
+                            <p className="font-semibold text-on-surface">
+                              {addr.logradouro}, {addr.numero} {addr.complemento ? `• ${addr.complemento}` : ''}
+                            </p>
+                            <p>
+                              {addr.bairro} — {addr.cidade}/{addr.uf} • CEP {addr.cep}
+                            </p>
+                          </div>
+                          {addr.padrao && (
+                            <span className="inline-flex items-center gap-1 font-code-snippet text-[10px] text-emerald-600 font-bold">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Endereço Padrão
+                            </span>
+                          )}
+                        </label>
+                      ))}
                     </div>
-                    <span className="inline-flex items-center gap-1 font-code-snippet text-[10px] text-emerald-600 font-bold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Docagem Padrão
-                    </span>
-                  </label>
-
-                  {/* Address 2 */}
-                  <label
-                    onClick={() => setSelectedAddress('addr-2')}
-                    className={`cursor-pointer rounded-xl p-4 border transition-all flex flex-col justify-between gap-3 ${
-                      selectedAddress === 'addr-2'
-                        ? 'bg-primary-container/5 border-primary-container shadow-xs'
-                        : 'bg-surface-container-low border-surface-container-high/60 hover:bg-surface-container'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-on-surface-variant text-[20px]">home_work</span>
-                        <span className="font-label-md text-xs font-bold text-on-surface">Dev Hub &amp; Garagem</span>
-                      </div>
-                      <input
-                        type="radio"
-                        name="delivery_address"
-                        checked={selectedAddress === 'addr-2'}
-                        onChange={() => setSelectedAddress('addr-2')}
-                        className="accent-primary-container mt-0.5"
-                      />
-                    </div>
-                    <div className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-                      <p className="font-semibold text-on-surface">Lucas Mendonça (Engenharia)</p>
-                      <p>Rua Fradique Coutinho, 1120 • Apto 62</p>
-                      <p>Pinheiros — São Paulo/SP • CEP 05416-001</p>
-                    </div>
-                    <span className="inline-flex items-center gap-1 font-code-snippet text-[10px] text-on-surface-variant">
-                      <span className="w-1.5 h-1.5 rounded-full bg-surface-container-highest"></span> Endereço Pessoal
-                    </span>
-                  </label>
+                  )}
                 </div>
               ) : (
-                /* Collapsible New Address Form */
+                /* Collapsible New Address Form with ViaCEP Auto-fill & Unlocked City/UF */
                 <div className="p-5 rounded-xl bg-surface-container-low border border-surface-container-high/60 flex flex-col gap-4 animate-fadeIn">
+                  <div className="flex items-center justify-between pb-2 border-b border-surface-container">
+                    <span className="font-label-md text-xs font-bold text-on-surface">
+                      Cadastrar Novo Endereço de Entrega
+                    </span>
+                    <span className="text-[11px] text-primary font-medium flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[14px]">bolt</span>
+                      Autopreenchimento via CEP
+                    </span>
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="flex flex-col gap-1">
-                      <label className="font-label-md text-xs text-on-surface-variant">CEP</label>
-                      <input
-                        type="text"
-                        placeholder="00000-000"
-                        value={newAddress.cep}
-                        onChange={(e) => setNewAddress({ ...newAddress, cep: e.target.value })}
-                        className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs font-code-snippet focus:outline-none focus:ring-2 focus:ring-primary-container"
-                      />
+                      <label className="font-label-md text-xs text-on-surface-variant font-medium">CEP *</label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="00000-000"
+                          maxLength={9}
+                          value={newAddress.cep}
+                          onChange={handleCepChange}
+                          className="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs font-code-snippet focus:outline-none focus:ring-2 focus:ring-primary-container"
+                          required
+                        />
+                        {isLoadingCep && (
+                          <span className="absolute right-2.5 top-2.5 w-3.5 h-3.5 border-2 border-primary-container border-t-transparent rounded-full animate-spin"></span>
+                        )}
+                      </div>
+                      {cepError && <span className="text-[11px] text-error font-medium">{cepError}</span>}
                     </div>
+
                     <div className="sm:col-span-2 flex flex-col gap-1">
-                      <label className="font-label-md text-xs text-on-surface-variant">Logradouro / Rua</label>
+                      <label className="font-label-md text-xs text-on-surface-variant font-medium">Logradouro / Rua *</label>
                       <input
                         type="text"
-                        placeholder="Ex: Av. Paulista"
+                        placeholder="Ex: Av. Paulista ou Rua das Flores"
                         value={newAddress.rua}
                         onChange={(e) => setNewAddress({ ...newAddress, rua: e.target.value })}
                         className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs focus:outline-none focus:ring-2 focus:ring-primary-container"
+                        required
                       />
                     </div>
                   </div>
+
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div className="flex flex-col gap-1">
-                      <label className="font-label-md text-xs text-on-surface-variant">Número</label>
+                      <label className="font-label-md text-xs text-on-surface-variant font-medium">Número *</label>
                       <input
                         type="text"
                         placeholder="123"
                         value={newAddress.numero}
                         onChange={(e) => setNewAddress({ ...newAddress, numero: e.target.value })}
                         className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs focus:outline-none focus:ring-2 focus:ring-primary-container"
+                        required
                       />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <label className="font-label-md text-xs text-on-surface-variant">Complemento</label>
+                      <label className="font-label-md text-xs text-on-surface-variant font-medium">Complemento</label>
                       <input
                         type="text"
                         placeholder="Sala / Apto"
@@ -364,83 +605,118 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <label className="font-label-md text-xs text-on-surface-variant">Bairro</label>
+                      <label className="font-label-md text-xs text-on-surface-variant font-medium">Bairro *</label>
                       <input
                         type="text"
                         placeholder="Bairro"
                         value={newAddress.bairro}
                         onChange={(e) => setNewAddress({ ...newAddress, bairro: e.target.value })}
                         className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs focus:outline-none focus:ring-2 focus:ring-primary-container"
+                        required
                       />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <label className="font-label-md text-xs text-on-surface-variant">Cidade / UF</label>
+                      <label className="font-label-md text-xs text-on-surface-variant font-medium">Destinatário</label>
                       <input
                         type="text"
-                        value={`${newAddress.cidade} / ${newAddress.uf}`}
-                        disabled
-                        className="px-3 py-2 bg-surface-container rounded-lg border border-surface-container-high/60 text-xs text-on-surface-variant"
+                        placeholder={user?.nome || 'Seu Nome'}
+                        value={newAddress.destinatario}
+                        onChange={(e) => setNewAddress({ ...newAddress, destinatario: e.target.value })}
+                        className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs focus:outline-none focus:ring-2 focus:ring-primary-container"
                       />
                     </div>
+                  </div>
+
+                  {/* UNLOCKED CITY AND UF */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div className="flex flex-col gap-1">
+                      <label className="font-label-md text-xs text-on-surface-variant font-medium">Cidade *</label>
+                      <input
+                        type="text"
+                        placeholder="Digite a Cidade"
+                        value={newAddress.cidade}
+                        onChange={(e) => setNewAddress({ ...newAddress, cidade: e.target.value })}
+                        className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs focus:outline-none focus:ring-2 focus:ring-primary-container"
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-label-md text-xs text-on-surface-variant font-medium">Estado (UF) *</label>
+                      <select
+                        value={newAddress.uf}
+                        onChange={(e) => setNewAddress({ ...newAddress, uf: e.target.value })}
+                        className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs focus:outline-none focus:ring-2 focus:ring-primary-container"
+                        required
+                      >
+                        {ESTADOS_BRASIL.map((uf) => (
+                          <option key={uf} value={uf}>
+                            {uf}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end pt-2">
+                    <button
+                      type="button"
+                      disabled={isSavingAddress}
+                      onClick={handleSaveNewAddress}
+                      className="px-4 py-2 bg-primary-container text-on-primary font-label-md text-xs font-bold rounded-lg hover:bg-primary transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">save</span>
+                      <span>{isSavingAddress ? 'Salvando...' : 'Salvar e Usar este Endereço'}</span>
+                    </button>
                   </div>
                 </div>
               )}
 
-              {/* Shipping Carrier Selector */}
+              {/* Dynamic Shipping Carrier Selector */}
               <div className="flex flex-col gap-3 pt-2">
-                <span className="font-label-md text-xs text-on-surface-variant font-bold uppercase tracking-wider">
-                  Modalidade de Envio Selecionada
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="font-label-md text-xs text-on-surface-variant font-bold uppercase tracking-wider">
+                    Modalidade de Envio Selecionada
+                  </span>
+                  {isLoadingFreight && (
+                    <span className="text-[11px] text-primary flex items-center gap-1 font-medium animate-pulse">
+                      <span className="material-symbols-outlined text-[14px]">refresh</span>
+                      Recalculando frete...
+                    </span>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <label
-                    onClick={() => setShippingMethod('sedex')}
-                    className={`cursor-pointer p-3 rounded-xl border flex items-center justify-between transition-all ${
-                      shippingMethod === 'sedex'
-                        ? 'bg-primary-container/10 border-primary-container'
-                        : 'bg-surface-container-low border-surface-container-high/50'
-                    }`}
-                  >
-                    <div className="flex flex-col">
-                      <span className="font-label-md text-xs font-bold text-on-surface">SEDEX IoT Expresso</span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant">1-2 dias úteis</span>
-                    </div>
-                    <span className="font-code-snippet text-xs font-bold text-primary">R$ 18,50</span>
-                  </label>
-
-                  <label
-                    onClick={() => setShippingMethod('pac')}
-                    className={`cursor-pointer p-3 rounded-xl border flex items-center justify-between transition-all ${
-                      shippingMethod === 'pac'
-                        ? 'bg-primary-container/10 border-primary-container'
-                        : 'bg-surface-container-low border-surface-container-high/50'
-                    }`}
-                  >
-                    <div className="flex flex-col">
-                      <span className="font-label-md text-xs font-bold text-on-surface">PAC Econômico</span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant">4-7 dias úteis</span>
-                    </div>
-                    <span className="font-code-snippet text-xs font-bold text-on-surface">R$ 11,90</span>
-                  </label>
-
-                  <label
-                    onClick={() => setShippingMethod('lab')}
-                    className={`cursor-pointer p-3 rounded-xl border flex items-center justify-between transition-all ${
-                      shippingMethod === 'lab'
-                        ? 'bg-primary-container/10 border-primary-container'
-                        : 'bg-surface-container-low border-surface-container-high/50'
-                    }`}
-                  >
-                    <div className="flex flex-col">
-                      <span className="font-label-md text-xs font-bold text-on-surface">Retirada no Lab</span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant">Pinheiros / SP</span>
-                    </div>
-                    <span className="font-code-snippet text-xs font-bold text-emerald-600">Grátis</span>
-                  </label>
+                  {shippingOptions.map((opt) => {
+                    const isSelected = shippingMethod.toLowerCase() === opt.modalidade.toLowerCase();
+                    return (
+                      <label
+                        key={opt.modalidade}
+                        onClick={() => setShippingMethod(opt.modalidade.toLowerCase())}
+                        className={`cursor-pointer p-3 rounded-xl border flex items-center justify-between transition-all ${
+                          isSelected
+                            ? 'bg-primary-container/10 border-primary-container shadow-xs'
+                            : 'bg-surface-container-low border-surface-container-high/50 hover:bg-surface-container'
+                        }`}
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-label-md text-xs font-bold text-on-surface">
+                            {opt.nome || opt.modalidade}
+                          </span>
+                          <span className="font-body-sm text-[11px] text-on-surface-variant">
+                            {opt.prazoFormatado || 'Consulte prazo'}
+                          </span>
+                        </div>
+                        <span className="font-code-snippet text-xs font-bold text-primary">
+                          {opt.valor === 0 ? 'Grátis' : `R$ ${opt.valor.toFixed(2).replace('.', ',')}`}
+                        </span>
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
-            {/* SECTION 2: FORMAS DE PAGAMENTO */}
+            {/* SECTION 2: FORMAS DE PAGAMENTO MERCADO PAGO */}
             <div className="bg-surface-container-lowest rounded-2xl p-6 md:p-8 shadow-sm border border-surface-container-high/60 flex flex-col gap-6">
               <div className="flex items-center justify-between pb-2 border-b border-surface-container">
                 <div className="flex items-center gap-3">
@@ -449,534 +725,329 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="font-label-md text-xs text-on-surface-variant uppercase tracking-wider font-semibold">
-                      2. Transação Financeira
+                      2. Gateway &amp; Liquidação
                     </span>
                     <h2 className="font-headline-sm text-headline-sm text-on-surface font-bold">
                       Método de Pagamento
                     </h2>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-on-surface-variant font-label-md text-xs">
-                  <span className="material-symbols-outlined text-[16px] text-primary">lock</span>
-                  <span>Tokenizado</span>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 rounded bg-surface-container text-[11px] font-code-snippet text-on-surface-variant font-bold">
+                    MERCADO PAGO
+                  </span>
                 </div>
               </div>
 
-              {/* Payment Tabs Selector */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-1.5 rounded-xl bg-surface-container-low">
+              {/* Tabs */}
+              <div className="flex gap-2 p-1.5 bg-surface-container-low rounded-xl">
                 <button
                   type="button"
                   onClick={() => setPaymentTab('pix')}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg font-label-md text-xs font-bold transition-all ${
+                  className={`flex-1 py-2.5 px-3 rounded-lg font-label-md text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     paymentTab === 'pix'
-                      ? 'bg-surface-container-lowest text-on-surface shadow-xs text-primary'
+                      ? 'bg-surface-container-lowest text-primary shadow-xs'
                       : 'text-on-surface-variant hover:text-on-surface'
                   }`}
                 >
                   <span className="material-symbols-outlined text-[18px]">qr_code_2</span>
-                  <span>PIX (-5%)</span>
+                  <span>PIX Instantâneo (-5%)</span>
                 </button>
-
                 <button
                   type="button"
                   onClick={() => setPaymentTab('card')}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg font-label-md text-xs font-bold transition-all ${
+                  className={`flex-1 py-2.5 px-3 rounded-lg font-label-md text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     paymentTab === 'card'
-                      ? 'bg-surface-container-lowest text-on-surface shadow-xs text-primary'
+                      ? 'bg-surface-container-lowest text-primary shadow-xs'
                       : 'text-on-surface-variant hover:text-on-surface'
                   }`}
                 >
                   <span className="material-symbols-outlined text-[18px]">credit_card</span>
-                  <span>Cartão</span>
+                  <span>Cartão de Crédito</span>
                 </button>
-
                 <button
                   type="button"
                   onClick={() => setPaymentTab('b2b')}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg font-label-md text-xs font-bold transition-all ${
+                  className={`flex-1 py-2.5 px-3 rounded-lg font-label-md text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     paymentTab === 'b2b'
-                      ? 'bg-surface-container-lowest text-on-surface shadow-xs text-primary'
+                      ? 'bg-surface-container-lowest text-primary shadow-xs'
                       : 'text-on-surface-variant hover:text-on-surface'
                   }`}
                 >
-                  <span className="material-symbols-outlined text-[18px]">receipt_long</span>
-                  <span>B2B Faturado</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setPaymentTab('nfc')}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg font-label-md text-xs font-bold transition-all ${
-                    paymentTab === 'nfc'
-                      ? 'bg-surface-container-lowest text-on-surface shadow-xs text-primary'
-                      : 'text-on-surface-variant hover:text-on-surface'
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-[18px]">nfc</span>
-                  <span>Fox Key NFC</span>
+                  <span className="material-symbols-outlined text-[18px]">domain</span>
+                  <span>Faturamento B2B (28 DDL)</span>
                 </button>
               </div>
 
-              {/* Tab 1: PIX Content */}
+              {/* Tab Content: PIX */}
               {paymentTab === 'pix' && (
-                <div className="flex flex-col gap-4 p-5 rounded-xl bg-surface-container-low border border-surface-container-high/60 animate-fadeIn">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-primary-container text-[24px]">qr_code_2</span>
-                      <span className="font-label-lg text-sm font-bold text-on-surface">
-                        PIX com 5% de Desconto Imediato
+                <div className="p-4 rounded-xl bg-primary-container/5 border border-primary-container/20 flex flex-col gap-3">
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-primary text-[28px]">bolt</span>
+                    <div className="flex flex-col text-xs">
+                      <span className="font-bold text-on-surface">Liberação Imediata da Impressão 3D</span>
+                      <span className="text-on-surface-variant">
+                        Ao confirmar o pedido, o QR Code dinâmico do Mercado Pago será gerado com 5% de desconto exclusivo.
                       </span>
                     </div>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded bg-surface-container-lowest text-primary font-code-snippet text-xs font-bold">
-                      Aprovação em ~15 segundos
-                    </span>
-                  </div>
-                  <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-                    Ao confirmar o pedido, o QR Code de pagamento dinâmico e a chave Copia-e-Cola serão gerados instantaneamente vinculados à ordem <strong>#ORD-9921</strong>. O pipeline de fatiamento 3D entra na fila no exato segundo da compensação bancária.
-                  </p>
-                  <div className="p-3 rounded-lg bg-surface-container-lowest border border-surface-container-high/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-code-snippet text-on-surface">
-                    <span>Chave Temporária: VORTEX-9921-AEROTECH</span>
-                    <span className="text-primary font-bold">Desconto aplicado: -R$ {pixDiscount.toFixed(2).replace('.', ',')}</span>
                   </div>
                 </div>
               )}
 
-              {/* Tab 2: Credit Card Content */}
+              {/* Tab Content: Card */}
               {paymentTab === 'card' && (
-                <div className="flex flex-col gap-5 animate-fadeIn">
-                  <div className="p-4 rounded-xl bg-surface-container-low border border-surface-container-high/60 flex flex-col gap-3">
-                    <div className="flex items-center justify-between">
-                      <span className="font-label-md text-xs text-on-surface-variant font-bold uppercase tracking-wider">
-                        Cartão Cadastrado
-                      </span>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-container/15 text-primary font-code-snippet text-[10px] font-bold">
-                        Padrão da Organização
-                      </span>
+                <div className="flex flex-col gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="font-label-md text-xs text-on-surface-variant">Número do Cartão</label>
+                      <input
+                        type="text"
+                        placeholder="0000 0000 0000 0000"
+                        value={cardData.number}
+                        onChange={(e) => setCardData({ ...cardData, number: e.target.value })}
+                        className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs font-code-snippet focus:outline-none focus:ring-2 focus:ring-primary-container"
+                      />
                     </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-surface-container-lowest rounded-lg border border-surface-container-high/40">
-                      <div className="flex items-center gap-3">
-                        <span className="material-symbols-outlined text-primary text-[28px]">credit_card</span>
-                        <div className="flex flex-col">
-                          <span className="font-label-md text-sm font-bold text-on-surface">Mastercard Corporate</span>
-                          <span className="font-code-snippet text-xs text-on-surface-variant">•••• •••• •••• 4289</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="font-code-snippet text-xs text-on-surface-variant">Exp: 08/29</span>
-                        <div className="w-20">
-                          <input
-                            type="password"
-                            placeholder="CVV"
-                            maxLength="4"
-                            className="w-full px-2 py-1 bg-surface-container text-xs rounded border border-surface-container-high text-center font-code-snippet focus:outline-none focus:ring-1 focus:ring-primary-container"
-                          />
-                        </div>
-                      </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-label-md text-xs text-on-surface-variant">Nome no Cartão</label>
+                      <input
+                        type="text"
+                        placeholder="NOME COMO NO CARTÃO"
+                        value={cardData.holder}
+                        onChange={(e) => setCardData({ ...cardData, holder: e.target.value })}
+                        className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs focus:outline-none focus:ring-2 focus:ring-primary-container uppercase"
+                      />
                     </div>
                   </div>
-
-                  {/* Installments */}
-                  <div className="flex flex-col gap-1">
-                    <label className="font-label-md text-xs text-on-surface-variant">Opções de Parcelamento</label>
-                    <select
-                      value={cardData.installments}
-                      onChange={(e) => setCardData({ ...cardData, installments: e.target.value })}
-                      className="px-3.5 py-2.5 bg-surface-container-low rounded-xl border border-surface-container-high/60 text-xs font-semibold text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container"
-                    >
-                      <option value="1">1x de R$ {grandTotal.toFixed(2).replace('.', ',')} sem juros (À vista)</option>
-                      <option value="2">2x de R$ {(grandTotal / 2).toFixed(2).replace('.', ',')} sem juros</option>
-                      <option value="3">3x de R$ {(grandTotal / 3).toFixed(2).replace('.', ',')} sem juros</option>
-                      <option value="6">6x de R$ {(grandTotal / 6).toFixed(2).replace('.', ',')} sem juros</option>
-                    </select>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="font-label-md text-xs text-on-surface-variant">Validade</label>
+                      <input
+                        type="text"
+                        placeholder="MM/AA"
+                        value={cardData.expiry}
+                        onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
+                        className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs font-code-snippet focus:outline-none focus:ring-2 focus:ring-primary-container"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-label-md text-xs text-on-surface-variant">CVV</label>
+                      <input
+                        type="password"
+                        placeholder="123"
+                        maxLength={4}
+                        value={cardData.cvv}
+                        onChange={(e) => setCardData({ ...cardData, cvv: e.target.value })}
+                        className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs font-code-snippet focus:outline-none focus:ring-2 focus:ring-primary-container"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-label-md text-xs text-on-surface-variant">Parcelas</label>
+                      <select
+                        value={cardData.installments}
+                        onChange={(e) => setCardData({ ...cardData, installments: e.target.value })}
+                        className="px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-container-high/60 text-xs focus:outline-none focus:ring-2 focus:ring-primary-container"
+                      >
+                        <option value="1">1x de R$ {grandTotal.toFixed(2).replace('.', ',')} (sem juros)</option>
+                        <option value="2">2x de R$ {(grandTotal / 2).toFixed(2).replace('.', ',')} (sem juros)</option>
+                        <option value="3">3x de R$ {(grandTotal / 3).toFixed(2).replace('.', ',')} (sem juros)</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               )}
 
-              {/* Tab 3: B2B Faturado Content */}
+              {/* Tab Content: B2B */}
               {paymentTab === 'b2b' && (
-                <div className="flex flex-col gap-4 p-5 rounded-xl bg-surface-container-low border border-surface-container-high/60 animate-fadeIn">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-primary text-[24px]">business_center</span>
-                      <span className="font-label-lg text-sm font-bold text-on-surface">
-                        Faturamento Corporativo a Prazo (28 DDL)
-                      </span>
-                    </div>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded bg-surface-container text-on-surface font-code-snippet text-xs font-bold">
-                      Limite: R$ 12.000,00
-                    </span>
-                  </div>
-                  <div className="font-body-sm text-xs text-on-surface-variant flex flex-col gap-1.5 leading-relaxed">
-                    <p>Empresa aprovada no portal: <strong>AeroTech Labs Indústria e Automação LTDA</strong></p>
-                    <p>CNPJ: <strong>34.891.204/0001-92</strong> • Boleto bancário emitido contra CNPJ com vencimento líquido em 28 dias após emissão da NF-e.</p>
-                  </div>
+                <div className="p-4 rounded-xl bg-surface-container-low border border-surface-container-high/60 flex flex-col gap-2 text-xs">
+                  <span className="font-bold text-on-surface">Faturamento Corporativo via Boleto Bancário 28 DDL</span>
+                  <p className="text-on-surface-variant">
+                    Disponível para clientes com limite de crédito empresarial pré-aprovado no Lab Vórtex.
+                  </p>
                 </div>
               )}
-
-              {/* Tab 4: NFC Fox Key Content */}
-              {paymentTab === 'nfc' && (
-                <div className="flex flex-col gap-4 p-6 rounded-xl bg-surface-container-low border border-surface-container-high/60 text-center items-center animate-fadeIn">
-                  <div className="w-14 h-14 rounded-full bg-primary-container/15 flex items-center justify-center text-primary-container animate-pulse">
-                    <span className="material-symbols-outlined text-[32px]">nfc</span>
-                  </div>
-                  <div className="flex flex-col gap-1 max-w-md">
-                    <span className="font-headline-sm text-sm font-bold text-on-surface">
-                      Aproxime seu Chaveiro Fox NFC ou Token
-                    </span>
-                    <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-                      Se você possui um leitor RFID/NFC pareado ou dispositivo corporativo Vórtex, encoste o token físico cadastrado para autorizar débito corporativo em 1 toque.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* SECTION 3: EMISSÃO DE NOTA FISCAL ELETRÔNICA (NF-e) */}
-            <div className="bg-surface-container-lowest rounded-2xl p-6 md:p-8 shadow-sm border border-surface-container-high/60 flex flex-col gap-6">
-              <div className="flex items-center justify-between pb-2 border-b border-surface-container">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary-container/15 flex items-center justify-center text-primary-container">
-                    <span className="material-symbols-outlined text-[24px]">receipt</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="font-label-md text-xs text-on-surface-variant uppercase tracking-wider font-semibold">
-                      3. Conformidade Fiscal
-                    </span>
-                    <h2 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                      Emissão de Nota Fiscal (NF-e)
-                    </h2>
-                  </div>
-                </div>
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
-                  <span className="material-symbols-outlined text-[16px]">verified</span> SEFAZ Ativa
-                </span>
-              </div>
-
-              {/* Persona Radio */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <label
-                  onClick={() => setNfeType('pj')}
-                  className={`cursor-pointer p-4 rounded-xl border flex items-center justify-between transition-all ${
-                    nfeType === 'pj'
-                      ? 'bg-primary-container/10 border-primary-container'
-                      : 'bg-surface-container-low border-surface-container-high/60'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-primary text-[22px]">corporate_fare</span>
-                    <div className="flex flex-col">
-                      <span className="font-label-lg text-xs font-bold text-on-surface">Pessoa Jurídica (B2B)</span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant">AeroTech Labs LTDA</span>
-                    </div>
-                  </div>
-                  <input
-                    type="radio"
-                    name="nfe_type"
-                    checked={nfeType === 'pj'}
-                    onChange={() => setNfeType('pj')}
-                    className="accent-primary-container"
-                  />
-                </label>
-
-                <label
-                  onClick={() => setNfeType('pf')}
-                  className={`cursor-pointer p-4 rounded-xl border flex items-center justify-between transition-all ${
-                    nfeType === 'pf'
-                      ? 'bg-primary-container/10 border-primary-container'
-                      : 'bg-surface-container-low border-surface-container-high/60'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-on-surface-variant text-[22px]">person</span>
-                    <div className="flex flex-col">
-                      <span className="font-label-lg text-xs font-bold text-on-surface">Pessoa Física (CPF)</span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant">Eng. Lucas Mendonça</span>
-                    </div>
-                  </div>
-                  <input
-                    type="radio"
-                    name="nfe_type"
-                    checked={nfeType === 'pf'}
-                    onChange={() => setNfeType('pf')}
-                    className="accent-primary-container"
-                  />
-                </label>
-              </div>
-
-              {/* B2B / B2C Details */}
-              <div className="p-4 rounded-xl bg-surface-container-low border border-surface-container-high/60 flex flex-col gap-3 font-body-sm text-xs">
-                {nfeType === 'pj' ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                      <span className="text-on-surface-variant text-[11px] uppercase font-bold">Razão Social:</span>
-                      <p className="font-semibold text-on-surface">AeroTech Labs Indústria e Automação LTDA</p>
-                    </div>
-                    <div>
-                      <span className="text-on-surface-variant text-[11px] uppercase font-bold">CNPJ:</span>
-                      <p className="font-code-snippet font-semibold text-on-surface">34.891.204/0001-92 (IE: Isenta)</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                      <span className="text-on-surface-variant text-[11px] uppercase font-bold">Nome do Titular:</span>
-                      <p className="font-semibold text-on-surface">Lucas Mendonça de Oliveira</p>
-                    </div>
-                    <div>
-                      <span className="text-on-surface-variant text-[11px] uppercase font-bold">CPF:</span>
-                      <p className="font-code-snippet font-semibold text-on-surface">381.902.448-12</p>
-                    </div>
-                  </div>
-                )}
-
-                <label className="flex items-center gap-2.5 pt-2 border-t border-surface-container cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={nfeHashSync}
-                    onChange={(e) => setNfeHashSync(e.target.checked)}
-                    className="w-4 h-4 accent-primary-container rounded"
-                  />
-                  <span className="font-label-md text-xs text-on-surface">
-                    Vincular Hash Criptográfico da Ordem aos chips NFC gravados na fábrica
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            {/* SECTION 4: PROTOCOLO & DIÁRIO DE RASTREIO IOT */}
-            <div className="p-5 rounded-2xl bg-surface-container-low/80 border border-surface-container-high/60 flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-primary-container/15 flex items-center justify-center text-primary-container shrink-0">
-                <span className="material-symbols-outlined text-[22px]">hub</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <h3 className="font-label-lg text-sm font-bold text-on-surface">
-                  Telemetria &amp; Acompanhamento de Fatiamento 3D
-                </h3>
-                <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-                  Assim que o pagamento for registrado, você receberá notificações por e-mail e WhatsApp em tempo real: 
-                  <strong>Aquecimento de Mesa</strong>, <strong>Gravação de Firmware NFC</strong> e <strong>Embalagem Anti-Impacto</strong>.
-                </p>
-              </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Sticky Order Summary & CTA (5 Cols) */}
-          <div className="lg:col-span-5 sticky top-28 flex flex-col gap-6">
-            <div className="bg-surface-container-lowest rounded-2xl p-6 lg:p-7 shadow-md border border-surface-container-high/60 flex flex-col gap-6 relative">
-              {/* Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-surface-container">
-                <div className="flex flex-col">
-                  <span className="font-label-md text-xs text-primary font-bold uppercase tracking-wider">
-                    Revisão Final
-                  </span>
-                  <h2 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                    Resumo do Pedido
-                  </h2>
-                </div>
-                <span className="font-code-snippet text-xs font-semibold px-2.5 py-1 bg-surface-container rounded-lg text-on-surface">
-                  {displayItems.length} {displayItems.length === 1 ? 'item' : 'itens'}
-                </span>
-              </div>
+          {/* RIGHT COLUMN: Order Summary (5 Cols) */}
+          <div className="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+            <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-surface-container-high/60 flex flex-col gap-5">
+              <h2 className="font-headline-sm text-base font-bold text-on-surface pb-3 border-b border-surface-container">
+                Resumo da Ordem de Manufatura
+              </h2>
 
-              {/* Cart Items List */}
-              <div className="flex flex-col gap-3 max-h-72 overflow-y-auto pr-1">
-                {displayItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center gap-3.5 p-2.5 rounded-xl bg-surface-container-low/70 border border-surface-container-high/40 hover:bg-surface-container-low transition-colors"
-                  >
-                    <div className="w-14 h-14 rounded-lg bg-surface-container shrink-0 overflow-hidden relative flex items-center justify-center p-1">
-                      <img
-                        src={item.imageUrl}
-                        alt={item.title}
-                        className="w-full h-full object-contain"
-                        onError={(e) => {
-                          e.target.src = '/assets/prod-chaveiro-fox-nfc.png';
-                        }}
-                      />
-                      <span className="absolute bottom-0 right-0 px-1 text-[9px] font-bold bg-primary-container text-white rounded-tl">
-                        {item.quantity}x
-                      </span>
+              <div className="flex flex-col gap-3 max-h-64 overflow-y-auto pr-1">
+                {displayItems.map((item, idx) => (
+                  <div key={idx} className="flex items-center justify-between text-xs gap-3">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-10 h-10 rounded-lg bg-surface-container-high p-1 shrink-0 flex items-center justify-center">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.title}
+                          className="w-full h-full object-contain"
+                          onError={(e) => { e.target.src = '/assets/prod-chaveiro-fox-nfc.png'; }}
+                        />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-bold text-on-surface truncate">{item.title}</span>
+                        <span className="text-[11px] text-on-surface-variant">
+                          Qtd: {item.quantity} • {item.selectedColor || 'Padrão'}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex flex-col min-w-0 flex-1">
-                      <span className="font-label-lg text-xs font-bold text-on-surface truncate">
-                        {item.title}
-                      </span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant truncate">
-                        {item.selectedColor || 'Padrão'} {item.specs?.chip ? `• ${item.specs.chip}` : ''}
-                      </span>
-                      <span className="font-code-snippet text-[11px] text-on-surface-variant font-medium pt-0.5">
-                        {item.quantity} un × R$ {item.price.toFixed(2).replace('.', ',')}
-                      </span>
-                    </div>
-                    <span className="font-headline-sm text-xs font-bold text-on-surface whitespace-nowrap">
+                    <span className="font-code-snippet font-bold text-on-surface shrink-0">
                       R$ {(item.price * item.quantity).toFixed(2).replace('.', ',')}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* Price Calculation Lines */}
-              <div className="flex flex-col gap-2.5 pt-4 border-t border-surface-container">
-                <div className="flex items-center justify-between font-body-sm text-xs text-on-surface-variant">
-                  <span>Subtotal das Peças</span>
-                  <span className="font-code-snippet text-on-surface font-semibold">
+              {/* Totals */}
+              <div className="pt-4 border-t border-surface-container flex flex-col gap-2 font-body-sm text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-on-surface-variant">Subtotal dos Produtos</span>
+                  <span className="font-code-snippet font-semibold">
                     R$ {effectiveSubtotal.toFixed(2).replace('.', ',')}
                   </span>
                 </div>
-
-                <div className="flex items-center justify-between font-body-sm text-xs text-on-surface-variant">
-                  <div className="flex items-center gap-1.5">
-                    <span>Frete Selecionado</span>
-                    <span className="material-symbols-outlined text-[14px] text-primary" title="Frete com telemetria">
-                      info
-                    </span>
-                  </div>
-                  <span className="font-code-snippet text-on-surface font-semibold">
-                    {effectiveShipping === 0 ? (
-                      <span className="text-emerald-600 font-bold">Grátis</span>
-                    ) : (
-                      `R$ ${effectiveShipping.toFixed(2).replace('.', ',')}`
-                    )}
+                <div className="flex items-center justify-between">
+                  <span className="text-on-surface-variant">Frete ({shippingMethod.toUpperCase()})</span>
+                  <span className="font-code-snippet font-semibold text-primary">
+                    {effectiveShipping === 0 ? 'Grátis' : `R$ ${effectiveShipping.toFixed(2).replace('.', ',')}`}
                   </span>
                 </div>
-
                 {pixDiscount > 0 && (
-                  <div className="flex items-center justify-between font-body-sm text-xs text-primary">
-                    <span className="flex items-center gap-1 font-semibold">
-                      <span className="material-symbols-outlined text-[16px]">qr_code_2</span>
-                      Desconto PIX (-5%)
-                    </span>
-                    <span className="font-code-snippet font-bold">
+                  <div className="flex items-center justify-between text-emerald-600 font-semibold">
+                    <span>Desconto PIX (-5%)</span>
+                    <span className="font-code-snippet">
                       -R$ {pixDiscount.toFixed(2).replace('.', ',')}
                     </span>
                   </div>
                 )}
-
-                <div className="h-px bg-surface-container my-1"></div>
-
-                <div className="flex items-baseline justify-between pt-1">
-                  <div className="flex flex-col">
-                    <span className="font-label-lg text-sm font-bold text-on-surface">Total Consolidado</span>
-                    <span className="font-code-snippet text-[11px] text-on-surface-variant">
-                      Em até 6x sem juros no cartão
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className="font-headline-lg text-xl font-bold text-primary leading-none">
-                      R$ {grandTotal.toFixed(2).replace('.', ',')}
-                    </span>
-                    <span className="font-code-snippet text-[10px] text-on-surface-variant pt-1">
-                      NF-e e impostos inclusos
-                    </span>
-                  </div>
+                <div className="pt-2 border-t border-surface-container flex items-center justify-between font-bold text-sm text-on-surface">
+                  <span>Total Final</span>
+                  <span className="font-code-snippet text-base text-primary">
+                    R$ {grandTotal.toFixed(2).replace('.', ',')}
+                  </span>
                 </div>
               </div>
 
-              {/* Primary Action Button */}
-              <div className="flex flex-col gap-3 pt-2">
-                <button
-                  type="button"
-                  disabled={isSubmitting}
-                  onClick={handleConfirmOrder}
-                  className="w-full py-4 px-6 rounded-xl bg-primary-container hover:bg-tertiary-container text-on-primary font-headline-sm text-sm font-bold flex items-center justify-center gap-3 transition-transform hover:-translate-y-0.5 shadow-md group disabled:opacity-75 cursor-pointer"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                      <span>Transmitindo para Fila de Impressão...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="material-symbols-outlined text-[20px]">verified_user</span>
-                      <span>Confirmar Pedido &amp; Emitir NF-e</span>
-                      <span className="material-symbols-outlined text-[18px] transition-transform group-hover:translate-x-1">
-                        arrow_forward
-                      </span>
-                    </>
-                  )}
-                </button>
-                <p className="font-label-md text-xs text-center text-on-surface-variant flex items-center justify-center gap-1.5">
-                  <span className="material-symbols-outlined text-[15px] text-primary">lock</span>
-                  Transação criptografada de ponta a ponta
-                </p>
-              </div>
-
-              {/* Triple Quality Guarantee */}
-              <div className="p-4 rounded-xl bg-surface-container-low/70 border border-surface-container-high/50 flex flex-col gap-2.5 text-xs">
-                <div className="flex items-center gap-2 text-on-surface font-semibold">
-                  <span className="material-symbols-outlined text-primary text-[18px]">straighten</span>
-                  <span>Tolerância Dimensional Aferida: ±0.08mm</span>
-                </div>
-                <div className="flex items-center gap-2 text-on-surface font-semibold">
-                  <span className="material-symbols-outlined text-primary text-[18px]">nfc</span>
-                  <span>Gravação de Chip NFC Testada 100% em Bancada</span>
-                </div>
-                <div className="flex items-center gap-2 text-on-surface font-semibold">
-                  <span className="material-symbols-outlined text-primary text-[18px]">receipt_long</span>
-                  <span>Envio Automático do XML da NF-e ao e-mail cadastrado</span>
-                </div>
-              </div>
+              {/* Confirm Order Button */}
+              <button
+                type="button"
+                disabled={isSubmitting}
+                onClick={handleConfirmOrder}
+                className="w-full py-3.5 px-4 bg-primary-container text-on-primary rounded-xl font-label-lg text-sm font-bold shadow-md hover:bg-primary transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    <span>Processando Ordem com Mercado Pago...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined text-[20px]">verified</span>
+                    <span>Confirmar e Finalizar Ordem 3D</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>
       </main>
 
-      {/* Order Confirmation Modal */}
+      {/* MODAL DE SUCESSO DO PEDIDO & PAGAMENTO PIX REAL */}
       {orderSuccess && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-inverse-surface/80 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-surface-container-lowest rounded-2xl max-w-lg w-full p-6 md:p-8 shadow-2xl border border-surface-container-high/60 flex flex-col gap-6 relative">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center mx-auto">
-              <span className="material-symbols-outlined text-[36px]">check_circle</span>
+          <div className="bg-surface-container-lowest rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-surface-container-high/60 flex flex-col gap-6 relative max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-surface-container">
+              <div className="flex items-center gap-2.5">
+                <span className="material-symbols-outlined text-primary text-[28px]">check_circle</span>
+                <div className="flex flex-col">
+                  <h3 className="font-headline-sm text-base font-bold text-on-surface">
+                    Ordem de Manufatura #{orderSuccess.orderId}
+                  </h3>
+                  <span className="text-[11px] text-on-surface-variant font-code-snippet">
+                    STATUS: {orderSuccess.status} • {orderSuccess.date}
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <div className="text-center flex flex-col gap-2">
-              <span className="px-3 py-1 rounded-full bg-primary-container/10 text-primary font-code-snippet text-xs font-bold mx-auto">
-                {orderSuccess.orderId}
-              </span>
-              <h2 className="font-headline-lg text-xl font-bold text-on-surface">
-                Ordem de Produção Transmitida!
-              </h2>
-              <p className="font-body-md text-xs text-on-surface-variant leading-relaxed">
-                Seu pedido foi registrado no sistema industrial da <strong>Vórtex 3D Labs</strong> e inserido na fila de manufatura aditiva.
-              </p>
-            </div>
+            {/* Status do Pagamento (Atualizado via Polling) */}
+            {orderSuccess.statusPagamento === 'APROVADO' || orderSuccess.status === 'PAGO' ? (
+              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-3 text-emerald-600 animate-fadeIn">
+                <span className="material-symbols-outlined text-[32px]">verified</span>
+                <div className="flex flex-col text-left">
+                  <span className="font-bold text-xs">Pagamento Confirmado via Mercado Pago!</span>
+                  <span className="text-[11px] text-emerald-700">
+                    Sua ordem foi direcionada imediatamente para o fatiador 3D e agendada na máquina.
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-surface-container text-xs font-code-snippet">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                  <span className="text-on-surface-variant">Aguardando confirmação do Mercado Pago...</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSimularAprovacaoPix}
+                  className="px-2.5 py-1 rounded bg-primary-container/20 text-primary-container font-bold hover:bg-primary-container/30 transition-colors text-[10px] cursor-pointer"
+                  title="Simula webhook do Mercado Pago de confirmação de pagamento"
+                >
+                  ⚡ Simular Pagamento
+                </button>
+              </div>
+            )}
 
-            {orderSuccess.paymentMethod === 'pix' && (
+            {/* Detalhes PIX Real */}
+            {orderSuccess.paymentMethod === 'pix' && orderSuccess.statusPagamento !== 'APROVADO' && (
               <div className="p-4 rounded-xl bg-surface-container-low border border-surface-container-high/60 flex flex-col items-center gap-3 text-center">
                 <span className="font-label-md text-xs font-bold text-on-surface">
-                  Pague com PIX para liberar o fatiador imediatamente:
+                  Escaneie o QR Code no seu aplicativo bancário:
                 </span>
-                <div className="w-36 h-36 bg-white p-2 rounded-xl border border-surface-container shadow-xs flex items-center justify-center">
+
+                <div className="w-44 h-44 bg-white p-2 rounded-xl border border-surface-container shadow-xs flex items-center justify-center">
                   <img
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=00020126580014BR.GOV.BCB.PIX0136vortex-iot-pay@vortex.tech5204000053039865406246.065802BR5910VORTEX3D6009SAOPAULO62070503***6304"
-                    alt="QR Code PIX"
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=${encodeURIComponent(
+                      orderSuccess.qrCodePix || 'PIX_VORTEX_DEFAULT'
+                    )}`}
+                    alt="QR Code PIX Real"
                     className="w-full h-full object-contain"
                   />
                 </div>
+
                 <div className="w-full flex items-center gap-2">
                   <input
                     type="text"
                     readOnly
-                    value={orderSuccess.pixCopiaECola || "00020126580014BR.GOV.BCB.PIX0136vortex-iot-pay@vortex.tech..."}
-                    className="flex-1 px-3 py-1.5 bg-surface-container-lowest text-xs rounded border border-surface-container-high font-code-snippet text-on-surface-variant truncate"
+                    value={orderSuccess.qrCodePix || ''}
+                    className="flex-1 px-3 py-2 bg-surface-container-lowest text-xs rounded-lg border border-surface-container-high font-code-snippet text-on-surface-variant truncate"
                   />
                   <button
                     type="button"
                     onClick={() => {
-                      navigator.clipboard?.writeText(orderSuccess.pixCopiaECola || "00020126580014BR.GOV.BCB.PIX0136vortex-iot-pay@vortex.tech...");
-                      alert('Código PIX Copia e Cola copiado com sucesso!');
+                      if (orderSuccess.qrCodePix) {
+                        navigator.clipboard?.writeText(orderSuccess.qrCodePix);
+                        setPixCopied(true);
+                        setTimeout(() => setPixCopied(false), 2000);
+                      }
                     }}
-                    className="px-3 py-1.5 bg-primary-container text-on-primary font-label-md text-xs font-bold rounded hover:bg-primary transition-colors whitespace-nowrap cursor-pointer"
+                    className="px-3 py-2 bg-primary-container text-on-primary font-label-md text-xs font-bold rounded-lg hover:bg-primary transition-colors whitespace-nowrap cursor-pointer flex items-center gap-1"
                   >
-                    Copiar
+                    <span className="material-symbols-outlined text-[16px]">
+                      {pixCopied ? 'done' : 'content_copy'}
+                    </span>
+                    <span>{pixCopied ? 'Copiado!' : 'Copiar'}</span>
                   </button>
                 </div>
               </div>
             )}
 
             <div className="p-3.5 rounded-xl bg-surface-container-low/80 flex items-center justify-between text-xs font-code-snippet">
-              <span className="text-on-surface-variant">Total:</span>
+              <span className="text-on-surface-variant">Total da Ordem:</span>
               <span className="font-bold text-on-surface text-sm">
                 R$ {orderSuccess.total.toFixed(2).replace('.', ',')}
               </span>
@@ -985,15 +1056,17 @@ export default function CheckoutPage() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 to="/perfil"
-                className="flex-1 py-3 px-4 rounded-xl bg-inverse-surface text-inverse-on-surface font-label-md text-xs font-bold text-center hover:bg-inverse-surface/90 transition-all"
+                className="flex-1 py-3 px-4 rounded-xl bg-inverse-surface text-inverse-on-surface font-label-md text-xs font-bold text-center hover:bg-inverse-surface/90 transition-all flex items-center justify-center gap-1.5"
               >
-                Acompanhar no Perfil
+                <span className="material-symbols-outlined text-[16px]">account_circle</span>
+                <span>Acompanhar no Perfil</span>
               </Link>
               <Link
                 to="/"
-                className="flex-1 py-3 px-4 rounded-xl bg-surface-container text-on-surface font-label-md text-xs font-bold text-center hover:bg-surface-container-high transition-all"
+                className="flex-1 py-3 px-4 rounded-xl bg-surface-container text-on-surface font-label-md text-xs font-bold text-center hover:bg-surface-container-high transition-all flex items-center justify-center gap-1.5"
               >
-                Voltar ao Início
+                <span className="material-symbols-outlined text-[16px]">storefront</span>
+                <span>Voltar ao Início</span>
               </Link>
             </div>
           </div>

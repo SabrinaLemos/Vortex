@@ -52,7 +52,7 @@ public class MaquinaImpressao {
     @Column(name = "temperatura_mesa_celsius", precision = 5, scale = 1)
     private BigDecimal temperaturaMesaCelsius;
 
-    @Column(name = "nozzle_diametro", length = 10)
+    @Column(name = "nozzle_diametro", length = 30)
     @Builder.Default
     private String nozzleDiametro = "0.4mm";
 

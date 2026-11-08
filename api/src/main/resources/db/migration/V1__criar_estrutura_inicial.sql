@@ -308,7 +308,7 @@ CREATE TABLE IF NOT EXISTS maquinas_impressao (
     status VARCHAR(30) NOT NULL DEFAULT 'OCIOSA', -- 'IMPRIMINDO', 'OCIOSA', 'PAUSADA', 'MANUTENCAO'
     temperatura_bico_celsius NUMERIC(5, 1),
     temperatura_mesa_celsius NUMERIC(5, 1),
-    nozzle_diametro VARCHAR(10) DEFAULT '0.4mm',
+    nozzle_diametro VARCHAR(30) DEFAULT '0.4mm',
     camada_atual INTEGER DEFAULT 0,
     total_camadas INTEGER DEFAULT 0,
     tempo_restante_minutos INTEGER DEFAULT 0,

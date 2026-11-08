@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { MOCK_PRODUCTS } from '../data/mockData';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import authService from '../services/authService';
 import pedidoService from '../services/pedidoService';
 import nfcService from '../services/nfcService';
 
 export default function ProfilePage() {
   const { addToCart } = useCart();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('pedidos'); // 'pedidos' | 'rastreio' | 'nfc' | 'dados'
 
   // NFC Key Remap Modal State
@@ -16,15 +19,16 @@ export default function ProfilePage() {
   const [nfcSuccessMsg, setNfcSuccessMsg] = useState('');
   const [myTags, setMyTags] = useState([]);
   const [myOrders, setMyOrders] = useState([]);
+  const [addresses, setAddresses] = useState([]);
 
   // Personal Data Edit
   const [userData, setUserData] = useState({
-    nome: 'Lucas Mendonça de Oliveira',
-    cargo: 'Tech Lead & Engenheiro de Hardware',
-    empresa: 'AeroTech Labs Indústria LTDA',
-    email: 'lucas.mendonca@aerotechlabs.com.br',
-    telefone: '(11) 98412-0091',
-    cnpj: '34.891.204/0001-92',
+    nome: user?.nome || '',
+    cargo: user?.cargo || 'Maker Pro',
+    empresa: user?.razaoSocial || user?.empresa || 'Cliente Vórtex',
+    email: user?.email || '',
+    telefone: user?.telefone || '',
+    cnpj: user?.documento || '',
   });
 
   // Carregar dados reais do usuário logado, tags NFC e pedidos do banco
@@ -32,31 +36,23 @@ export default function ProfilePage() {
     let isMounted = true;
     async function carregarDados() {
       try {
-        const [user, tags, pedidos] = await Promise.all([
-          authService.getUsuarioAtual(),
-          nfcService.listarMinhasTags(),
-          pedidoService.listarMeusPedidos(),
+        const [tags, pedidos, enderecos] = await Promise.all([
+          nfcService.listarMinhasTags().catch(() => []),
+          pedidoService.listarMeusPedidos().catch(() => []),
+          authService.listarMeusEnderecos().catch(() => []),
         ]);
         if (isMounted) {
-          if (user) {
-            setUserData((prev) => ({
-              ...prev,
-              nome: user.nome || prev.nome,
-              email: user.email || prev.email,
-              cargo: user.cargo || prev.cargo,
-              empresa: user.empresa || prev.empresa,
-              telefone: user.telefone || prev.telefone,
-              cnpj: user.documento || prev.cnpj,
-            }));
-          }
           if (tags && tags.length > 0) {
             setMyTags(tags);
             if (tags[0].urlDestino) {
               setNfcTargetUrl(tags[0].urlDestino);
             }
           }
-          if (pedidos && pedidos.length > 0) {
+          if (pedidos) {
             setMyOrders(pedidos);
+          }
+          if (enderecos) {
+            setAddresses(enderecos);
           }
         }
       } catch (err) {
@@ -66,6 +62,29 @@ export default function ProfilePage() {
     carregarDados();
     return () => { isMounted = false; };
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      setUserData({
+        nome: user.nome || '',
+        cargo: user.cargo || 'Maker Pro',
+        empresa: user.razaoSocial || user.empresa || 'Cliente Vórtex',
+        email: user.email || '',
+        telefone: user.telefone || '',
+        cnpj: user.documento || '',
+      });
+    }
+  }, [user]);
+
+  const handleRemoveAddress = async (enderecoId) => {
+    if (!window.confirm('Deseja remover este endereço?')) return;
+    try {
+      await authService.removerMeuEndereco(enderecoId);
+      setAddresses((prev) => prev.filter((a) => a.id !== enderecoId));
+    } catch (err) {
+      alert('Erro ao remover endereço: ' + (err.message || 'Tente novamente.'));
+    }
+  };
 
   const handleSaveNfcUrl = async (e) => {
     e.preventDefault();
@@ -180,6 +199,18 @@ export default function ProfilePage() {
               >
                 <span className="material-symbols-outlined text-[18px] text-primary">nfc</span>
                 <span>Configurar Chip</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  logout();
+                  navigate('/login');
+                }}
+                className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-error/10 hover:bg-error/20 text-error font-label-md text-xs font-bold transition-all"
+                title="Sair da Conta"
+              >
+                <span className="material-symbols-outlined text-[18px]">logout</span>
+                <span>Sair</span>
               </button>
             </div>
           </div>
@@ -669,26 +700,46 @@ export default function ProfilePage() {
             <div className="rounded-2xl bg-surface-container-lowest border border-surface-container-high/60 shadow-sm p-6 flex flex-col gap-4">
               <div className="flex items-center justify-between pb-3 border-b border-surface-container">
                 <h3 className="font-label-lg text-sm font-bold text-on-surface">Endereços de Manufatura Salvos</h3>
-                <span className="font-label-md text-xs text-on-surface-variant">2 Cadastrados</span>
+                <span className="font-label-md text-xs text-on-surface-variant">
+                  {addresses.length} Cadastrado{addresses.length !== 1 ? 's' : ''}
+                </span>
               </div>
               <div className="flex flex-col gap-3">
-                <div className="p-3.5 rounded-xl bg-surface-container-low border border-surface-container-high/40 flex flex-col gap-1 text-xs">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-on-surface">Laboratório Principal (Faria Lima)</span>
-                    <span className="text-emerald-600 font-bold font-code-snippet text-[10px]">PADRÃO</span>
-                  </div>
-                  <p className="text-on-surface-variant">Av. Brigadeiro Faria Lima, 3477 • 12º Andar</p>
-                  <p className="text-on-surface-variant">Itaim Bibi — São Paulo/SP • CEP 04538-133</p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-surface-container-low border border-surface-container-high/40 flex flex-col gap-1 text-xs">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-on-surface">Dev Hub Pinheiros</span>
-                    <span className="text-on-surface-variant font-code-snippet text-[10px]">SECUNDÁRIO</span>
-                  </div>
-                  <p className="text-on-surface-variant">Rua Fradique Coutinho, 1120 • Apto 62</p>
-                  <p className="text-on-surface-variant">Pinheiros — São Paulo/SP • CEP 05416-001</p>
-                </div>
+                {addresses.length === 0 ? (
+                  <p className="text-xs text-on-surface-variant py-2">
+                    Nenhum endereço cadastrado no momento. Você pode cadastrar novos endereços na tela de Checkout.
+                  </p>
+                ) : (
+                  addresses.map((addr) => (
+                    <div
+                      key={addr.id}
+                      className="p-3.5 rounded-xl bg-surface-container-low border border-surface-container-high/40 flex items-start justify-between gap-2 text-xs"
+                    >
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-on-surface">{addr.destinatario || 'Endereço'}</span>
+                          {addr.padrao && (
+                            <span className="text-emerald-600 font-bold font-code-snippet text-[10px]">PADRÃO</span>
+                          )}
+                        </div>
+                        <p className="text-on-surface-variant">
+                          {addr.logradouro}, {addr.numero} {addr.complemento ? `• ${addr.complemento}` : ''}
+                        </p>
+                        <p className="text-on-surface-variant">
+                          {addr.bairro} — {addr.cidade}/{addr.uf} • CEP {addr.cep}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveAddress(addr.id)}
+                        className="text-error hover:text-error/80 p-1 rounded hover:bg-surface-container"
+                        title="Remover Endereço"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                      </button>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>

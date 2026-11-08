@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -26,6 +27,30 @@ function ScrollToTop() {
   return null;
 }
 
+function ProtectedRoute({ children, requireAdmin = false }) {
+  const { user, isAuthenticated, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-container"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    const redirectUrl = encodeURIComponent(location.pathname + location.search);
+    return <Navigate to={`/login?redirect=${redirectUrl}`} replace />;
+  }
+
+  if (requireAdmin && user?.perfilAcesso !== 'ADMIN') {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+}
+
 function AppContent() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
@@ -41,11 +66,32 @@ function AppContent() {
           <Route path="/personalizados" element={<CustomCADPage />} />
           <Route path="/custom" element={<CustomCADPage />} />
           <Route path="/carrinho" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <CheckoutPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/perfil" element={<ProfilePage />} />
+          <Route
+            path="/perfil"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/b2b" element={<B2BPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
       {!isAdmin && <Footer />}
@@ -55,12 +101,14 @@ function AppContent() {
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <ScrollToTop />
-        <AppContent />
-      </Router>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <ScrollToTop />
+          <AppContent />
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

@@ -2,131 +2,68 @@ import api, { getToken, setToken, removeToken } from './api';
 
 export const authService = {
   async login(email, senha) {
-    try {
-      const response = await api.post('/auth/login', { email, senha });
-      if (response && response.accessToken) {
-        setToken(response.accessToken);
-        localStorage.setItem('vortex_refresh_token', response.refreshToken || '');
-        localStorage.setItem('vortex_usuario', JSON.stringify(response.usuario));
-        return response;
-      }
-      throw new Error('Resposta de autenticação inválida.');
-    } catch (err) {
-      console.warn('Backend indisponível ou credenciais rejeitadas. Aplicando fallback de autenticação...', err);
-      // Fallback para desenvolvimento caso a API não esteja acessível
-      const mockUser = {
-        id: 'usr_8820',
-        nome: email.includes('admin') ? 'Administrador Vórtex' : 'Lucas Mendonça Maker Pro',
-        email: email,
-        tipoPerfil: email.includes('admin') ? 'ADMINISTRADOR' : 'CLIENTE_PRO',
-        empresa: 'AeroTech Labs Indústria LTDA',
-        cargo: 'Tech Lead & Engenheiro de Hardware',
-        telefone: '(11) 98412-0091',
-        documento: '34.891.204/0001-92',
-      };
-      const mockToken = 'mock_jwt_token_' + Date.now();
-      setToken(mockToken);
-      localStorage.setItem('vortex_usuario', JSON.stringify(mockUser));
-      return {
-        accessToken: mockToken,
-        tokenType: 'Bearer',
-        expiraEm: 86400,
-        usuario: mockUser,
-      };
+    const response = await api.post('/auth/login', { email, senha });
+    if (response && response.accessToken) {
+      setToken(response.accessToken);
+      localStorage.setItem('vortex_refresh_token', response.refreshToken || '');
+      localStorage.setItem('vortex_usuario', JSON.stringify(response.usuario));
+      return response;
     }
+    throw new Error('Falha ao autenticar. Verifique suas credenciais.');
   },
 
   async registrar(dados) {
-    try {
-      const response = await api.post('/auth/registro', dados);
-      if (response && response.accessToken) {
-        setToken(response.accessToken);
-        localStorage.setItem('vortex_refresh_token', response.refreshToken || '');
-        localStorage.setItem('vortex_usuario', JSON.stringify(response.usuario));
-        return response;
-      }
+    const response = await api.post('/auth/registrar', dados);
+    if (response && response.accessToken) {
+      setToken(response.accessToken);
+      localStorage.setItem('vortex_refresh_token', response.refreshToken || '');
+      localStorage.setItem('vortex_usuario', JSON.stringify(response.usuario));
       return response;
-    } catch (err) {
-      console.warn('Backend indisponível para registro. Aplicando fallback...', err);
-      const mockUser = {
-        id: 'usr_' + Date.now(),
-        nome: dados.nome,
-        email: dados.email,
-        tipoPerfil: 'CLIENTE',
-        empresa: dados.empresa || '',
-        cargo: dados.cargo || '',
-        telefone: dados.telefone || '',
-        documento: dados.documento || '',
-      };
-      const mockToken = 'mock_jwt_token_' + Date.now();
-      setToken(mockToken);
-      localStorage.setItem('vortex_usuario', JSON.stringify(mockUser));
-      return {
-        accessToken: mockToken,
-        tokenType: 'Bearer',
-        expiraEm: 86400,
-        usuario: mockUser,
-      };
     }
+    return response;
   },
 
-  async nfcLogin(tokenNfc = 'VORTEX-NTAG213-SIGNATURE-048A2F1A') {
-    try {
-      const response = await api.post('/auth/nfc-login', { tokenNfc });
-      if (response && response.accessToken) {
-        setToken(response.accessToken);
-        localStorage.setItem('vortex_usuario', JSON.stringify(response.usuario));
-        return response;
-      }
+  async nfcLogin(tokenNfc) {
+    const response = await api.post('/auth/nfc-login', { tokenNfc });
+    if (response && response.accessToken) {
+      setToken(response.accessToken);
+      localStorage.setItem('vortex_usuario', JSON.stringify(response.usuario));
       return response;
-    } catch (err) {
-      console.warn('Backend indisponível para NFC Login. Aplicando fallback de chaveiro...', err);
-      const mockUser = {
-        id: 'usr_8820',
-        nome: 'Lucas Mendonça Maker Pro',
-        email: 'lucas.mendonca@aerotechlabs.com.br',
-        tipoPerfil: 'CLIENTE_PRO',
-        empresa: 'AeroTech Labs Indústria LTDA',
-        cargo: 'Tech Lead & Engenheiro de Hardware',
-        telefone: '(11) 98412-0091',
-        documento: '34.891.204/0001-92',
-        nfcToken: tokenNfc,
-      };
-      const mockToken = 'mock_jwt_token_nfc_' + Date.now();
-      setToken(mockToken);
-      localStorage.setItem('vortex_usuario', JSON.stringify(mockUser));
-      return {
-        accessToken: mockToken,
-        tokenType: 'Bearer',
-        usuario: mockUser,
-      };
     }
+    throw new Error('Chaveiro NFC não reconhecido ou não associado a uma conta.');
   },
 
   async getUsuarioAtual() {
+    if (!getToken()) {
+      return null;
+    }
     try {
       const usuario = await api.get('/usuarios/me');
       localStorage.setItem('vortex_usuario', JSON.stringify(usuario));
       return usuario;
     } catch (err) {
-      const stored = localStorage.getItem('vortex_usuario');
-      if (stored) return JSON.parse(stored);
+      // Token expirado ou inválido
+      this.logout();
       return null;
     }
   },
 
   async atualizarPerfil(dados) {
-    try {
-      const atualizado = await api.put('/usuarios/me', dados);
-      localStorage.setItem('vortex_usuario', JSON.stringify(atualizado));
-      return atualizado;
-    } catch (err) {
-      const stored = localStorage.getItem('vortex_usuario');
-      const user = stored ? JSON.parse(stored) : {};
-      const updated = { ...user, ...dados };
-      localStorage.setItem('vortex_usuario', JSON.stringify(updated));
-      return updated;
-    }
+    const atualizado = await api.put('/usuarios/me', dados);
+    localStorage.setItem('vortex_usuario', JSON.stringify(atualizado));
+    return atualizado;
+  },
+
+  async listarMeusEnderecos() {
+    return await api.get('/usuarios/me/enderecos');
+  },
+
+  async adicionarMeuEndereco(dados) {
+    return await api.post('/usuarios/me/enderecos', dados);
+  },
+
+  async removerMeuEndereco(enderecoId) {
+    return await api.delete(`/usuarios/me/enderecos/${enderecoId}`);
   },
 
   logout() {

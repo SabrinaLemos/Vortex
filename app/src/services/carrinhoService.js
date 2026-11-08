@@ -16,12 +16,13 @@ export const carrinhoService = {
       return await api.post('/carrinho/itens', {
         produtoId: item.produtoId || item.id,
         quantidade: item.quantidade || item.quantity || 1,
-        variacaoCorId: item.variacaoCorId || null,
-        variacaoMaterialId: item.variacaoMaterialId || null,
-        observacoes: item.observacoes || null,
+        cor: item.selectedColor || item.cor || 'Laranja Vórtex',
+        material: item.selectedMaterial || item.material || 'PLA+',
+        payloadNfc: item.payloadNfc || null,
+        gravacaoLaser: item.gravacaoLaser || null,
       });
     } catch (err) {
-      console.warn('Salvando item no carrinho localmente...', err);
+      console.warn('Erro ao adicionar item no carrinho remoto:', err);
       return null;
     }
   },

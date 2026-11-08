@@ -16,14 +16,13 @@ export const produtoService = {
 
     try {
       const data = await api.get(`/produtos${queryString}`);
-      if (data && data.conteudo) {
-        return data;
-      }
+      const items = data?.content || data?.conteudo || (Array.isArray(data) ? data : []);
       return {
-        conteudo: data,
-        totalElementos: data.length,
-        totalPaginas: 1,
-        pagina: 0,
+        conteudo: items,
+        content: items,
+        totalElementos: data?.totalElements || data?.totalElementos || items.length,
+        totalPaginas: data?.totalPages || data?.totalPaginas || 1,
+        pagina: data?.number || data?.pagina || 0,
       };
     } catch (err) {
       console.warn('API de produtos indisponível, utilizando dados sincronizados...', err);
